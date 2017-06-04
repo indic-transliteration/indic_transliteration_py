@@ -3,6 +3,8 @@ Indic transliteration tools
 # Intro
 For detailed examples and help, please see individual module files in this package.
 
+Installation or upgrade: `sudo pip2 install indic_transliteration -U`
+
 # Transliteration
 ```
 from indic_transliteration import sanscript
@@ -25,5 +27,5 @@ Have a problem or question? Please head to [github](https://github.com/sanskrit-
 * ~/.pypirc should have your pypi login credentials.
 ```
 python setup.py bdist_wheel
-twine upload dist/*
+twine upload dist/* --skip-existing
 ```

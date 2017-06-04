@@ -3,7 +3,9 @@ Indic transliteration tools
 # Intro
 For detailed examples and help, please see individual module files in this package.
 
-Installation or upgrade: `sudo pip2 install indic_transliteration -U`
+Installation or upgrade:
+* `sudo pip2 install indic_transliteration -U`
+* [Web](https://pypi.python.org/pypi/indic-transliteration).
 
 # Transliteration
 ```

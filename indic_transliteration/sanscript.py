@@ -53,6 +53,8 @@ from __future__ import unicode_literals
 # ---------------
 #: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
 #: as `ব`.
+import sys
+
 BENGALI = 'bengali'
 
 #: Internal name of Devanagari.
@@ -185,7 +187,7 @@ def _roman(data, scheme_map, **kw):
     suspend_on = kw.pop('suspend_on', set())
     suspend_off = kw.pop('suspend_off', set())
     if kw:
-        raise TypeError('Unexpected keyword argument %s' % kw.keys()[0])
+        raise TypeError('Unexpected keyword argument %s' % list(kw.keys())[0])
 
     buf = []
     i = 0
@@ -342,7 +344,9 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
 
 def _setup():
     """Add a variety of default schemes."""
-    s = unicode.split
+    s = str.split
+    if sys.version_info < (3, 0):
+        s = unicode.split
 
     SCHEMES.update({
         BENGALI: Scheme({

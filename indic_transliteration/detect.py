@@ -11,6 +11,8 @@
 import re
 
 #: Scheme data. This is split into separate classes, but here it's DRY.
+import sys
+
 SCHEMES = [
     ('Bengali', 0x0980),
     ('Devanagari', 0x0900),
@@ -45,25 +47,25 @@ Scheme = type('Enum', (), {name : name for name, code in SCHEMES})
 class Regex:
 
     #: Match on special Roman characters
-    IAST_OR_KOLKATA_ONLY = re.compile(ur'[āīūṛṝḷḹēōṃḥṅñṭḍṇśṣḻ]')
+    IAST_OR_KOLKATA_ONLY = re.compile(u'[āīūṛṝḷḹēōṃḥṅñṭḍṇśṣḻ]')
 
     #: Match on chars shared by ITRANS and Velthuis
-    ITRANS_OR_VELTHUIS_ONLY = re.compile(ur'aa|ii|uu|~n')
+    ITRANS_OR_VELTHUIS_ONLY = re.compile(u'aa|ii|uu|~n')
 
     #: Match on ITRANS-only
-    ITRANS_ONLY = re.compile(ur'ee|oo|\^[iI]|RR[iI]|L[iI]|' \
-                             ur'~N|N\^|Ch|chh|JN|sh|Sh|\.a')
+    ITRANS_ONLY = re.compile(u'ee|oo|\^[iI]|RR[iI]|L[iI]|' \
+                             u'~N|N\^|Ch|chh|JN|sh|Sh|\\.a')
 
     #: Match on Kolkata-specific Roman characters
-    KOLKATA_ONLY = re.compile(ur'[ēō]')
+    KOLKATA_ONLY = re.compile(u'[ēō]')
 
     #: Match on SLP1-only characters and bigrams
-    SLP1_ONLY = re.compile(ur'[fFxXEOCYwWqQPB]|kz|Nk|Ng|tT|dD|Sc|Sn|' \
-                           ur'[aAiIuUfFxXeEoO]R|' \
-                           ur'G[yr]|(\W|^)G')
+    SLP1_ONLY = re.compile(u'[fFxXEOCYwWqQPB]|kz|Nk|Ng|tT|dD|Sc|Sn|' \
+                           u'[aAiIuUfFxXeEoO]R|' \
+                           u'G[yr]|(\\W|^)G')
 
     #: Match on Velthuis-only characters
-    VELTHUIS_ONLY = re.compile(ur'\.[mhnrlntds]|"n|~s')
+    VELTHUIS_ONLY = re.compile(u'\\.[mhnrlntds]|"n|~s')
 
 
 def detect(text):
@@ -72,11 +74,12 @@ def detect(text):
     :param text: some text data, either a `unicode` or a `str` encoded
                  in UTF-8.
     """
-    # Verify encoding
-    try:
-        text = text.decode('utf-8')
-    except UnicodeError:
-        pass
+    if sys.version_info < (3, 0):
+      # Verify encoding
+      try:
+          text = text.decode('utf-8')
+      except UnicodeError:
+          pass
 
     # Brahmic schemes are all within a specific range of code points.
     for L in text:

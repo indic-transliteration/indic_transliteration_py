@@ -100,6 +100,17 @@ DATA = {
     'naraIti': 'nara iti',
     'sentence': 'Darmakzetre kurukzetre samavetA yuyutsavaH .'
   },
+  S.WX: {
+    'vowels': 'a A i I u U q Q L ḹ e E o O',
+    'marks': 'ka KA gi GI fu cU Cq jQ JL Fḹ te TE do DO NaM waH W',
+    'consonants': """ka Ka ga Ga fa ca Ca ja Ja Fa ta Ta da Da Na
+                         wa Wa xa Xa na pa Pa ba Ba ma
+                         ya ra la va Sa Ra sa ha ḻa""",
+    'symbols': 'oM . .. 0 1 2 3 4 5 6 7 8 9',
+    'putra': 'puwra',
+    'naraIti': 'nara iwi',
+    'sentence': 'XarmakRewre kurukRewre samavewA yuyuwsavaH .'
+  },
   S.TELUGU: {
     'vowels': 'అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ',
     'marks': 'క ఖా గి ఘీ ఙు చూ ఛృ జౄ ఝౢ ఞౣ టే ఠై డో ఢౌ ణం తః థ్',

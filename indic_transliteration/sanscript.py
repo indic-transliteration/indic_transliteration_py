@@ -22,6 +22,7 @@ and the following romanizations:
 - Harvard-Kyoto_
 - IAST_ (also known as Roman Unicode)
 - SLP1
+- WX
 
 Each of these **schemes** is defined in a global dictionary `SCHEMES`, whose
 keys are strings::
@@ -100,6 +101,9 @@ KOLKATA = 'kolkata'
 
 #: Internal name of SLP1.
 SLP1 = 'slp1'
+
+#: Internal name of SLP1.
+WX = 'wx'
 
 #: Internal name of Velthuis.
 VELTHUIS = 'velthuis'
@@ -545,6 +549,26 @@ def _setup():
                             y r l v
                             S z s h
                             L kz jY
+                            """),
+            'symbols': s("""
+                       oM ' . ..
+                       0 1 2 3 4 5 6 7 8 9
+                       """)
+        }),
+        WX: Scheme({
+            'vowels': s("""a A i I u U q Q L ḹ e E o O"""),
+            'marks': s("""A i I u U q Q L ḹ e E o O"""),
+            'virama': [''],
+            'other': s('M H ~'),
+            'consonants': s("""
+                            k K g G f
+                            c C j J F
+                            t T d D N
+                            w W x X n
+                            p P b B m
+                            y r l v
+                            S R s h
+                            ḻ kR jF
                             """),
             'symbols': s("""
                        oM ' . ..

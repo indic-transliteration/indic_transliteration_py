@@ -196,6 +196,16 @@ class RomanTestCase(SanscriptTestCase):
         self.compare_all(_from, _to)
 
 
+class ItransSynonymsTestCase(SanscriptTestCase):
+  """Test transliteration from a roman scheme."""
+
+  def test_devanaagarii_equivalence(self):
+    """Test all synonmous transliterations."""
+    print S.transliterate("rAmo gUDhaM vaktI~Ngitaj~naH kShetre", S.ITRANS, S.DEVANAGARI),
+    self.assertEqual(S.transliterate("rAmo gUDhaM vaktI~Ngitaj~naH kShetre", S.ITRANS, S.DEVANAGARI),
+                     S.transliterate("raamo guuDhaM vaktii~NgitaGYaH xetre", S.ITRANS, S.DEVANAGARI))
+
+
 class BrahmicTestCase(SanscriptTestCase):
   """Test transliteration from a Brahmic scheme."""
 

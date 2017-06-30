@@ -96,7 +96,7 @@ IAST = 'iast'
 #: Internal name of ITRANS
 ITRANS = 'itrans'
 
-#: Internal name of ITRANS
+#: Internal name of KOLKATA
 KOLKATA = 'kolkata'
 
 #: Internal name of SLP1.
@@ -451,6 +451,27 @@ def _setup():
                             """),
             'symbols': s("""
                        OM ' | ||
+                       0 1 2 3 4 5 6 7 8 9
+                       """)
+        }),
+        # TODO: The below scheme does not recongize alternatives such as ii, aa, uu, x, GY, R^i, R^I, L^i, L^I
+        ITRANS: Scheme({
+            'vowels': s("""a A i I u U RRi RRI LLi LLI e ai o au"""),
+            'marks': s("""A i I u U RRi RRI LLi LLI e ai o au"""),
+            'virama': [''],
+            'other': s('M H .N'),
+            'consonants': s("""
+                            k kh g gh ~N
+                            ch Ch j jh ~n
+                            T Th D Dh N
+                            t th d dh n
+                            p ph b bh m
+                            y r l v
+                            sh Sh s h
+                            L kSh j~n
+                            """),
+            'symbols': s("""
+                       OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
         }),

@@ -11,6 +11,7 @@ Installation or upgrade:
 ```
 from indic_transliteration import sanscript
 output = sanscript.transliterate('idam adbhutam', sanscript.HK, sanscript.DEVANAGARI)
+sanscript.transliterate(u"गच्छ",sanscript.DEVANAGARI, sanscript.HK)
 ```
 
 # Script detection

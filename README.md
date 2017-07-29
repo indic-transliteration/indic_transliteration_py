@@ -14,6 +14,8 @@ output = sanscript.transliterate('idam adbhutam', sanscript.HK, sanscript.DEVANA
 sanscript.transliterate(u"गच्छ",sanscript.DEVANAGARI, sanscript.HK)
 ```
 
+Scripts supported: devanagari tamil malayalam telugu gurumukhi gujarati bengali oriya  Harvard-Kyoto IAST (aka Roman-Unicode) SLP1 WX
+
 # Script detection
 `detect.py` automatically detects a string's transliteration scheme:
 ```

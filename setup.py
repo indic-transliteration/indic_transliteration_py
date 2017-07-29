@@ -76,7 +76,7 @@ setup(
   ],
 
   # What does your project relate to?
-  keywords='indic script transliteration hindi sanskrit samskritam kannada devanagari tamil malayalam telugu gurumukhi gujarati bengali oriya',
+  keywords='indic script transliteration hindi sanskrit samskritam kannada devanagari tamil malayalam telugu gurumukhi gujarati bengali oriya - Harvard-Kyoto IAST Roman-Unicode) SLP1 WX',
 
   # You can just specify the packages manually here if your project is
   # simple. Or you can use find_packages().

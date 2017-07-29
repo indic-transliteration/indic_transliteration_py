@@ -1,13 +1,13 @@
 Indic transliteration tools
 =======================
-# Intro
+# For users
 For detailed examples and help, please see individual module files in this package.
 
-Installation or upgrade:
+## Installation or upgrade:
 * `sudo pip2 install indic_transliteration -U`
 * [Web](https://pypi.python.org/pypi/indic-transliteration).
 
-# Transliteration
+## Transliteration
 ```
 from indic_transliteration import sanscript
 output = sanscript.transliterate('idam adbhutam', sanscript.HK, sanscript.DEVANAGARI)
@@ -16,7 +16,7 @@ sanscript.transliterate(u"गच्छ",sanscript.DEVANAGARI, sanscript.HK)
 
 Scripts supported: devanagari tamil malayalam telugu gurumukhi gujarati bengali oriya  Harvard-Kyoto IAST (aka Roman-Unicode) SLP1 WX
 
-# Script detection
+## Script detection
 `detect.py` automatically detects a string's transliteration scheme:
 ```
 from indic_transliteration import detect

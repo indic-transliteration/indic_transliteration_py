@@ -5,6 +5,7 @@ For detailed examples and help, please see individual module files in this packa
 
 ## Installation or upgrade:
 * `sudo pip2 install indic_transliteration -U`
+* `sudo pip2 install git+https://github.com/sanskrit-coders/indic_transliteration/@master -U`
 * [Web](https://pypi.python.org/pypi/indic-transliteration).
 
 ## Transliteration

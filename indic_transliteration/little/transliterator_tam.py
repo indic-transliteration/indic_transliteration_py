@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 """ Transliterate texts between unicode and standard transliteration schemes.
 
 Transliterate texts between non-latin scripts and commonly-used latin
@@ -471,8 +474,8 @@ class DevanagariCharacter (TLCharacter):
     _vowelOffset = 0x93E - 0x906
     _depVowelRange = range(0x93E, 0x94D)
     _vowelRange = range(0x904, 0x915)
-    _VIRAMA = chr(0x94D)
-    _LETTER_A = chr(0x905)
+    _VIRAMA = '्'
+    _LETTER_A = "अ"
     """ Unicode calls agravaha a letter. Not for our purposes:
         we need to not treat it as one for handling virama & implicit 'a'
     """

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 """ Transliterate texts between unicode and standard transliteration schemes.
 
 Transliterate texts between non-latin scripts and commonly-used latin
@@ -37,14 +40,14 @@ USAGE
 --------
 Transliterate a text:
 
->>> import transliterator
+>>> from indic_transliteration.little import transliterator
 >>> transliterator.transliterate('yogazcittavRttinirodhaH', 'harvardkyoto',
 ...     'devanagari', {'outputASCIIEncoded' : True})
 '&#x92f;&#x94b;&#x917;&#x936;&#x94d;&#x91a;&#x93f;&#x924;&#x94d;&#x924;&#x935;&#x943;&#x924;&#x94d;&#x924;&#x93f;&#x928;&#x93f;&#x930;&#x94b;&#x927;&#x903;'
 
 Create a new CharacterBlock and TransliterationScheme:
 
->>> import transliterator
+>>> from indic_transliteration.little import transliterator
 >>> cb = transliterator.CharacterBlock('NEWBLOCK', range(0x901, 0x9FF))
 >>> scheme = transliterator.TransliterationScheme(cb.name, 'NEWSCHEME',
 ...                          {'ab': 0x901, 'cd': 0x902})
@@ -471,8 +474,8 @@ class DevanagariCharacter (TLCharacter):
     _vowelOffset = 0x93E - 0x906
     _depVowelRange = range(0x93E, 0x94D)
     _vowelRange = range(0x904, 0x915)
-    _VIRAMA = chr(0x94D)
-    _LETTER_A = chr(0x905)
+    _VIRAMA = '्'
+    _LETTER_A = "अ"
     """ Unicode calls agravaha a letter. Not for our purposes:
         we need to not treat it as one for handling virama & implicit 'a'
     """

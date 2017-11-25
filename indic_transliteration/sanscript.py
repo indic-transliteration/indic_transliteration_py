@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-indic_transliteration.sanscript
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Transliteration functions for Sanskrit. The most important function is
 :func:`transliterate`, which is very easy to use::
 
@@ -82,9 +79,6 @@ TAMIL = 'tamil'
 #: Internal name of Telugu.
 TELUGU = 'telugu'
 
-#: Internal name of Telugu.
-TELUGU = 'telugu'
-
 # Roman schemes
 # -------------
 #: Internal name of Harvard-Kyoto.
@@ -124,8 +118,10 @@ class Scheme(dict):
                    otherwise.
   """
 
-  def __init__(self, data=None, synonym_map={}, is_roman=True):
+  def __init__(self, data=None, synonym_map=None, is_roman=True):
     super(Scheme, self).__init__(data or {})
+    if synonym_map is None:
+      synonym_map = {}
     self.synonym_map = synonym_map
     self.is_roman = is_roman
 
@@ -351,6 +347,7 @@ def _setup():
   """Add a variety of default schemes."""
   s = str.split
   if sys.version_info < (3, 0):
+    import unicode
     s = unicode.split
 
   SCHEMES.update({

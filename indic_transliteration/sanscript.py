@@ -333,7 +333,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
     scheme_map = SchemeMap(from_scheme, to_scheme)
 
   options = {
-    'togglers': set(['##']),
+    'togglers': {'##'},
     'suspend_on': set('<'),
     'suspend_off': set('>')
   }
@@ -347,7 +347,7 @@ def _setup():
   """Add a variety of default schemes."""
   s = str.split
   if sys.version_info < (3, 0):
-    import unicode
+    # noinspection PyUnresolvedReferences
     s = unicode.split
 
   SCHEMES.update({

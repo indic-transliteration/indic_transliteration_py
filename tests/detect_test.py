@@ -198,7 +198,7 @@ def test_basic(data):
 @pytest.mark.parametrize('data', BASIC)
 def test_decoded(data):
     text, scheme = data
-    if sys.version_info >= (3,0):
+    if sys.version_info < (3,0):
         text = text.decode('utf-8')
     detection = detect(text)
     assert detection == scheme, u'%s == %s (%s)' % (detection, scheme, text)

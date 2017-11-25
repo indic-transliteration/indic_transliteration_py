@@ -5,13 +5,13 @@ Indic transliteration tools
 
 
 # For users
-For detailed examples and help, please see individual module files in this package.
+* [Docs](http://indic-transliteration.readthedocs.io/en/latest/).
+* For detailed examples and help, please see individual module files in this package.
 
 ## Installation or upgrade:
 * `sudo pip install indic_transliteration -U`
 * `sudo pip install git+https://github.com/sanskrit-coders/indic_transliteration/@master -U`
 * [Web](https://pypi.python.org/pypi/indic-transliteration).
-* [Docs](http://indic-transliteration.readthedocs.io/en/latest/).
 
 # For contributors
 ## Contact

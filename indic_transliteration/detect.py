@@ -72,7 +72,7 @@ class Regex:
                          u'G[yr]|(\\W|^)G')
 
   #: Match on Velthuis-only characters
-  VELTHUIS_ONLY = re.compile(u'\\.[mhnrlntds]|"n|~s')
+  VELTHUIS_ONLY = re.compile(u'\\.[mhnrltds]|"n|~s')
 
 
 def detect(text):

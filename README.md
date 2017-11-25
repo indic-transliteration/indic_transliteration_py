@@ -1,5 +1,9 @@
 Indic transliteration tools
 =======================
+# Status
+[![Build Status](https://travis-ci.org/sanskrit-coders/indic_transliteration.svg?branch=master)](https://travis-ci.org/sanskrit-coders/indic_transliteration)
+
+
 # For users
 For detailed examples and help, please see individual module files in this package.
 

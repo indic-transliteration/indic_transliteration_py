@@ -10,10 +10,10 @@ Tests Sanskrit transliteration.
 
 from __future__ import unicode_literals
 
-from indic_transliteration import sanscript as S
-
-import unittest
+import logging
 from unittest import TestCase
+
+from indic_transliteration import sanscript as S
 
 DATA = {
   S.BENGALI: {
@@ -175,7 +175,8 @@ class GeneralTestCase(SanscriptTestCase):
     groups = set(dev.keys())
     for name, scheme in S.SCHEMES.items():
       for group in scheme:
-        print name, group
+        logging.debug(name)
+        logging.debug(group)
         self.assertIn(group, groups)
         self.assertEqual(len(scheme[group]), len(dev[group]))
 
@@ -201,7 +202,7 @@ class ItransSynonymsTestCase(SanscriptTestCase):
 
   def test_devanaagarii_equivalence(self):
     """Test all synonmous transliterations."""
-    print S.transliterate("rAmo gUDhaM vaktI~Ngitaj~naH kShetre", S.ITRANS, S.DEVANAGARI),
+    logging.info(S.transliterate("rAmo gUDhaM vaktI~Ngitaj~naH kShetre", S.ITRANS, S.DEVANAGARI))
     self.assertEqual(S.transliterate("rAmo gUDhaM vaktI~Ngitaj~naH kShetre", S.ITRANS, S.DEVANAGARI),
                      S.transliterate("raamo guuDhaM vaktii~NgitaGYaH xetre", S.ITRANS, S.DEVANAGARI))
 

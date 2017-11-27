@@ -8,8 +8,7 @@ logging.basicConfig(
   format="%(levelname)s: %(asctime)s %(message)s"
 )
 
-
-from indic_transliteration import get_approx_deduplicating_key
+from indic_transliteration.sanscript import get_approx_deduplicating_key
 
 TEST_DATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'approxDeduplicationTests.json')
 

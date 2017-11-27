@@ -13,6 +13,7 @@
 
 import sys
 import array
+import logging
 
 # Generic Constants
 
@@ -355,7 +356,7 @@ special_maps = {
 
 
 def make_script_maps():
-    _invalid_range = range(0xEB, 0xF1) + range(0xFB, 0xFF + 1)    
+    _invalid_range = list(range(0xEB, 0xF1)) + list(range(0xFB, 0xFF + 1))
     scripts = {}
     
     for i in range(9):
@@ -485,7 +486,7 @@ class Parser:
         if i in range(1, 10):
             n = i - 1
         else:
-            raise IllegalInput, "Invalid Value for ATR %s" % (hex(i))
+            raise IllegalInput("Invalid Value for ATR %s" % (hex(i)))
 
         if n > -1: # n = -1 is the default script ..
             self.curr_script = n
@@ -517,7 +518,7 @@ class Parser:
         
         for a in range(1):
             
-            if not ((EXT_RANGE_END >= curr_char) and\
+            if not ((EXT_RANGE_END >= curr_char) and
                     (EXT_RANGE_BEGIN <= curr_char)):
                 break
             
@@ -535,19 +536,19 @@ class Parser:
                 return dest_char
 
 
-        print >> sys.stderr, "Invalid input after EXT %s" % (hex(i))
+        logging.info(sys.stderr, "Invalid input after EXT %s" % (hex(i)))
         return None
     
 
     def handle_atr(self, i):
 
-        print >> sys.stderr, "Handling ATR:",
+        logging.info(sys.stderr, "Handling ATR:",)
         if i in ISCII_SCRIPTS.keys():
             self.set_script(ISCII_SCRIPTS[i])
-            print >> sys.stderr, "setting script to", i
+            logging.info(sys.stderr, "setting script to", i)
         else:
             # ignore all other ATR markers
-            print >> sys.stderr, "ignored"
+            logging.info(sys.stderr, "ignored")
             pass
         
         self.pos += 2 # for ATR and the following char
@@ -567,7 +568,7 @@ class Parser:
         
 
     def post_analysis(self, prev_char, src_char):
-
+        ret = None
         if prev_char == ISCII_ATR:
             ret = self.handle_atr(src_char)
                 
@@ -602,8 +603,8 @@ class Parser:
             
             if invalid_chars[self.curr_script][curr_char]:
                 # just ignore the invalid iscii characters
-                print >> sys.stderr, 'ignoring invalid iscii char', \
-                      hex(curr_char)
+                logging.info(sys.stderr, 'ignoring invalid iscii char',
+                      hex(curr_char))
                 self.pos += 1
                 continue
             
@@ -702,7 +703,7 @@ def show_usage(name):
     any msgs to the user (error msgs etc) are printed on stderr
     """ % (name)
     
-    print >> sys.stderr,  usage
+    logging.info(sys.stderr,  usage)
     sys.exit(1)
 
 
@@ -710,6 +711,7 @@ chunk_size = 4096
 
 if __name__ == '__main__':
 
+    i = 0
     try:
         
         i = int(sys.argv[1])

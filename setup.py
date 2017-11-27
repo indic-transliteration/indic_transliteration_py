@@ -5,11 +5,11 @@ https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
 """
 
+# To use a consistent encoding
+from os import path
+
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
-# To use a consistent encoding
-from codecs import open
-from os import path
 
 here = path.abspath(path.dirname(__file__))
 
@@ -96,10 +96,10 @@ setup(
   # dependencies). You can install these using the following syntax,
   # for example:
   # $ pip install -e .[dev,test]
-  # extras_require={
-  #     'dev': ['check-manifest'],
-  #     'test': ['coverage'],
-  # },
+  extras_require={
+      # 'dev': ['check-manifest'],
+      'test': ['pytest', 'regex'],
+  },
 
   # If there are data files included in your packages that need to be
   # installed, specify them here.  If using Python 2.6 or less, then these

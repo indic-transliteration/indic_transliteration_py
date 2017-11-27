@@ -1,0 +1,12 @@
+{
+  "canonical_source": "https://github.com/sanskrit-coders/indic-transliteration/blob/master/src/test/resources/approxDeduplicationTests.json",
+  "duplicates": [
+    ["धर्मः", "धर्म्मः"],
+    ["रामं गृह्णाति", "रामङ्गृह्णाति"],
+    ["रामोऽनुगृह्णाति", "रामोनुगृह्णाति"],
+    ["अग्नि॒मीळे॑", "अग्निमीळे"]
+  ],
+  "non_duplicates": [
+    ["स्तम्बः", "स्तम्भः"]
+  ]
+}

@@ -55,6 +55,10 @@ import logging
 import sys
 
 import regex
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
 
 BENGALI = 'bengali'
 
@@ -310,6 +314,17 @@ def _brahmic(data, scheme_map, **kw):
   return ''.join(buf)
 
 
+@lru_cache(maxsize=8)
+def _get_schema_map(input_encoding, output_encoding):
+    """Provides a caching layer on top of `SchemeMap` objects to allow faster
+    access to scheme maps we've instantiated once.
+
+    :param input_encoding: Input encoding. Must be defined in `SCHEMES`.
+    :param output_encoding: Input encoding. Must be defined in `SCHEMES`.
+    """
+    return SchemeMap(SCHEMES[input_encoding], SCHEMES[output_encoding])
+
+
 def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   """Transliterate `data` with the given parameters::
 
@@ -331,9 +346,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
                      :class:`SchemeMap` from `_from` to `_to`.
   """
   if scheme_map is None:
-    from_scheme = SCHEMES[_from]
-    to_scheme = SCHEMES[_to]
-    scheme_map = SchemeMap(from_scheme, to_scheme)
+    scheme_map = _get_schema_map(_from, _to)
 
   options = {
     'togglers': {'##'},

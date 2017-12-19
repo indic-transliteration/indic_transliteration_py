@@ -315,7 +315,7 @@ def _brahmic(data, scheme_map, **kw):
 
 
 @lru_cache(maxsize=8)
-def _get_schema_map(input_encoding, output_encoding):
+def _get_scheme_map(input_encoding, output_encoding):
     """Provides a caching layer on top of `SchemeMap` objects to allow faster
     access to scheme maps we've instantiated once.
 
@@ -346,7 +346,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
                      :class:`SchemeMap` from `_from` to `_to`.
   """
   if scheme_map is None:
-    scheme_map = _get_schema_map(_from, _to)
+    scheme_map = _get_scheme_map(_from, _to)
 
   options = {
     'togglers': {'##'},

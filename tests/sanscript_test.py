@@ -81,6 +81,17 @@ DATA = {
     'naraIti': 'nara iti',
     'sentence': 'dharmakṣetre kurukṣetre samavetā yuyutsavaḥ ।'
   },
+  S.KOLKATA: {
+    'vowels': 'a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au',
+    'marks': 'ka khā gi ghī ṅu cū chṛ jṝ jhḷ ñḹ ṭē ṭhai ḍō ḍhau ṇaṃ taḥ th',
+    'consonants': """ka kha ga gha ṅa ca cha ja jha ña ṭa ṭha ḍa ḍha ṇa
+                         ta tha da dha na pa pha ba bha ma
+                         ya ra la va śa ṣa sa ha ḻa""",
+    'symbols': 'oṃ । ॥ 0 1 2 3 4 5 6 7 8 9',
+    'putra': 'putra',
+    'naraIti': 'nara iti',
+    'sentence': 'dharmakṣētrē kurukṣētrē samavētā yuyutsavaḥ ।'
+  },
   S.KANNADA: {
     'vowels': 'ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ',
     'marks': 'ಕ ಖಾ ಗಿ ಘೀ ಙು ಚೂ ಛೃ ಜೄ ಝೢ ಞೣ ಟೇ ಠೈ ಡೋ ಢೌ ಣಂ ತಃ ಥ್',
@@ -139,7 +150,7 @@ DATA = {
 class SanscriptTestCase(TestCase):
   """Ordinary :class:`~unittest.TestCase` with some helper data."""
 
-  roman = {S.HK, S.IAST, S.SLP1, S.ITRANS, S.WX}
+  roman = {S.HK, S.IAST, S.SLP1, S.ITRANS, S.WX, S.KOLKATA}
   brahmic = {x for x in S.SCHEMES} - roman
 
   def compare_all(self, _from, _to):

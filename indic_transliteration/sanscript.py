@@ -511,6 +511,26 @@ def _setup():
                        0 1 2 3 4 5 6 7 8 9
                        """)
     }),
+    KOLKATA: Scheme({
+      'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au"""),
+      'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au"""),
+      'virama': [''],
+      'other': s('ṃ ḥ m̐'),
+      'consonants': s("""
+                            k kh g gh ṅ
+                            c ch j jh ñ
+                            ṭ ṭh ḍ ḍh ṇ
+                            t th d dh n
+                            p ph b bh m
+                            y r l v
+                            ś ṣ s h
+                            ḻ kṣ jñ
+                            """),
+      'symbols': s("""
+                       oṃ ' । ॥
+                       0 1 2 3 4 5 6 7 8 9
+                       """)
+    }),
     KANNADA: Scheme({
       'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ"""),
       'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ"""),

@@ -70,6 +70,18 @@ DATA = {
     'naraIti': 'nara iti',
     'sentence': 'dharmakShetre kurukShetre samavetA yuyutsavaH |'
   },
+  S.VELTHUIS: {
+    'vowels': 'a aa i ii u uu .r .rr .l .ll e ai o au',
+    'marks': """ka khaa gi ghii "nu cuu ch.r j.rr jh.l ~n.ll .te .thai .do .dhau
+                    .na.m ta.h th""",
+    'consonants': """ka kha ga gha "na ca cha ja jha ~na .ta .tha .da .dha .na
+                         ta tha da dha na pa pha ba bha ma
+                         ya ra la va "sa .sa sa ha La""",
+    'symbols': 'O | || 0 1 2 3 4 5 6 7 8 9',
+    'putra': 'putra',
+    'naraIti': 'nara iti',
+    'sentence': 'dharmak.setre kuruk.setre samavetaa yuyutsava.h |'
+  },
   S.IAST: {
     'vowels': 'a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au',
     'marks': 'ka khā gi ghī ṅu cū chṛ jṝ jhḷ ñḹ ṭe ṭhai ḍo ḍhau ṇaṃ taḥ th',
@@ -150,7 +162,7 @@ DATA = {
 class SanscriptTestCase(TestCase):
   """Ordinary :class:`~unittest.TestCase` with some helper data."""
 
-  roman = {S.HK, S.IAST, S.SLP1, S.ITRANS, S.WX, S.KOLKATA}
+  roman = {S.HK, S.IAST, S.SLP1, S.ITRANS, S.WX, S.KOLKATA, S.VELTHUIS}
   brahmic = {x for x in S.SCHEMES} - roman
 
   def compare_all(self, _from, _to):

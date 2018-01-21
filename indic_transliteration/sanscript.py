@@ -468,6 +468,26 @@ def _setup():
                        0 1 2 3 4 5 6 7 8 9
                        """)
     }),
+    VELTHUIS: Scheme({
+      'vowels': s("""a aa i ii u uu .r .rr .l .ll e ai o au"""),
+      'marks': s("""aa i ii u uu .r .rr .l .ll e ai o au"""),
+      'virama': [''],
+      'other': s('.m .h /'),
+      'consonants': s("""
+                            k kh g gh "n
+                            c ch j jh ~n
+                            .t .th .d .dh .n
+                            t th d dh n
+                            p ph b bh m
+                            y r l v
+                            "s .s s h
+                            L k.s j~n
+                            """),
+      'symbols': s("""
+                       O .a | ||
+                       0 1 2 3 4 5 6 7 8 9
+                       """)
+    }),
     ITRANS: Scheme({
       'vowels': s("""a A i I u U RRi RRI LLi LLI e ai o au"""),
       'marks': s("""A i I u U RRi RRI LLi LLI e ai o au"""),

@@ -120,7 +120,7 @@ class Scheme(dict):
   :class:`Scheme` is just a subclass of :class:`dict`.
 
   :param data: a :class:`dict` of initial values.
-  :param synonym_map: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS. 
+  :param synonym_map: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS.
   :param is_roman: `True` if the scheme is a romanization and `False`
                    otherwise.
   """

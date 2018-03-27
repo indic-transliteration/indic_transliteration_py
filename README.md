@@ -13,11 +13,36 @@ Indic transliteration tools
 * `sudo pip install git+https://github.com/sanskrit-coders/indic_transliteration/@master -U`
 * [Web](https://pypi.python.org/pypi/indic-transliteration).
 
+
+## Usage
+
+```py
+In [1]: from indic_transliteration import sanscript
+   ...: from indic_transliteration.sanscript import SchemeMap, SCHEMES, transliterate
+   ...:
+
+In [2]: data = 'idam adbhutam'
+
+In [3]: print(transliterate(data, sanscript.HK, sanscript.TELUGU))
+ఇదమ్ అద్భుతమ్
+
+In [4]: print(transliterate(data, sanscript.ITRANS, sanscript.DEVANAGARI))
+इदम् अद्भुतम्
+
+In [5]: scheme_map = SchemeMap(SCHEMES[sanscript.VELTHUIS], SCHEMES[sanscript.TELUGU])
+
+In [6]: print(transliterate(data, scheme_map=scheme_map))
+ఇదమ్ అద్భుతమ్
+```
+
 # For contributors
+
 ## Contact
+
 Have a problem or question? Please head to [github](https://github.com/sanskrit-coders/indic_transliteration).
 
 ## Packaging
+
 * ~/.pypirc should have your pypi login credentials.
 ```
 python setup.py bdist_wheel

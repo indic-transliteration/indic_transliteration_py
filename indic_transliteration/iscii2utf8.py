@@ -400,7 +400,7 @@ def make_invalid_maps():
         curr_map = {}
         
         for j in range(0xFF + 1):
-            curr_map[j] = (not script_maps[i].has_key(j)) and \
+            curr_map[j] = (j not in script_maps[i]) and \
                           (j not in ISCII_SPECIALS)
         maps[i] = curr_map
         
@@ -502,7 +502,7 @@ class Parser:
 
     def isvalid_iscii(self, x):
 
-        return not invalid_chars[self.curr_script].has_key(x)
+        return x not in invalid_chars[self.curr_script]
 
 
     def is_nukta_special(self, i):

@@ -309,26 +309,6 @@ def _setup():
     s = unicode.split
 
   SCHEMES.update({
-    BENGALI: Scheme({
-      'vowels': s("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
-      'marks': s("""া ি ী ু ূ ৃ ৄ ৢ ৣ ে ৈ ো ৌ"""),
-      'virama': s('্'),
-      'other': s('ং ঃ ঁ'),
-      'consonants': s("""
-                            ক খ গ ঘ ঙ
-                            চ ছ জ ঝ ঞ
-                            ট ঠ ড ঢ ণ
-                            ত থ দ ধ ন
-                            প ফ ব ভ ম
-                            য র ল ব
-                            শ ষ স হ
-                            ळ ক্ষ জ্ঞ
-                            """),
-      'symbols': s("""
-                       ॐ ঽ । ॥
-                       ০ ১ ২ ৩ ৪ ৫ ৬ ৭ ৮ ৯
-                       """)
-    }, is_roman=False),
     DEVANAGARI: Scheme({
       'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ऎ ए ऐ ऒ ओ औ"""),
       'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ ॆ े ै ॊ ो ौ"""),
@@ -354,47 +334,6 @@ def _setup():
       #                  ० १ २ ३ ४ ५ ६ ७ ८ ९
       #                  """)
     }, is_roman=False),
-    GUJARATI: Scheme({
-      'vowels': s("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
-      'marks': s("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),
-      'virama': s('્'),
-      'other': s('ં ઃ ઁ'),
-      'consonants': s("""
-                            ક ખ ગ ઘ ઙ
-                            ચ છ જ ઝ ઞ
-                            ટ ઠ ડ ઢ ણ
-                            ત થ દ ધ ન
-                            પ ફ બ ભ મ
-                            ય ર લ વ
-                            શ ષ સ હ
-                            ળ ક્ષ જ્ઞ
-                            """),
-      'symbols': s("""
-                       ૐ ઽ ૤ ૥
-                       ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯
-                       """)
-    }, is_roman=False),
-    GURMUKHI: Scheme({
-      'vowels': s("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),
-      'marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', '', '',
-                '', '', 'ੇ', 'ੈ', 'ੋ', 'ੌ'],
-      'virama': s('੍'),
-      'other': s('ਂ ਃ ਁ'),
-      'consonants': s("""
-                            ਕ ਖ ਗ ਘ ਙ
-                            ਚ ਛ ਜ ਝ ਞ
-                            ਟ ਠ ਡ ਢ ਣ
-                            ਤ ਥ ਦ ਧ ਨ
-                            ਪ ਫ ਬ ਭ ਮ
-                            ਯ ਰ ਲ ਵ
-                            ਸ਼ ਸ਼ ਸ ਹ
-                            ਲ਼ ਕ੍ਸ਼ ਜ੍ਞ
-                            """),
-      'symbols': s("""
-                       ॐ ऽ । ॥
-                       ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
-                       """)
-    }, is_roman=False),
     HK: Scheme({
       'vowels': s("""a A i I u U R RR lR lRR e E ai o O au"""),
       'marks': s("""A i I u U R RR lR lRR e E ai o O au"""),
@@ -418,8 +357,8 @@ def _setup():
     }, synonym_map={ "|": ["."], "||": [".."]
     }),
     ITRANS: Scheme({
-      'vowels': s("""a A i I u U RRi RRI LLi LLI e ai o au"""),
-      'marks': s("""A i I u U RRi RRI LLi LLI e ai o au"""),
+      'vowels': s("""a A i I u U RRi RRI LLi LLI e E ai o O au"""),
+      'marks': s("""A i I u U RRi RRI LLi LLI e E ai o O au"""),
       'virama': [''],
       'other': s('M H .N'),
       'consonants': s("""
@@ -462,8 +401,8 @@ def _setup():
                        """)
     }),
     KANNADA: Scheme({
-      'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ"""),
-      'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ"""),
+      'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಎ ಏ ಐ ಒ ಓ ಔ"""),
+      'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೆ ೇ ೈ ೊ ೋ ೌ"""),
       'virama': s('್'),
       'other': s('ಂ ಃ ँ'),
       'consonants': s("""
@@ -482,8 +421,8 @@ def _setup():
                        """)
     }, is_roman=False),
     MALAYALAM: Scheme({
-      'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ"""),
-      'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ"""),
+      'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ എ ഏ ഐ ഓ ഒ ഔ"""),
+      'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ െ േ ൈ ൊ ോ ൌ"""),
       'virama': s('്'),
       'other': s('ം ഃ ँ'),
       'consonants': s("""
@@ -501,67 +440,6 @@ def _setup():
                        ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯
                        """)
     }, is_roman=False),
-    ORIYA: Scheme({
-      'vowels': s("""ଅ ଆ ଇ ଈ ଉ ଊ ଋ ୠ ଌ ୡ ଏ ଐ ଓ ଔ"""),
-      'marks': ['ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'ୃ', 'ୄ',
-                '', '', 'େ', 'ୈ', 'ୋ', 'ୌ'],
-      'virama': s('୍'),
-      'other': s('ଂ ଃ ଁ'),
-      'consonants': s("""
-                            କ ଖ ଗ ଘ ଙ
-                            ଚ ଛ ଜ ଝ ଞ
-                            ଟ ଠ ଡ ଢ ଣ
-                            ତ ଥ ଦ ଧ ନ
-                            ପ ଫ ବ ଭ ମ
-                            ଯ ର ଲ ଵ
-                            ଶ ଷ ସ ହ
-                            ଳ କ୍ଷ ଜ୍ଞ
-                            """),
-      'symbols': s("""
-                       ଓଂ ଽ । ॥
-                       ୦ ୧ ୨ ୩ ୪ ୫ ୬ ୭ ୮ ୯
-                       """)
-    }, is_roman=False),
-    SLP1: Scheme({
-      'vowels': s("""a A i I u U f F x X e E o O"""),
-      'marks': s("""A i I u U f F x X e E o O"""),
-      'virama': [''],
-      'other': s('M H ~'),
-      'consonants': s("""
-                            k K g G N
-                            c C j J Y
-                            w W q Q R
-                            t T d D n
-                            p P b B m
-                            y r l v
-                            S z s h
-                            L kz jY
-                            """),
-      'symbols': s("""
-                       oM ' . ..
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }),
-    WX: Scheme({
-      'vowels': s("""a A i I u U q Q L ḹ e E o O"""),
-      'marks': s("""A i I u U q Q L ḹ e E o O"""),
-      'virama': [''],
-      'other': s('M H ~'),
-      'consonants': s("""
-                            k K g G f
-                            c C j J F
-                            t T d D N
-                            w W x X n
-                            p P b B m
-                            y r l v
-                            S R s h
-                            ḻ kR jF
-                            """),
-      'symbols': s("""
-                       oM ' . ..
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }),
     TAMIL: Scheme({
       'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ எ ஏ ஐ ஒ ஓ ஔ"""),
       'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '', '',
@@ -586,7 +464,8 @@ def _setup():
     }, is_roman=False),
     TELUGU: Scheme({
       'vowels': s("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ"""),
-      'marks': s("""ా ి ీ ు ూ ృ ౄ ౢ ౣ ే ై ో ౌ"""),
+      'marks': s("""ా ి ీ ు ూ ృ ౄ ౢ ౣ $
+ె ే ై ొ ో ౌ"""),
       'virama': s('్'),
       'other': s('ం ః ఁ'),
       'consonants': s("""

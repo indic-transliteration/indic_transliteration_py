@@ -35,6 +35,19 @@ In [6]: print(transliterate(data, scheme_map=scheme_map))
 ఇదమ్ అద్భుతమ్
 ```
 
+## Dravidian language extension
+```py
+In [1]: from indic_transliteration import xsanscript
+   ...: from indic_transliteration.xsanscript import SchemeMap, SCHEMES, transliterate
+   ...:
+
+In [2]: data = 'असय औषधिः ग्रन्थः। ऎ ऒ यॆक्ककॊ?'
+
+In [3]: print(transliterate(data, xsanscript.DEVANAGARI, xsanscript.KANNADA))
+ಅಸಯ ಔಷಧಿಃ ಗ್ರನ್ಥಃ। ಎ ಒ ಯೆಕ್ಕಕೊ?
+```
+
+
 # For contributors
 
 ## Contact

@@ -1,0 +1,12 @@
+{
+"canonical_source": "https://github.com/sanskrit-coders/indic_transliteration/blob/master/src/test/resources/dravidianTransliterationTests.json",
+"comments": "Shared transliteration tests for dravidian scripts. In each test, the dev field is compulsory.",
+"tests": [
+{
+  "dev": "असय औषधिः ग्रन्थः। ऎ ऒ यॆक्ककॊ?",
+  "telugu": "అసయ ఔషధిః గ్రన్థః। ఎ ఒ యెక్కకొ?",
+  "kannada": "ಅಸಯ ಔಷಧಿಃ ಗ್ರನ್ಥಃ। ಎ ಒ ಯೆಕ್ಕಕೊ?",
+  "tamil_failing": "அஸய ஔஷதிஃ க்ரந்தஃ। எ ஒ யெக்ககொ?"
+}
+]
+}

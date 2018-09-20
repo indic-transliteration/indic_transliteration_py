@@ -61,3 +61,8 @@ Have a problem or question? Please head to [github](https://github.com/sanskrit-
 python setup.py bdist_wheel
 twine upload dist/* --skip-existing
 ```
+
+## Auxiliary tools
+- [![Build Status](https://travis-ci.org/sanskrit-coders/indic_transliteration.svg?branch=master)](https://travis-ci.org/sanskrit-coders/indic_transliteration)
+- [![Documentation Status](https://readthedocs.org/projects/indic-transliteration/badge/?version=latest)](http://indic-transliteration.readthedocs.io/en/latest/?badge=latest)
+- [pyup](https://pyup.io/account/repos/github/sanskrit-coders/indic_transliteration/)

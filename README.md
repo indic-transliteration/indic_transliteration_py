@@ -70,6 +70,9 @@ python setup.py bdist_wheel
 twine upload dist/* --skip-existing
 ```
 
+## Testing
+Run `pytest` in the root directory.
+
 ## Auxiliary tools
 - [![Build Status](https://travis-ci.org/sanskrit-coders/indic_transliteration.svg?branch=master)](https://travis-ci.org/sanskrit-coders/indic_transliteration)
 - [![Documentation Status](https://readthedocs.org/projects/indic-transliteration/badge/?version=latest)](http://indic-transliteration.readthedocs.io/en/latest/?badge=latest)

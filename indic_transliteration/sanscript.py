@@ -358,12 +358,12 @@ def optitrans_to_itrans(data_in):
 
 def fix_lazy_anusvaara_itrans(data_in):
     data_out = data_in
-    data_out = regex.sub(r'M([kg])', r'~N\1',   data_out)
-    data_out = regex.sub(r'M([cCj])', r'~n\1',   data_out)
-    data_out = regex.sub(r'M([tdn])', r'n\1',   data_out)
-    data_out = regex.sub(r'M([TDN])', r'N\1',   data_out)
-    data_out = regex.sub(r'M([pb])', r'm\1',   data_out)
-    data_out = regex.sub(r'M([yvl])', r'\1.N\1',   data_out)
+    data_out = regex.sub(r'M( *)([kg])', r'~N\1\2',   data_out)
+    data_out = regex.sub(r'M( *)([cCj])', r'~n\1\2',   data_out)
+    data_out = regex.sub(r'M( *)([tdn])', r'n\1\2',   data_out)
+    data_out = regex.sub(r'M( *)([TDN])', r'N\1\2',   data_out)
+    data_out = regex.sub(r'M( *)([pb])', r'm\1\2',   data_out)
+    data_out = regex.sub(r'M( *)([yvl])', r'\2.N\1\2',   data_out)
     return data_out
 
 def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):

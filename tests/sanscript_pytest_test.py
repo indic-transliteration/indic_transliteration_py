@@ -59,3 +59,4 @@ def test_fix_lazy_anusvaara_itrans():
     assert sanscript.fix_lazy_anusvaara_itrans("saMvara") == "sav.Nvara"
     assert sanscript.fix_lazy_anusvaara_itrans("saMyukta") == "say.Nyukta"
     assert sanscript.fix_lazy_anusvaara_itrans("saMlagna") == "sal.Nlagna"
+    assert sanscript.fix_lazy_anusvaara_itrans("taM jitvA") == "ta~n jitvA"

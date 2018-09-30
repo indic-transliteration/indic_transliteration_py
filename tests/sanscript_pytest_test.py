@@ -40,8 +40,22 @@ def test_to_devanagari(test_conversions):
 def test_optitrans_to_itrans():
     assert sanscript.optitrans_to_itrans("shankara") == "sha~Nkara"
     assert sanscript.optitrans_to_itrans("manjIra") == "ma~njIra"
+    assert sanscript.optitrans_to_itrans("praBA") == "prabhA"
+    assert sanscript.optitrans_to_itrans("pRRS") == "pRRISh"
+    assert sanscript.optitrans_to_itrans("pRcCa") == "pRRichCha"
+    assert sanscript.optitrans_to_itrans("R") == "RRi"
+    assert sanscript.optitrans_to_itrans("Rc") == "RRich"
 
 def test_itrans_to_optitrans():
     assert sanscript.itrans_to_optitrans("sha~Nkara") == "shankara"
     assert sanscript.itrans_to_optitrans("ma~njIra") == "manjIra"
 
+def test_fix_lazy_anusvaara_itrans():
+    assert sanscript.fix_lazy_anusvaara_itrans("shaMkara") == "sha~Nkara"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMchara") == "sa~nchara"
+    assert sanscript.fix_lazy_anusvaara_itrans("ShaMDa") == "ShaNDa"
+    assert sanscript.fix_lazy_anusvaara_itrans("shAMta") == "shAnta"
+    assert sanscript.fix_lazy_anusvaara_itrans("sAMba") == "sAmba"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMvara") == "sav.Nvara"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMyukta") == "say.Nyukta"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMlagna") == "sal.Nlagna"

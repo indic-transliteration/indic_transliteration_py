@@ -338,10 +338,33 @@ def itrans_to_optitrans(data_in):
 def optitrans_to_itrans(data_in):
   data_out = data_in
   data_out = regex.sub(r'RR', 'RRI',   data_out)
-  data_out = regex.sub(r'R', 'RRi',   data_out)
+  data_out = regex.sub(r'([^R])R([^R])', r'\1RRi\2',   data_out)
+  data_out = regex.sub(r'([^R])R$', r'\1RRi',   data_out)
+  data_out = regex.sub(r'^R([^R])', r'RRi\1',   data_out)
+  data_out = regex.sub(r'^R$', r'RRi',   data_out)
+  data_out = regex.sub('E', 'e',   data_out)
+  data_out = regex.sub('O', 'o',   data_out)
+  data_out = regex.sub('K', 'kh',   data_out)
+  data_out = regex.sub(r'c([^h])', r'ch\1',   data_out)
+  data_out = regex.sub(r'C([^h])', r'Ch\1',   data_out)
+  data_out = regex.sub(r'([cC])$', r'\1h',   data_out)
+  data_out = regex.sub('J', 'jh',   data_out)
+  data_out = regex.sub('P', 'ph',   data_out)
+  data_out = regex.sub('B', 'bh',   data_out)
+  data_out = regex.sub('S', 'Sh',   data_out)
   data_out = regex.sub(r'n([kg])', r'~N\1',   data_out)
-  data_out = regex.sub(r'n([cj])', r'~n\1',   data_out)
+  data_out = regex.sub(r'n([cjC])', r'~n\1',   data_out)
   return data_out
+
+def fix_lazy_anusvaara_itrans(data_in):
+    data_out = data_in
+    data_out = regex.sub(r'M([kg])', r'~N\1',   data_out)
+    data_out = regex.sub(r'M([cCj])', r'~n\1',   data_out)
+    data_out = regex.sub(r'M([tdn])', r'n\1',   data_out)
+    data_out = regex.sub(r'M([TDN])', r'N\1',   data_out)
+    data_out = regex.sub(r'M([pb])', r'm\1',   data_out)
+    data_out = regex.sub(r'M([yvl])', r'\1.N\1',   data_out)
+    return data_out
 
 def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   """Transliterate `data` with the given parameters::

@@ -43,6 +43,17 @@ assert sanscript.optitrans_to_itrans("shankara") == "sha~Nkara"
 assert sanscript.itrans_to_optitrans("sha~Nkara") == "shankara"
 ``` 
 
+See sanscript_pytest_test.py for more examples.
+
+### Lazy anusvaara-s
+```
+    assert sanscript.fix_lazy_anusvaara_itrans("shaMkara") == "sha~Nkara"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMchara") == "sa~nchara"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMvara") == "sav.Nvara"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMyukta") == "say.Nyukta"
+    assert sanscript.fix_lazy_anusvaara_itrans("saMlagna") == "sal.Nlagna"
+```
+
 ## Dravidian language extension
 ```py
 In [1]: from indic_transliteration import xsanscript

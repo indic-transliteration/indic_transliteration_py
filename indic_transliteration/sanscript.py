@@ -97,6 +97,9 @@ IAST = 'iast'
 #: Internal name of ITRANS
 ITRANS = 'itrans'
 
+#: Internal name of OPTITRANS
+OPTITRANS = 'optitrans'
+
 #: Internal name of KOLKATA
 KOLKATA = 'kolkata'
 
@@ -324,6 +327,21 @@ def _get_scheme_map(input_encoding, output_encoding):
     """
     return SchemeMap(SCHEMES[input_encoding], SCHEMES[output_encoding])
 
+# Optitransv1 is described in https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1 and in https://docs.google.com/spreadsheets/d/1o2vysXaXfNkFxCO-WD77C4AEbXcAcJmDVgUb-E0mYbg/edit?usp=drive_web&ouid=109000762913288837175 . It is very close to ITRANS.
+def itrans_to_optitrans(data_in):
+  data_out = data_in
+  data_out = regex.sub(r'R[R^]i', 'R',   data_out)
+  data_out = regex.sub(r'R[R^]I', 'RR',   data_out)
+  data_out = regex.sub(r'~[Nn]', 'n',   data_out)
+  return data_out
+
+def optitrans_to_itrans(data_in):
+  data_out = data_in
+  data_out = regex.sub(r'RR', 'RRI',   data_out)
+  data_out = regex.sub(r'R', 'RRi',   data_out)
+  data_out = regex.sub(r'n([kg])', r'~N\1',   data_out)
+  data_out = regex.sub(r'n([cj])', r'~n\1',   data_out)
+  return data_out
 
 def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   """Transliterate `data` with the given parameters::

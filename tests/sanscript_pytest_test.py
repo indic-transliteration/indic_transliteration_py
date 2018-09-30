@@ -36,3 +36,12 @@ def test_to_devanagari(test_conversions):
             continue
         assert sanscript.transliterate(text, script, sanscript.DEVANAGARI) == dev_string, "Failed to convert " + script + " to devanAgarI"
 
+
+def test_optitrans_to_itrans():
+    assert sanscript.optitrans_to_itrans("shankara") == "sha~Nkara"
+    assert sanscript.optitrans_to_itrans("manjIra") == "ma~njIra"
+
+def test_itrans_to_optitrans():
+    assert sanscript.itrans_to_optitrans("sha~Nkara") == "shankara"
+    assert sanscript.itrans_to_optitrans("ma~njIra") == "manjIra"
+

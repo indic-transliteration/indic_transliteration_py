@@ -35,6 +35,14 @@ In [6]: print(transliterate(data, scheme_map=scheme_map))
 ఇదమ్ అద్భుతమ్
 ```
 
+### Optitrans extension
+Optitransv1 is described in [this page](https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1). OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु).
+
+```
+assert sanscript.optitrans_to_itrans("shankara") == "sha~Nkara"
+assert sanscript.itrans_to_optitrans("sha~Nkara") == "shankara"
+``` 
+
 ## Dravidian language extension
 ```py
 In [1]: from indic_transliteration import xsanscript

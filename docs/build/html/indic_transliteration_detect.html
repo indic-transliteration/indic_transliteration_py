@@ -1,0 +1,243 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>indic_transliteration.detect &#8212; indic_transliteration 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="indic_transliteration.xsanscript" href="indic_transliteration_xsanscript.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="indic-transliteration-detect">
+<h1>indic_transliteration.detect<a class="headerlink" href="#indic-transliteration-detect" title="Permalink to this headline">¶</a></h1>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">indic_transliteration</span> <span class="k">import</span> <span class="n">detect</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="s1">&#39;pitRRIn&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Scheme</span><span class="o">.</span><span class="n">ITRANS</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="s1">&#39;pitRRn&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Scheme</span><span class="o">.</span><span class="n">HK</span>
+</pre></div>
+</div>
+<p>When handling a Sanskrit string, it’s almost always best to explicitly
+state its transliteration scheme. This avoids embarrassing errors with
+words like <code class="docutils literal notranslate"><span class="pre">pitRRIn</span></code>. But most of the time, it’s possible to infer the
+encoding from the text itself.</p>
+<p><code class="docutils literal notranslate"><span class="pre">detect.py</span></code> automatically detects a string’s transliteration scheme:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">detect</span><span class="p">(</span><span class="s1">&#39;pitRRIn&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Scheme</span><span class="o">.</span><span class="n">ITRANS</span>
+<span class="n">detect</span><span class="p">(</span><span class="s1">&#39;pitRRn&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Scheme</span><span class="o">.</span><span class="n">HK</span>
+<span class="n">detect</span><span class="p">(</span><span class="s1">&#39;pitFn&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Scheme</span><span class="o">.</span><span class="n">SLP1</span>
+<span class="n">detect</span><span class="p">(</span><span class="s1">&#39;पितॄन्&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Scheme</span><span class="o">.</span><span class="n">Devanagari</span>
+<span class="n">detect</span><span class="p">(</span><span class="s1">&#39;পিতৄন্&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Scheme</span><span class="o">.</span><span class="n">Bengali</span>
+</pre></div>
+</div>
+<div class="section" id="supported-schemes">
+<h2>Supported schemes<a class="headerlink" href="#supported-schemes" title="Permalink to this headline">¶</a></h2>
+<p>All schemes are attributes on the <code class="docutils literal notranslate"><span class="pre">Scheme</span></code> class. You can also just
+use the scheme name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Scheme</span><span class="o">.</span><span class="n">IAST</span> <span class="o">==</span> <span class="s1">&#39;IAST&#39;</span>
+<span class="n">Scheme</span><span class="o">.</span><span class="n">Devanagari</span> <span class="o">==</span> <span class="s1">&#39;Devanagari&#39;</span>
+</pre></div>
+</div>
+<p>Scripts:</p>
+<ul class="simple">
+<li>Bengali (<code class="docutils literal notranslate"><span class="pre">'Bengali'</span></code>)</li>
+<li>Devanagari (<code class="docutils literal notranslate"><span class="pre">'Devanagari'</span></code>)</li>
+<li>Gujarati (<code class="docutils literal notranslate"><span class="pre">'Gujarati'</span></code>)</li>
+<li>Gurmukhi (<code class="docutils literal notranslate"><span class="pre">'Gurmukhi'</span></code>)</li>
+<li>Kannada (<code class="docutils literal notranslate"><span class="pre">'Kannada'</span></code>)</li>
+<li>Malayalam (<code class="docutils literal notranslate"><span class="pre">'Malayalam'</span></code>)</li>
+<li>Oriya (<code class="docutils literal notranslate"><span class="pre">'Oriya'</span></code>)</li>
+<li>Tamil (<code class="docutils literal notranslate"><span class="pre">'Tamil'</span></code>)</li>
+<li>Telugu (<code class="docutils literal notranslate"><span class="pre">'Telugu'</span></code>)</li>
+</ul>
+<p>Romanizations:</p>
+<ul class="simple">
+<li>Harvard-Kyoto (<code class="docutils literal notranslate"><span class="pre">'HK'</span></code>)</li>
+<li>IAST (<code class="docutils literal notranslate"><span class="pre">'IAST'</span></code>)</li>
+<li>ITRANS (<code class="docutils literal notranslate"><span class="pre">'ITRANS'</span></code>)</li>
+<li>Kolkata (<code class="docutils literal notranslate"><span class="pre">'Kolkata'</span></code>)</li>
+<li>SLP1 (<code class="docutils literal notranslate"><span class="pre">'SLP1'</span></code>)</li>
+<li>Velthuis (<code class="docutils literal notranslate"><span class="pre">'Velthuis'</span></code>)</li>
+</ul>
+<dl class="data">
+<dt id="indic_transliteration.detect.BLOCKS">
+<code class="descclassname">indic_transliteration.detect.</code><code class="descname">BLOCKS</code><em class="property"> = [('Malayalam', 3328), ('Kannada', 3200), ('Telugu', 3072), ('Tamil', 2944), ('Oriya', 2816), ('Gujarati', 2688), ('Gurmukhi', 2560), ('Bengali', 2432), ('Devanagari', 2304)]</em><a class="headerlink" href="#indic_transliteration.detect.BLOCKS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schemes sorted by Unicode code point. Ignore schemes with none defined.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="indic_transliteration.detect.BRAHMIC_FIRST_CODE_POINT">
+<code class="descclassname">indic_transliteration.detect.</code><code class="descname">BRAHMIC_FIRST_CODE_POINT</code><em class="property"> = 2304</em><a class="headerlink" href="#indic_transliteration.detect.BRAHMIC_FIRST_CODE_POINT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start of the Devanagari block.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="indic_transliteration.detect.BRAHMIC_LAST_CODE_POINT">
+<code class="descclassname">indic_transliteration.detect.</code><code class="descname">BRAHMIC_LAST_CODE_POINT</code><em class="property"> = 3455</em><a class="headerlink" href="#indic_transliteration.detect.BRAHMIC_LAST_CODE_POINT" title="Permalink to this definition">¶</a></dt>
+<dd><p>End of the Malayalam block.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="indic_transliteration.detect.Regex">
+<em class="property">class </em><code class="descclassname">indic_transliteration.detect.</code><code class="descname">Regex</code><a class="reference internal" href="_modules/indic_transliteration/detect.html#Regex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#indic_transliteration.detect.Regex" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="indic_transliteration.detect.Regex.IAST_OR_KOLKATA_ONLY">
+<code class="descname">IAST_OR_KOLKATA_ONLY</code><em class="property"> = re.compile('[āīūṛṝḷḹēōṃḥṅñṭḍṇśṣḻ]')</em><a class="headerlink" href="#indic_transliteration.detect.Regex.IAST_OR_KOLKATA_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match on special Roman characters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="indic_transliteration.detect.Regex.ITRANS_ONLY">
+<code class="descname">ITRANS_ONLY</code><em class="property"> = re.compile('ee|oo|\\^[iI]|RR[iI]|L[iI]|~N|N\\^|Ch|chh|JN|sh|Sh|\\.a')</em><a class="headerlink" href="#indic_transliteration.detect.Regex.ITRANS_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match on ITRANS-only</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="indic_transliteration.detect.Regex.ITRANS_OR_VELTHUIS_ONLY">
+<code class="descname">ITRANS_OR_VELTHUIS_ONLY</code><em class="property"> = re.compile('aa|ii|uu|~n')</em><a class="headerlink" href="#indic_transliteration.detect.Regex.ITRANS_OR_VELTHUIS_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match on chars shared by ITRANS and Velthuis</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="indic_transliteration.detect.Regex.KOLKATA_ONLY">
+<code class="descname">KOLKATA_ONLY</code><em class="property"> = re.compile('[ēō]')</em><a class="headerlink" href="#indic_transliteration.detect.Regex.KOLKATA_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match on Kolkata-specific Roman characters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="indic_transliteration.detect.Regex.SLP1_ONLY">
+<code class="descname">SLP1_ONLY</code><em class="property"> = re.compile('[fFxXEOCYwWqQPB]|kz|Nk|Ng|tT|dD|Sc|Sn|[aAiIuUfFxXeEoO]R|G[yr]|(\\W|^)G')</em><a class="headerlink" href="#indic_transliteration.detect.Regex.SLP1_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match on SLP1-only characters and bigrams</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="indic_transliteration.detect.Regex.VELTHUIS_ONLY">
+<code class="descname">VELTHUIS_ONLY</code><em class="property"> = re.compile('\\.[mhnrltds]|&quot;n|~s')</em><a class="headerlink" href="#indic_transliteration.detect.Regex.VELTHUIS_ONLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match on Velthuis-only characters</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="indic_transliteration.detect.Scheme">
+<code class="descclassname">indic_transliteration.detect.</code><code class="descname">Scheme</code><a class="headerlink" href="#indic_transliteration.detect.Scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enum for Sanskrit schemes.</p>
+<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">indic_transliteration.detect.Enum</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="indic_transliteration.detect.detect">
+<code class="descclassname">indic_transliteration.detect.</code><code class="descname">detect</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/indic_transliteration/detect.html#detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#indic_transliteration.detect.detect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect the input’s transliteration scheme.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> – some text data, either a <cite>unicode</cite> or a <cite>str</cite> encoded
+in UTF-8.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="indic_transliteration.html">indic_transliteration</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="indic_transliteration_sanscript.html">indic_transliteration.sanscript</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indic_transliteration_xsanscript.html">indic_transliteration.xsanscript</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">indic_transliteration.detect</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-schemes">Supported schemes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="indic_transliteration.html">Documentation overview</a><ul>
+      <li>Previous: <a href="indic_transliteration_xsanscript.html" title="previous chapter">indic_transliteration.xsanscript</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/indic_transliteration_detect.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

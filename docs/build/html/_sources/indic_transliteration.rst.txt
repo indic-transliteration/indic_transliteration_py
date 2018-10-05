@@ -15,6 +15,7 @@ Submodules
 	indic_transliteration_sanscript
 	indic_transliteration_xsanscript
 	indic_transliteration_detect
+	indic_transliteration_deduplication
 
 Indices and tables
 ====================

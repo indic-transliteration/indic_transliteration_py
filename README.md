@@ -71,6 +71,9 @@ python setup.py bdist_wheel
 twine upload dist/* --skip-existing
 ```
 
+## Build documentation
+- sphinx html docs can be generated with `cd docs; make html`
+
 ## Testing
 Run `pytest` in the root directory.
 

@@ -1,5 +1,5 @@
 # general things to ignore
-build/
+/build/
 dist/
 .pytest_cache/
 *.egg-info/

@@ -73,9 +73,12 @@ def _setup():
     # noinspection PyUnresolvedReferences
     s = unicode.split
 
+  def pop_all(some_dict, some_list):
+    for scheme in some_list:
+        some_dict.pop(scheme)
+  
   SCHEMES = copy.deepcopy(sanscript.SCHEMES)
-  for scheme in [sanscript.ORIYA, sanscript.BENGALI, sanscript.GUJARATI]:
-    SCHEMES.pop(scheme)
+  pop_all(SCHEMES, [sanscript.ORIYA, sanscript.BENGALI, sanscript.GUJARATI])
   SCHEMES[DEVANAGARI].update({
       'vowels': SCHEMES[DEVANAGARI]['vowels'] + s("""ऎ ऒ"""),
       'marks': SCHEMES[DEVANAGARI]['marks'] + s("""ॆ ॊ"""),
@@ -90,7 +93,14 @@ def _setup():
       'vowels': SCHEMES[ITRANS]['vowels'] + s("""e o"""),
       'marks': SCHEMES[ITRANS]['marks'] + s("""e o"""),
       'consonants': SCHEMES[ITRANS]['consonants'] + s("""n2 r2 zh""")
-    })
+  })
+  pop_all(SCHEMES[ITRANS].synonym_map, s("""e o"""))
+  SCHEMES[OPTITRANS].update({
+      'vowels': SCHEMES[OPTITRANS]['vowels'] + s("""e o"""),
+      'marks': SCHEMES[OPTITRANS]['marks'] + s("""e o"""),
+      'consonants': SCHEMES[OPTITRANS]['consonants'] + s("""n2 r2 zh""")
+  })
+  pop_all(SCHEMES[OPTITRANS].synonym_map, s("""e o"""))
   SCHEMES[IAST].update({
       'vowels': SCHEMES[ITRANS]['vowels'] + s("""ê ô"""),
       'marks': SCHEMES[ITRANS]['marks'] + s("""ê ô"""),
@@ -109,9 +119,7 @@ def _setup():
   SCHEMES[TAMIL].update({
       'vowels': SCHEMES[TAMIL]['vowels'] + SCHEMES[TAMIL]['vowels'] + s("""எ ஒ"""),
       'marks': SCHEMES[TAMIL]['marks'] + ['ெ', 'ொ'],
-      'consonants': SCHEMES[TAMIL]['consonants'] + s("""
-                            ன ற ழ 
-                            """)
+      'consonants': SCHEMES[TAMIL]['consonants'] + s("""ன ற ழ""")
     })
   SCHEMES[TELUGU].update({
       'vowels': SCHEMES[TELUGU]['vowels'] + s("""ఎ ఒ"""),

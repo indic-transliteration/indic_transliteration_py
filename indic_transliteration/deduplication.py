@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Some useful functions for converting and disambiguating between common alternative orthographies (ways of writing) the same text.
+"""
+
 import logging
 
 import regex

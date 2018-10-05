@@ -13,13 +13,20 @@ By default, the module supports the following scripts:
 - Kannada_
 - Malayalam_
 - Telugu_
+- Tamil_
+- Oriya_
+- Gurmukhi/ Punjabi/ Panjabi_
 
 and the following romanizations:
 
-- Harvard-Kyoto_
-- IAST_ (also known as Roman Unicode)
-- SLP1
-- WX
+- HK = 'hk'
+- IAST = 'iast'
+- ITRANS = 'itrans'
+- OPTITRANS = 'optitrans'
+- KOLKATA = 'kolkata'
+- SLP1 = 'slp1'
+- VELTHUIS = 'velthuis'
+- WX = 'wx'
 
 Each of these **schemes** is defined in a global dictionary `SCHEMES`, whose
 keys are strings::

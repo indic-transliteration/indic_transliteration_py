@@ -51,21 +51,12 @@ from __future__ import unicode_literals
 # ---------------
 #: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
 #: as `ব`.
-import logging
 import sys
 
 try:
     from functools import lru_cache
 except ImportError:
     from backports.functools_lru_cache import lru_cache
-
-# Remove all handlers associated with the root logger object.
-for handler in logging.root.handlers[:]:
-  logging.root.removeHandler(handler)
-logging.basicConfig(
-  level=logging.DEBUG,
-  format="%(levelname)s:%(asctime)s:%(module)s:%(filename)s:%(lineno)d %(message)s"
-)
 
 # Brahmi schemes
 # -------------
@@ -750,5 +741,3 @@ def _setup():
   })
 
 _setup()
-
-logging.info(transliterate("shankara", OPTITRANS, DEVANAGARI))

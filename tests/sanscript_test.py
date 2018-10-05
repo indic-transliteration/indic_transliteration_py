@@ -15,6 +15,14 @@ from unittest import TestCase
 
 from indic_transliteration import sanscript as S
 
+# Remove all handlers associated with the root logger object.
+for handler in logging.root.handlers[:]:
+  logging.root.removeHandler(handler)
+logging.basicConfig(
+  level=logging.DEBUG,
+  format="%(levelname)s:%(asctime)s:%(module)s:%(filename)s:%(lineno)d %(message)s"
+)
+
 DATA = {
   S.BENGALI: {
     'vowels': 'অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ',
@@ -61,6 +69,18 @@ DATA = {
   S.ITRANS: {
     'vowels': 'a A i I u U RRi RRI LLi LLI e ai o au',
     'marks': """ka khA gi ghI ~Nu chU ChRRi jRRI jhLLi ~nLLI Te Thai Do Dhau
+                    NaM taH th""",
+    'consonants': """ka kha ga gha ~Na cha Cha ja jha ~na Ta Tha Da Dha Na
+                         ta tha da dha na pa pha ba bha ma
+                         ya ra la va sha Sha sa ha La""",
+    'symbols': 'OM | || 0 1 2 3 4 5 6 7 8 9',
+    'putra': 'putra',
+    'naraIti': 'nara iti',
+    'sentence': 'dharmakShetre kurukShetre samavetA yuyutsavaH |'
+  },
+  S.OPTITRANS: {
+    'vowels': 'a A i I u U R RR LLi LLI e ai o au',
+    'marks': """ka khA gi ghI ~Nu chU ChR jRR jhLLi ~nLLI Te Thai Do Dhau
                     NaM taH th""",
     'consonants': """ka kha ga gha ~Na cha Cha ja jha ~na Ta Tha Da Dha Na
                          ta tha da dha na pa pha ba bha ma
@@ -162,7 +182,7 @@ DATA = {
 class SanscriptTestCase(TestCase):
   """Ordinary :class:`~unittest.TestCase` with some helper data."""
 
-  roman = {S.HK, S.IAST, S.SLP1, S.ITRANS, S.WX, S.KOLKATA, S.VELTHUIS}
+  roman = {S.HK, S.IAST, S.SLP1, S.ITRANS, S.WX, S.KOLKATA, S.VELTHUIS, S.OPTITRANS}
   brahmic = {x for x in S.SCHEMES} - roman
 
   def compare_all(self, _from, _to):
@@ -251,7 +271,7 @@ class ToggleTestCase(SanscriptTestCase):
 
   def t_helper(self, _from, _to):
     def func(input, output):
-      self.assertEqual(output, S.transliterate(input, _from, _to))
+      self.assertEqual(output, S.transliterate(input, _from, _to)), "_from: %s, _to: %s, _input: %s" % (_from, _to, input)
 
     return func
 

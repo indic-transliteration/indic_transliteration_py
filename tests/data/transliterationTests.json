@@ -3,13 +3,13 @@
   "comments": "Shared transliteration tests. In each test, the dev field is compulsory.",
   "tests": [
     {
-      "dev": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  कष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
-      "iast_avagrahaDoesntWork": "asaya auṣadhiḥ granthaḥ! ḹkāro.`sti. nāsti leś`opi saṃśayaḥ. kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. aum tat.",
-      "iastDcs": "asaya auṣadhiḥ granthaḥ! ḹkāro/'sti/ nāsti leśo'pi saṃśayaḥ/ kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ/ śaṅkara! jñānam/  sañjīvaya/ 12345.. aum tat/",
-      "hk_sanscript_avagraha_failing": "asaya auSadhiH granthaH! lRRkAro|'sti| nAsti lezopi saMzayaH| kIlakam? kUpiH?  kaSThaM bhoH| zaGkara! jJAnam|  saJjIvaya| 12345|| OM tat|",
-      "optitrans": "asaya auShadhiH granthaH! LLIkaaro..asti. naasti lesho.api saMshayaH. kiilakam? kuupiH?  kaShThaM bhoH. shankara! JNaanam.  sanjiivaya. 12345.. OM tat.",
-      "slp": "asaya OzaDiH granTaH! XkAro.'sti. nAsti leSo'pi saMSayaH. kIlakam? kUpiH?  kazWaM BoH. SaNkara! jYAnam.  saYjIvaya. 12345.. oM tat.",
-      "wx": "asaya ORaXiH granWaH! ḹkAro.'swi. nAswi leSo'pi saMSayaH. kIlakam? kUpiH?  kaRTaM BoH. Safkara! jFAnam.  saFjIvaya. 12345.. oM waw."
+      "dev": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  काष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
+      "iast_avagrahaDoesntWork": "asaya auṣadhiḥ granthaḥ! ḹkāro.`sti. nāsti leś`opi saṃśayaḥ. kīlakam? kūpiḥ?  kāṣṭhaṃ bhoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. aum tat.",
+      "iastDcs": "asaya auṣadhiḥ granthaḥ! ḹkāro/'sti/ nāsti leśo'pi saṃśayaḥ/ kīlakam? kūpiḥ?  kāṣṭhaṃ bhoḥ/ śaṅkara! jñānam/  sañjīvaya/ 12345.. aum tat/",
+      "hk_sanscript_avagraha_failing": "asaya auSadhiH granthaH! lRRkAro|'sti| nAsti lezopi saMzayaH| kIlakam? kUpiH?  kASThaM bhoH| zaGkara! jJAnam|  saJjIvaya| 12345|| OM tat|",
+      "optitrans": "asaya auShadhiH granthaH! LLIkaaro|.asti| naasti lesho.api saMshayaH| kiilakam? kuupiH?  kAShThaM bhoH| shankara! jnaanam|  sanjiivaya| 12345|| OM tat|",
+      "slp": "asaya OzaDiH granTaH! XkAro.'sti. nAsti leSo'pi saMSayaH. kIlakam? kUpiH?  kAzWaM BoH. SaNkara! jYAnam.  saYjIvaya. 12345.. oM tat.",
+      "wx": "asaya ORaXiH granWaH! ḹkAro.'swi. nAswi leSo'pi saMSayaH. kIlakam? kUpiH?  kARTaM BoH. Safkara! jFAnam.  saFjIvaya. 12345.. oM waw."
     }
   ]
 }

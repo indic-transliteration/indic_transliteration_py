@@ -35,23 +35,13 @@ In [6]: print(transliterate(data, scheme_map=scheme_map))
 ఇదమ్ అద్భుతమ్
 ```
 
-### Optitrans extension
-Optitransv1 is described in [this page](https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1). OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु).
-
-```
-assert sanscript.optitrans_to_itrans("shankara") == "sha~Nkara"
-assert sanscript.itrans_to_optitrans("sha~Nkara") == "shankara"
-``` 
-
-See sanscript_pytest_test.py for more examples.
-
 ### Lazy anusvaara-s
 ```
-    assert sanscript.fix_lazy_anusvaara_itrans("shaMkara") == "sha~Nkara"
-    assert sanscript.fix_lazy_anusvaara_itrans("saMchara") == "sa~nchara"
-    assert sanscript.fix_lazy_anusvaara_itrans("saMvara") == "sav.Nvara"
-    assert sanscript.fix_lazy_anusvaara_itrans("saMyukta") == "say.Nyukta"
-    assert sanscript.fix_lazy_anusvaara_itrans("saMlagna") == "sal.Nlagna"
+    assert deduplication.fix_lazy_anusvaara_itrans("shaMkara") == "sha~Nkara"
+    assert deduplication.fix_lazy_anusvaara_itrans("saMchara") == "sa~nchara"
+    assert deduplication.fix_lazy_anusvaara_itrans("saMvara") == "sav.Nvara"
+    assert deduplication.fix_lazy_anusvaara_itrans("saMyukta") == "say.Nyukta"
+    assert deduplication.fix_lazy_anusvaara_itrans("saMlagna") == "sal.Nlagna"
 ```
 
 ## Dravidian language extension

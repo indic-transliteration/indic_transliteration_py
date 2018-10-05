@@ -67,7 +67,8 @@ logging.basicConfig(
   format="%(levelname)s:%(asctime)s:%(module)s:%(filename)s:%(lineno)d %(message)s"
 )
 
-
+# Brahmi schemes
+# -------------
 BENGALI = 'bengali'
 DEVANAGARI = 'devanagari'
 GUJARATI = 'gujarati'
@@ -491,7 +492,7 @@ def _setup():
                        OM ' | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
-    }, name=HK),
+    }, name=HK, synonym_map={"|": ["."], "||": [".."]}),
     VELTHUIS: Scheme({
       'vowels': s("""a aa i ii u uu .r .rr .l .ll e ai o au"""),
       'marks': s("""aa i ii u uu .r .rr .l .ll e ai o au"""),
@@ -538,6 +539,7 @@ def _setup():
       "ch": ["c"], "Ch": ["C"], "jh": ["J"],
       "ph": ["P"], "bh": ["B"], "Sh": ["S"],
       "v": ["w"], "kSh": ["x", "kS", "ksh"], "jn": ["GY", "jJN"],
+      "|": ["."], "||": [".."]
     }, name=OPTITRANS),
     ITRANS: Scheme({
       'vowels': s("""a A i I u U RRi RRI LLi LLI e ai o au"""),
@@ -560,8 +562,8 @@ def _setup():
                        """)
     }, synonym_map={
       "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
-      "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY", "jJN"]
-      # "||": [".."], "|": ["."],
+      "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY", "jJN"],
+      "||": [".."], "|": ["."],
     }, name=ITRANS),
     IAST: Scheme({
       'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"""),

@@ -2,267 +2,32 @@
 """
 This is a variant of :py:mod:`~indic_transliteration.sanscript` which supports more intuitive transliteration for non-sanskrit characters in Indian languages (like hrasva e and o in draviDian ones).
 """
+import copy
 
-from __future__ import unicode_literals
+from indic_transliteration import sanscript
 
-# Brahmic schemes
-# ---------------
-#: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
-#: as `ব`.
 import sys
 
-BENGALI = 'bengali'
+SCHEMES = {}
 
-#: Internal name of Devanagari.
+# Brahmi schemes
+# -------------
 DEVANAGARI = 'devanagari'
-
-#: Internal name of Gujarati.
-GUJARATI = 'gujarati'
-
-#: Internal name of Gurmukhi.
-GURMUKHI = 'gurmukhi'
-
-#: Internal name of Kannada.
 KANNADA = 'kannada'
-
-#: Internal name of Malayalam.
 MALAYALAM = 'malayalam'
-
-#: Internal name of Oriya.
-ORIYA = 'oriya'
-
-#: Internal name of Tamil.
 TAMIL = 'tamil'
-
-#: Internal name of Telugu.
 TELUGU = 'telugu'
 
 # Roman schemes
 # -------------
-#: Internal name of Harvard-Kyoto.
 HK = 'hk'
-
-#: Internal name of IAST.
 IAST = 'iast'
-
-#: Internal name of ITRANS
 ITRANS = 'itrans'
-
-#: Internal name of KOLKATA
+OPTITRANS = 'optitrans'
 KOLKATA = 'kolkata'
-
-#: Internal name of SLP1.
 SLP1 = 'slp1'
-
-#: Internal name of Velthuis.
 VELTHUIS = 'velthuis'
-
-#: Internal name of WX.
 WX = 'wx'
-
-SCHEMES = {}
-
-
-class Scheme(dict):
-  """Represents all of the data associated with a given scheme. In addition
-  to storing whether or not a scheme is roman, :class:`Scheme` partitions
-  a scheme's characters into important functional groups.
-
-  :class:`Scheme` is just a subclass of :class:`dict`.
-
-  :param data: a :class:`dict` of initial values.
-  :param synonym_map: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS. 
-  :param is_roman: `True` if the scheme is a romanization and `False`
-                   otherwise.
-  """
-
-  def __init__(self, data=None, synonym_map=None, is_roman=True):
-    super(Scheme, self).__init__(data or {})
-    if synonym_map is None:
-      synonym_map = {}
-    self.synonym_map = synonym_map
-    self.is_roman = is_roman
-
-
-class SchemeMap(object):
-  """Maps one :class:`Scheme` to another. This class grabs the metadata and
-  character data required for :func:`transliterate`.
-
-  :param from_scheme: the source scheme
-  :param to_scheme: the destination scheme
-  """
-
-  def __init__(self, from_scheme, to_scheme):
-    """Create a mapping from `from_scheme` to `to_scheme`."""
-    self.marks = {}
-    self.virama = {}
-
-    self.vowels = {}
-    self.consonants = {}
-    self.other = {}
-    self.from_roman = from_scheme.is_roman
-    self.to_roman = to_scheme.is_roman
-    self.longest = max(len(x) for g in from_scheme
-                       for x in from_scheme[g])
-
-    for group in from_scheme:
-      if group not in to_scheme:
-        continue
-      sub_map = {}
-      for (k, v) in zip(from_scheme[group], to_scheme[group]):
-        sub_map[k] = v
-        if k in from_scheme.synonym_map:
-          for k_syn in from_scheme.synonym_map[k]:
-            sub_map[k_syn] = v
-      if group.endswith('marks'):
-        self.marks.update(sub_map)
-      elif group == 'virama':
-        self.virama = sub_map
-      else:
-        self.other.update(sub_map)
-        if group.endswith('consonants'):
-          self.consonants.update(sub_map)
-        elif group.endswith('vowels'):
-          self.vowels.update(sub_map)
-
-
-def _roman(data, scheme_map, **kw):
-  """Transliterate `data` with the given `scheme_map`. This function is used
-  when the source scheme is a Roman scheme.
-
-  :param data: the data to transliterate
-  :param scheme_map: a dict that maps between characters in the old scheme
-                     and characters in the new scheme
-  """
-  vowels = scheme_map.vowels
-  marks = scheme_map.marks
-  virama = scheme_map.virama
-  consonants = scheme_map.consonants
-  other = scheme_map.other
-  longest = scheme_map.longest
-  to_roman = scheme_map.to_roman
-
-  togglers = kw.pop('togglers', set())
-  suspend_on = kw.pop('suspend_on', set())
-  suspend_off = kw.pop('suspend_off', set())
-  if kw:
-    raise TypeError('Unexpected keyword argument %s' % list(kw.keys())[0])
-
-  buf = []
-  i = 0
-  had_consonant = found = False
-  len_data = len(data)
-  append = buf.append
-
-  # If true, don't transliterate. The toggle token is discarded.
-  toggled = False
-  # If true, don't transliterate. The suspend token is retained.
-  # `suspended` overrides `toggled`.
-  suspended = False
-
-  while i <= len_data:
-    # The longest token in the source scheme has length `longest`. Iterate
-    # over `data` while taking `longest` characters at a time. If we don`t
-    # find the character group in our scheme map, lop off a character and
-    # try again.
-    #
-    # If we've finished reading through `data`, then `token` will be empty
-    # and the loop below will be skipped.
-    token = data[i:i + longest]
-
-    while token:
-      if token in togglers:
-        toggled = not toggled
-        i += 2  # skip over the token
-        found = True  # force the token to fill up again
-        break
-
-      if token in suspend_on:
-        suspended = True
-      elif token in suspend_off:
-        suspended = False
-
-      if toggled or suspended:
-        token = token[:-1]
-        continue
-
-      # Catch the pattern CV, where C is a consonant and V is a vowel.
-      # V should be rendered as a vowel mark, a.k.a. a "dependent"
-      # vowel. But due to the nature of Brahmic scripts, 'a' is implicit
-      # and has no vowel mark. If we see 'a', add nothing.
-      if had_consonant and token in vowels:
-        mark = marks.get(token, '')
-        if mark:
-          append(mark)
-        elif to_roman:
-          append(vowels[token])
-        found = True
-
-      # Catch any other character, including consonants, punctuation,
-      # and regular vowels. Due to the implicit 'a', we must explicitly
-      # end any lingering consonants before we can handle the current
-      # token.
-      elif token in other:
-        if had_consonant:
-          append(virama[''])
-        append(other[token])
-        found = True
-
-      if found:
-        had_consonant = token in consonants
-        i += len(token)
-        break
-      else:
-        token = token[:-1]
-
-    # We've exhausted the token; this must be some other character. Due to
-    # the implicit 'a', we must explicitly end any lingering consonants
-    # before we can handle the current token.
-    if not found:
-      if had_consonant:
-        append(virama[''])
-      if i < len_data:
-        append(data[i])
-        had_consonant = False
-      i += 1
-
-    found = False
-
-  return ''.join(buf)
-
-
-def _brahmic(data, scheme_map, **kw):
-  """Transliterate `data` with the given `scheme_map`. This function is used
-  when the source scheme is a Brahmic scheme.
-
-  :param data: the data to transliterate
-  :param scheme_map: a dict that maps between characters in the old scheme
-                     and characters in the new scheme
-  """
-  marks = scheme_map.marks
-  virama = scheme_map.virama
-  consonants = scheme_map.consonants
-  other = scheme_map.other
-  to_roman = scheme_map.to_roman
-
-  buf = []
-  had_consonant = False
-  append = buf.append
-
-  for L in data:
-    if L in marks:
-      append(marks[L])
-    elif L in virama:
-      append(virama[L])
-    else:
-      if had_consonant:
-        append('a')
-      append(other.get(L, L))
-    had_consonant = to_roman and L in consonants
-
-  if had_consonant:
-    append('a')
-  return ''.join(buf)
 
 
 def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
@@ -288,7 +53,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   if scheme_map is None:
     from_scheme = SCHEMES[_from]
     to_scheme = SCHEMES[_to]
-    scheme_map = SchemeMap(from_scheme, to_scheme)
+    scheme_map = sanscript.SchemeMap(from_scheme, to_scheme)
 
   options = {
     'togglers': {'##'},
@@ -297,7 +62,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   }
   options.update(kw)
 
-  func = _roman if scheme_map.from_roman else _brahmic
+  func = sanscript._roman if scheme_map.from_roman else sanscript._brahmic
   return func(data, scheme_map, **options)
 
 
@@ -308,12 +73,12 @@ def _setup():
     # noinspection PyUnresolvedReferences
     s = unicode.split
 
-  SCHEMES.update({
-    DEVANAGARI: Scheme({
+  SCHEMES = copy.deepcopy(sanscript.SCHEMES)
+  for scheme in [sanscript.ORIYA, sanscript.BENGALI, sanscript.GUJARATI]:
+    SCHEMES.pop(scheme)
+  SCHEMES[DEVANAGARI].update({
       'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ऎ ए ऐ ऒ ओ औ"""),
       'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ ॆ े ै ॊ ो ौ"""),
-      'virama': s('्'),
-      'other': s('ं ः ँ'),
       'consonants': s("""
                             क ख ग घ ङ
                             च छ ज झ ञ
@@ -324,21 +89,10 @@ def _setup():
                             श ष स ह
                             ळ क्ष ज्ञ
                             ऩ ऱ ऴ
-                            """),
-      'symbols': s("""
-                       ॐ ऽ । ॥
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-      # 'symbols': s("""
-      #                  ॐ ऽ । ॥
-      #                  ० १ २ ३ ४ ५ ६ ७ ८ ९
-      #                  """)
-    }, is_roman=False),
-    HK: Scheme({
+                            """)})
+  SCHEMES[HK].update({
       'vowels': s("""a A i I u U R RR lR lRR e E ai o O au"""),
       'marks': s("""A i I u U R RR lR lRR e E ai o O au"""),
-      'virama': [''],
-      'other': s('M H !'),
       'consonants': s("""
                             k kh g gh G
                             c ch j jh J
@@ -350,17 +104,10 @@ def _setup():
                             L kS jJ
                             n2 r2 zh
                             """),
-      'symbols': s("""
-                       OM ' | ||
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, synonym_map={ "|": ["."], "||": [".."]
-    }),
-    ITRANS: Scheme({
+    })
+  SCHEMES[ITRANS].update({
       'vowels': s("""a A i I u U RRi RRI LLi LLI e E ai o O au"""),
       'marks': s("""A i I u U RRi RRI LLi LLI e E ai o O au"""),
-      'virama': [''],
-      'other': s('M H .N'),
       'consonants': s("""
                             k kh g gh ~N
                             ch Ch j jh ~n
@@ -370,20 +117,12 @@ def _setup():
                             y r l v
                             sh Sh s h
                             L kSh j~n
+                            .n .R .L
                             """),
-      'symbols': s("""
-                       OM .a | ||
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, synonym_map={
-      "A": ["aa"], "I": ["ii"], "U": ["uu"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
-      "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY"]
-    }),
-    IAST: Scheme({
+    })
+  SCHEMES[IAST].update({
       'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ ê e ai ô o au"""),
       'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ ê e ai ô o au"""),
-      'virama': [''],
-      'other': s('ṃ ḥ m̐'),
       'consonants': s("""
                             k kh g gh ṅ
                             c ch j jh ñ
@@ -395,16 +134,10 @@ def _setup():
                             ḻ kṣ jñ
                             n r̂ ḷ
                             """),
-      'symbols': s("""
-                       oṃ ' । ॥
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }),
-    KANNADA: Scheme({
+    })
+  SCHEMES[KANNADA].update({
       'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಎ ಏ ಐ ಒ ಓ ಔ"""),
       'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೆ ೇ ೈ ೊ ೋ ೌ"""),
-      'virama': s('್'),
-      'other': s('ಂ ಃ ँ'),
       'consonants': s("""
                             ಕ ಖ ಗ ಘ ಙ
                             ಚ ಛ ಜ ಝ ಞ
@@ -414,17 +147,12 @@ def _setup():
                             ಯ ರ ಲ ವ
                             ಶ ಷ ಸ ಹ
                             ಳ ಕ್ಷ ಜ್ಞ
+                            ऩ ಱ ೞ
                             """),
-      'symbols': s("""
-                       ಓಂ ऽ । ॥
-                       ೦ ೧ ೨ ೩ ೪ ೫ ೬ ೭ ೮ ೯
-                       """)
-    }, is_roman=False),
-    MALAYALAM: Scheme({
+    })
+  SCHEMES[MALAYALAM].update({
       'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ എ ഏ ഐ ഓ ഒ ഔ"""),
       'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ െ േ ൈ ൊ ോ ൌ"""),
-      'virama': s('്'),
-      'other': s('ം ഃ ँ'),
       'consonants': s("""
                             ക ഖ ഗ ഘ ങ
                             ച ഛ ജ ഝ ഞ
@@ -434,18 +162,13 @@ def _setup():
                             യ ര ല വ
                             ശ ഷ സ ഹ
                             ള ക്ഷ ജ്ഞ
+                            ऩ ള ൟ
                             """),
-      'symbols': s("""
-                       ഓം ഽ । ॥
-                       ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯
-                       """)
-    }, is_roman=False),
-    TAMIL: Scheme({
+    })
+  SCHEMES[TAMIL].update({
       'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ எ ஏ ஐ ஒ ஓ ஔ"""),
       'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '', '',
                 '', '', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ'],
-      'virama': s('்'),
-      'other': s('ஂ ஃ ँ'),
       'consonants': s("""
                             க க க க ங
                             ச ச ஜ ச ஞ
@@ -456,18 +179,12 @@ def _setup():
                             ஶ ஷ ஸ ஹ
                             ள க்ஷ ஜ்ஞ
                             ன ற ழ 
-                            """),
-      'symbols': s("""
-                       ௐ ऽ । ॥
-                       ௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯
-                       """)
-    }, is_roman=False),
-    TELUGU: Scheme({
+                            """)
+    })
+  SCHEMES[TELUGU].update({
       'vowels': s("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఎ ఏ ఐ ఒ ఓ ఔ"""),
       'marks': s("""ా ి ీ ు ూ ృ ౄ ౢ ౣ 
 ె ే ై ొ ో ౌ"""),
-      'virama': s('్'),
-      'other': s('ం ః ఁ'),
       'consonants': s("""
                             క ఖ గ ఘ ఙ
                             చ ఛ జ ఝ ఞ
@@ -477,13 +194,14 @@ def _setup():
                             య ర ల వ
                             శ ష స హ
                             ళ క్ష జ్ఞ
+                            ऩ ఴ ౚ
                             """),
       'symbols': s("""
                        ఓం ఽ । ॥
                        ౦ ౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯
                        """)
-    }, is_roman=False)
-  })
+    })
+
 
 
 _setup()

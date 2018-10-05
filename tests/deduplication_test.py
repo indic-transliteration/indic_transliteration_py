@@ -17,6 +17,7 @@ TEST_DATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'approxDeduplic
 
 test_data = {}
 with open(TEST_DATA_PATH) as test_data_file:
+  # noinspection PyRedeclaration
   test_data = json.loads(test_data_file.read())
 logging.info(test_data["duplicates"])
 

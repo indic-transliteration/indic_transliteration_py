@@ -11,7 +11,7 @@
 import pytest
 import sys
 
-from indic_transliteration.detect import detect, Scheme as S
+from indic_transliteration.detect import detect, Scheme
 
 
 def add(testcases, scheme, items):
@@ -19,16 +19,16 @@ def add(testcases, scheme, items):
 
 
 BASIC = []
-add(BASIC, S.Bengali, ['অ', '৺'])
-add(BASIC, S.Devanagari, ['ऄ', 'ॿ'])
-add(BASIC, S.Gujarati, ['અ', '૱'])
-add(BASIC, S.Gurmukhi, ['ਅ', 'ੴ'])
-add(BASIC, S.Kannada, ['ಅ', '೯'])
-add(BASIC, S.Malayalam, ['അ', 'ൿ'])
-add(BASIC, S.Oriya, ['ଅ', 'ୱ'])
-add(BASIC, S.Tamil, ['அ', '௺'])
-add(BASIC, S.Telugu, ['అ', '౿'])
-add(BASIC, S.HK, [
+add(BASIC, Scheme.Bengali, ['অ', '৺'])
+add(BASIC, Scheme.Devanagari, ['ऄ', 'ॿ'])
+add(BASIC, Scheme.Gujarati, ['અ', '૱'])
+add(BASIC, Scheme.Gurmukhi, ['ਅ', 'ੴ'])
+add(BASIC, Scheme.Kannada, ['ಅ', '೯'])
+add(BASIC, Scheme.Malayalam, ['അ', 'ൿ'])
+add(BASIC, Scheme.Oriya, ['ଅ', 'ୱ'])
+add(BASIC, Scheme.Tamil, ['அ', '௺'])
+add(BASIC, Scheme.Telugu, ['అ', '౿'])
+add(BASIC, Scheme.HK, [
     '',
     'rAga',
     'nadI',
@@ -69,7 +69,7 @@ add(BASIC, S.HK, [
     'azvatthAman',
     'yuddha',
 ])
-add(BASIC, S.IAST, [
+add(BASIC, Scheme.IAST, [
     'rāga',
     'nadī',
     'vadhū',
@@ -95,7 +95,7 @@ add(BASIC, S.IAST, [
     'śṛṇoti',
     'jñāna',
 ])
-add(BASIC, S.ITRANS, [
+add(BASIC, Scheme.ITRANS, [
     'raaga',
     'nadii',
     'nadee',
@@ -124,11 +124,11 @@ add(BASIC, S.ITRANS, [
     'gachChati',
     'gachchhati',
 ])
-add(BASIC, S.Kolkata, [
+add(BASIC, Scheme.Kolkata, [
     'tējas',
     'sōma',
 ])
-add(BASIC, S.SLP1, [
+add(BASIC, Scheme.SLP1, [
     'kfta',
     'pitFn',
     'kxpta',
@@ -170,7 +170,7 @@ add(BASIC, S.SLP1, [
     'aSvatTAman',
     'yudDa',
 ])
-add(BASIC, S.Velthuis, [
+add(BASIC, Scheme.Velthuis, [
     'k.rta',
     'pit.rrn',
     'k.lipta',

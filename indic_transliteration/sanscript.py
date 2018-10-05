@@ -333,7 +333,8 @@ def _brahmic(data, scheme_map, **kw):
     append('a')
   output = ''.join(buf)
   if scheme_map.to_scheme.name == OPTITRANS:
-    output = output.replace("~N", "n").replace("~n", "n")
+    import regex
+    output = regex.sub(r"~[Nn]([kKgGcC])", r"n\1", output)
   return output
 
 @lru_cache(maxsize=8)

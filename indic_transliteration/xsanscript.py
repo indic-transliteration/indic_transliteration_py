@@ -77,131 +77,46 @@ def _setup():
   for scheme in [sanscript.ORIYA, sanscript.BENGALI, sanscript.GUJARATI]:
     SCHEMES.pop(scheme)
   SCHEMES[DEVANAGARI].update({
-      'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ऎ ए ऐ ऒ ओ औ"""),
-      'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ ॆ े ै ॊ ो ौ"""),
-      'consonants': s("""
-                            क ख ग घ ङ
-                            च छ ज झ ञ
-                            ट ठ ड ढ ण
-                            त थ द ध न
-                            प फ ब भ म
-                            य र ल व
-                            श ष स ह
-                            ळ क्ष ज्ञ
-                            ऩ ऱ ऴ
-                            """)})
+      'vowels': SCHEMES[DEVANAGARI]['vowels'] + s("""ऎ ऒ"""),
+      'marks': SCHEMES[DEVANAGARI]['marks'] + s("""ॆ ॊ"""),
+      'consonants': SCHEMES[DEVANAGARI]['consonants'] + s("""ऩ ऱ ऴ""")
+  })
   SCHEMES[HK].update({
-      'vowels': s("""a A i I u U R RR lR lRR e E ai o O au"""),
-      'marks': s("""A i I u U R RR lR lRR e E ai o O au"""),
-      'consonants': s("""
-                            k kh g gh G
-                            c ch j jh J
-                            T Th D Dh N
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            z S s h
-                            L kS jJ
-                            n2 r2 zh
-                            """),
+      'vowels': SCHEMES[HK]['vowels'] + s("""e o"""),
+      'marks': SCHEMES[HK]['marks'] + s("""e o"""),
+      'consonants': SCHEMES[HK]['consonants'] + s("""n2 r2 zh""")
     })
   SCHEMES[ITRANS].update({
-      'vowels': s("""a A i I u U RRi RRI LLi LLI e E ai o O au"""),
-      'marks': s("""A i I u U RRi RRI LLi LLI e E ai o O au"""),
-      'consonants': s("""
-                            k kh g gh ~N
-                            ch Ch j jh ~n
-                            T Th D Dh N
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            sh Sh s h
-                            L kSh j~n
-                            .n .R .L
-                            """),
+      'vowels': SCHEMES[ITRANS]['vowels'] + s("""e o"""),
+      'marks': SCHEMES[ITRANS]['marks'] + s("""e o"""),
+      'consonants': SCHEMES[ITRANS]['consonants'] + s("""n2 r2 zh""")
     })
   SCHEMES[IAST].update({
-      'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ ê e ai ô o au"""),
-      'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ ê e ai ô o au"""),
-      'consonants': s("""
-                            k kh g gh ṅ
-                            c ch j jh ñ
-                            ṭ ṭh ḍ ḍh ṇ
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            ś ṣ s h
-                            ḻ kṣ jñ
-                            n r̂ ḷ
-                            """),
+      'vowels': SCHEMES[ITRANS]['vowels'] + s("""ê ô"""),
+      'marks': SCHEMES[ITRANS]['marks'] + s("""ê ô"""),
+      'consonants': SCHEMES[ITRANS]['consonants'] + s("""n r̂ ḷ""")
     })
   SCHEMES[KANNADA].update({
-      'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಎ ಏ ಐ ಒ ಓ ಔ"""),
-      'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೆ ೇ ೈ ೊ ೋ ೌ"""),
-      'consonants': s("""
-                            ಕ ಖ ಗ ಘ ಙ
-                            ಚ ಛ ಜ ಝ ಞ
-                            ಟ ಠ ಡ ಢ ಣ
-                            ತ ಥ ದ ಧ ನ
-                            ಪ ಫ ಬ ಭ ಮ
-                            ಯ ರ ಲ ವ
-                            ಶ ಷ ಸ ಹ
-                            ಳ ಕ್ಷ ಜ್ಞ
-                            ऩ ಱ ೞ
-                            """),
+      'vowels': SCHEMES[KANNADA]['vowels'] + s("""ಎ ಒ"""),
+      'marks': SCHEMES[KANNADA]['marks'] + s("""ೆ ೊ"""),
+      'consonants': SCHEMES[KANNADA]['consonants'] + s("""ऩ ಱ ೞ""")
     })
   SCHEMES[MALAYALAM].update({
-      'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ എ ഏ ഐ ഓ ഒ ഔ"""),
-      'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ െ േ ൈ ൊ ോ ൌ"""),
-      'consonants': s("""
-                            ക ഖ ഗ ഘ ങ
-                            ച ഛ ജ ഝ ഞ
-                            ട ഠ ഡ ഢ ണ
-                            ത ഥ ദ ധ ന
-                            പ ഫ ബ ഭ മ
-                            യ ര ല വ
-                            ശ ഷ സ ഹ
-                            ള ക്ഷ ജ്ഞ
-                            ऩ ള ൟ
-                            """),
+      'vowels': SCHEMES[MALAYALAM]['vowels'] + s("""എ ഓ"""),
+      'marks': SCHEMES[MALAYALAM]['marks'] + s("""െ ൊ"""),
+      'consonants': SCHEMES[MALAYALAM]['consonants'] + s("""ഩ ള ൟ"""),
     })
   SCHEMES[TAMIL].update({
-      'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ எ ஏ ஐ ஒ ஓ ஔ"""),
-      'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '', '',
-                '', '', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ'],
-      'consonants': s("""
-                            க க க க ங
-                            ச ச ஜ ச ஞ
-                            ட ட ட ட ண
-                            த த த த ந
-                            ப ப ப ப ம
-                            ய ர ல வ
-                            ஶ ஷ ஸ ஹ
-                            ள க்ஷ ஜ்ஞ
+      'vowels': SCHEMES[TAMIL]['vowels'] + SCHEMES[TAMIL]['vowels'] + s("""எ ஒ"""),
+      'marks': SCHEMES[TAMIL]['marks'] + ['ெ', 'ொ'],
+      'consonants': SCHEMES[TAMIL]['consonants'] + s("""
                             ன ற ழ 
                             """)
     })
   SCHEMES[TELUGU].update({
-      'vowels': s("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఎ ఏ ఐ ఒ ఓ ఔ"""),
-      'marks': s("""ా ి ీ ు ూ ృ ౄ ౢ ౣ 
-ె ే ై ొ ో ౌ"""),
-      'consonants': s("""
-                            క ఖ గ ఘ ఙ
-                            చ ఛ జ ఝ ఞ
-                            ట ఠ డ ఢ ణ
-                            త థ ద ధ న
-                            ప ఫ బ భ మ
-                            య ర ల వ
-                            శ ష స హ
-                            ళ క్ష జ్ఞ
-                            ऩ ఴ ౚ
-                            """),
-      'symbols': s("""
-                       ఓం ఽ । ॥
-                       ౦ ౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯
-                       """)
+      'vowels': SCHEMES[TELUGU]['vowels'] + s("""ఎ ఒ"""),
+      'marks': SCHEMES[TELUGU]['marks'] + s("""ె  ొ"""),
+      'consonants': SCHEMES[TELUGU]['consonants'] + s("""ऩ ఴ ౚ""")
     })
-
-
 
 _setup()

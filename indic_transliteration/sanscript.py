@@ -54,62 +54,39 @@ from __future__ import unicode_literals
 import logging
 import sys
 
-import regex
 try:
     from functools import lru_cache
 except ImportError:
     from backports.functools_lru_cache import lru_cache
 
+# Remove all handlers associated with the root logger object.
+for handler in logging.root.handlers[:]:
+  logging.root.removeHandler(handler)
+logging.basicConfig(
+  level=logging.DEBUG,
+  format="%(levelname)s:%(asctime)s:%(module)s:%(filename)s:%(lineno)d %(message)s"
+)
+
+
 BENGALI = 'bengali'
-
-#: Internal name of Devanagari.
 DEVANAGARI = 'devanagari'
-
-#: Internal name of Gujarati.
 GUJARATI = 'gujarati'
-
-#: Internal name of Gurmukhi.
 GURMUKHI = 'gurmukhi'
-
-#: Internal name of Kannada.
 KANNADA = 'kannada'
-
-#: Internal name of Malayalam.
 MALAYALAM = 'malayalam'
-
-#: Internal name of Oriya.
 ORIYA = 'oriya'
-
-#: Internal name of Tamil.
 TAMIL = 'tamil'
-
-#: Internal name of Telugu.
 TELUGU = 'telugu'
 
 # Roman schemes
 # -------------
-#: Internal name of Harvard-Kyoto.
 HK = 'hk'
-
-#: Internal name of IAST.
 IAST = 'iast'
-
-#: Internal name of ITRANS
 ITRANS = 'itrans'
-
-#: Internal name of OPTITRANS
 OPTITRANS = 'optitrans'
-
-#: Internal name of KOLKATA
 KOLKATA = 'kolkata'
-
-#: Internal name of SLP1.
 SLP1 = 'slp1'
-
-#: Internal name of Velthuis.
 VELTHUIS = 'velthuis'
-
-#: Internal name of WX.
 WX = 'wx'
 
 SCHEMES = {}
@@ -128,12 +105,13 @@ class Scheme(dict):
                    otherwise.
   """
 
-  def __init__(self, data=None, synonym_map=None, is_roman=True):
+  def __init__(self, data=None, synonym_map=None, is_roman=True, name=None):
     super(Scheme, self).__init__(data or {})
     if synonym_map is None:
       synonym_map = {}
     self.synonym_map = synonym_map
     self.is_roman = is_roman
+    self.name = name
 
 
 class SchemeMap(object):
@@ -151,32 +129,79 @@ class SchemeMap(object):
 
     self.vowels = {}
     self.consonants = {}
-    self.other = {}
+    self.non_marks_viraama = {}
     self.from_roman = from_scheme.is_roman
     self.to_roman = to_scheme.is_roman
-    self.longest = max(len(x) for g in from_scheme
-                       for x in from_scheme[g])
+    self.max_key_length_from_scheme = max(len(x) for g in from_scheme
+                                          for x in from_scheme[g])
 
-    for group in from_scheme:
-      if group not in to_scheme:
+    for group in from_scheme.keys():
+      if group not in to_scheme.keys():
         continue
-      sub_map = {}
+      conjunct_map = {}
       for (k, v) in zip(from_scheme[group], to_scheme[group]):
-        sub_map[k] = v
+        conjunct_map[k] = v
         if k in from_scheme.synonym_map:
           for k_syn in from_scheme.synonym_map[k]:
-            sub_map[k_syn] = v
+            conjunct_map[k_syn] = v
       if group.endswith('marks'):
-        self.marks.update(sub_map)
+        self.marks.update(conjunct_map)
       elif group == 'virama':
-        self.virama = sub_map
+        self.virama = conjunct_map
       else:
-        self.other.update(sub_map)
+        self.non_marks_viraama.update(conjunct_map)
         if group.endswith('consonants'):
-          self.consonants.update(sub_map)
+          self.consonants.update(conjunct_map)
         elif group.endswith('vowels'):
-          self.vowels.update(sub_map)
+          self.vowels.update(conjunct_map)
 
+    if from_scheme.name == OPTITRANS:
+      if len(to_scheme['virama']) == 0:
+        to_scheme_virama = ""
+      else:
+        to_scheme_virama = to_scheme['virama'][0]
+      conjunct_map = {
+        "nk": self.consonants["~N"] + to_scheme_virama + self.consonants["k"],
+        "nkh": self.consonants["~N"] + to_scheme_virama + self.consonants["kh"],
+        "ng": self.consonants["~N"] + to_scheme_virama +self.consonants["g"],
+        "ngh": self.consonants["~N"] + to_scheme_virama +self.consonants["gh"],
+        "nch": self.consonants["~n"] + to_scheme_virama +self.consonants["ch"],
+        "nCh": self.consonants["~n"] + to_scheme_virama +self.consonants["Ch"],
+        "nj": self.consonants["~n"] + to_scheme_virama +self.consonants["j"],
+        "njh": self.consonants["~n"] + to_scheme_virama +self.consonants["jh"],
+      }
+      self.consonants.update(conjunct_map)
+      self.non_marks_viraama.update(conjunct_map)
+      synonym_conjunct_map = {}
+      for key in conjunct_map.keys():
+        latter_consonant = key[1:]
+        if latter_consonant in from_scheme.synonym_map:
+          for k_syn in from_scheme.synonym_map[latter_consonant]:
+            synonym_conjunct_map["n" + k_syn] = conjunct_map[key]
+      self.consonants.update(synonym_conjunct_map)
+      self.non_marks_viraama.update(synonym_conjunct_map)
+
+    if to_scheme.name == OPTITRANS:
+      inv_map = {v: k for k, v in self.consonants.items()}
+      conjunct_map = {
+        inv_map["~N"] + inv_map["k"]: "nk",
+        inv_map["~N"] + inv_map["kh"]: "nkh",
+        inv_map["~N"] + inv_map["g"]: "ng",
+        inv_map["~N"] + inv_map["gh"]: "ngh",
+        inv_map["~n"] + inv_map["ch"]: "nch",
+        inv_map["~n"] + inv_map["Ch"]: "nCh",
+        inv_map["~n"] + inv_map["j"]: "nj",
+        inv_map["~n"] + inv_map["jh"]: "njh",
+      }
+      self.consonants.update(conjunct_map)
+      self.non_marks_viraama.update(conjunct_map)
+
+  def __str__(self):
+    import pprint
+    return pprint.pformat({"vowels": self.vowels,
+                           "marks":  self.marks,
+                           "virama":  self.virama,
+                           "consonants": self.consonants})
 
 def _roman(data, scheme_map, **kw):
   """Transliterate `data` with the given `scheme_map`. This function is used
@@ -190,8 +215,8 @@ def _roman(data, scheme_map, **kw):
   marks = scheme_map.marks
   virama = scheme_map.virama
   consonants = scheme_map.consonants
-  other = scheme_map.other
-  longest = scheme_map.longest
+  non_marks_viraama = scheme_map.non_marks_viraama
+  max_key_length_from_scheme = scheme_map.max_key_length_from_scheme
   to_roman = scheme_map.to_roman
 
   togglers = kw.pop('togglers', set())
@@ -213,14 +238,14 @@ def _roman(data, scheme_map, **kw):
   suspended = False
 
   while i <= len_data:
-    # The longest token in the source scheme has length `longest`. Iterate
-    # over `data` while taking `longest` characters at a time. If we don`t
+    # The longest token in the source scheme has length `max_key_length_from_scheme`. Iterate
+    # over `data` while taking `max_key_length_from_scheme` characters at a time. If we don`t
     # find the character group in our scheme map, lop off a character and
     # try again.
     #
     # If we've finished reading through `data`, then `token` will be empty
     # and the loop below will be skipped.
-    token = data[i:i + longest]
+    token = data[i:i + max_key_length_from_scheme]
 
     while token:
       if token in togglers:
@@ -250,14 +275,14 @@ def _roman(data, scheme_map, **kw):
           append(vowels[token])
         found = True
 
-      # Catch any other character, including consonants, punctuation,
+      # Catch any non_marks_viraama character, including consonants, punctuation,
       # and regular vowels. Due to the implicit 'a', we must explicitly
       # end any lingering consonants before we can handle the current
       # token.
-      elif token in other:
+      elif token in non_marks_viraama:
         if had_consonant:
           append(virama[''])
-        append(other[token])
+        append(non_marks_viraama[token])
         found = True
 
       if found:
@@ -294,7 +319,7 @@ def _brahmic(data, scheme_map, **kw):
   marks = scheme_map.marks
   virama = scheme_map.virama
   consonants = scheme_map.consonants
-  other = scheme_map.other
+  non_marks_viraama = scheme_map.non_marks_viraama
   to_roman = scheme_map.to_roman
 
   buf = []
@@ -309,7 +334,7 @@ def _brahmic(data, scheme_map, **kw):
     else:
       if had_consonant:
         append('a')
-      append(other.get(L, L))
+      append(non_marks_viraama.get(L, L))
     had_consonant = to_roman and L in consonants
 
   if had_consonant:
@@ -327,45 +352,6 @@ def _get_scheme_map(input_encoding, output_encoding):
     """
     return SchemeMap(SCHEMES[input_encoding], SCHEMES[output_encoding])
 
-# Optitransv1 is described in https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1 and in https://docs.google.com/spreadsheets/d/1o2vysXaXfNkFxCO-WD77C4AEbXcAcJmDVgUb-E0mYbg/edit?usp=drive_web&ouid=109000762913288837175 . It is very close to ITRANS.
-def itrans_to_optitrans(data_in):
-  data_out = data_in
-  data_out = regex.sub(r'R[R^]i', 'R',   data_out)
-  data_out = regex.sub(r'R[R^]I', 'RR',   data_out)
-  data_out = regex.sub(r'~[Nn]', 'n',   data_out)
-  return data_out
-
-def optitrans_to_itrans(data_in):
-  data_out = data_in
-  data_out = regex.sub(r'RR', 'RRI',   data_out)
-  data_out = regex.sub(r'([^R])R([^R])', r'\1RRi\2',   data_out)
-  data_out = regex.sub(r'([^R])R$', r'\1RRi',   data_out)
-  data_out = regex.sub(r'^R([^R])', r'RRi\1',   data_out)
-  data_out = regex.sub(r'^R$', r'RRi',   data_out)
-  data_out = regex.sub('E', 'e',   data_out)
-  data_out = regex.sub('O', 'o',   data_out)
-  data_out = regex.sub('K', 'kh',   data_out)
-  data_out = regex.sub(r'c([^h])', r'ch\1',   data_out)
-  data_out = regex.sub(r'C([^h])', r'Ch\1',   data_out)
-  data_out = regex.sub(r'([cC])$', r'\1h',   data_out)
-  data_out = regex.sub('J', 'jh',   data_out)
-  data_out = regex.sub('P', 'ph',   data_out)
-  data_out = regex.sub('B', 'bh',   data_out)
-  data_out = regex.sub('S', 'Sh',   data_out)
-  data_out = regex.sub(r'n([kg])', r'~N\1',   data_out)
-  data_out = regex.sub(r'n([cjC])', r'~n\1',   data_out)
-  return data_out
-
-def fix_lazy_anusvaara_itrans(data_in):
-    data_out = data_in
-    data_out = regex.sub(r'M( *)([kg])', r'~N\1\2',   data_out)
-    data_out = regex.sub(r'M( *)([cCj])', r'~n\1\2',   data_out)
-    data_out = regex.sub(r'M( *)([tdn])', r'n\1\2',   data_out)
-    data_out = regex.sub(r'M( *)([TDN])', r'N\1\2',   data_out)
-    data_out = regex.sub(r'M( *)([pb])', r'm\1\2',   data_out)
-    data_out = regex.sub(r'M( *)([yvl])', r'\2.N\1\2',   data_out)
-    return data_out
-
 def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   """Transliterate `data` with the given parameters::
 
@@ -380,15 +366,12 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
       output = transliterate('idam adbhutam', scheme_map=scheme_map)
 
   :param data: the data to transliterate
-  :param _from: the name of a source scheme
-  :param _to: the name of a destination scheme
   :param scheme_map: the :class:`SchemeMap` to use. If specified, ignore
                      `_from` and `_to`. If unspecified, create a
                      :class:`SchemeMap` from `_from` to `_to`.
   """
   if scheme_map is None:
     scheme_map = _get_scheme_map(_from, _to)
-
   options = {
     'togglers': {'##'},
     'suspend_on': set('<'),
@@ -412,7 +395,7 @@ def _setup():
       'vowels': s("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
       'marks': s("""া ি ী ু ূ ৃ ৄ ৢ ৣ ে ৈ ো ৌ"""),
       'virama': s('্'),
-      'other': s('ং ঃ ঁ'),
+      'yogavaahas': s('ং ঃ ঁ'),
       'consonants': s("""
                             ক খ গ ঘ ঙ
                             চ ছ জ ঝ ঞ
@@ -427,12 +410,12 @@ def _setup():
                        ॐ ঽ । ॥
                        ০ ১ ২ ৩ ৪ ৫ ৬ ৭ ৮ ৯
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=BENGALI),
     DEVANAGARI: Scheme({
       'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ"""),
       'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ"""),
       'virama': s('्'),
-      'other': s('ं ः ँ'),
+      'yogavaahas': s('ं ः ँ'),
       'consonants': s("""
                             क ख ग घ ङ
                             च छ ज झ ञ
@@ -447,12 +430,12 @@ def _setup():
                        ॐ ऽ । ॥
                        ० १ २ ३ ४ ५ ६ ७ ८ ९
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=DEVANAGARI),
     GUJARATI: Scheme({
       'vowels': s("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
       'marks': s("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),
       'virama': s('્'),
-      'other': s('ં ઃ ઁ'),
+      'yogavaahas': s('ં ઃ ઁ'),
       'consonants': s("""
                             ક ખ ગ ઘ ઙ
                             ચ છ જ ઝ ઞ
@@ -467,13 +450,13 @@ def _setup():
                        ૐ ઽ ૤ ૥
                        ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=GUJARATI),
     GURMUKHI: Scheme({
       'vowels': s("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),
       'marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', '', '',
                 '', '', 'ੇ', 'ੈ', 'ੋ', 'ੌ'],
       'virama': s('੍'),
-      'other': s('ਂ ਃ ਁ'),
+      'yogavaahas': s('ਂ ਃ ਁ'),
       'consonants': s("""
                             ਕ ਖ ਗ ਘ ਙ
                             ਚ ਛ ਜ ਝ ਞ
@@ -488,12 +471,12 @@ def _setup():
                        ॐ ऽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=GURMUKHI),
     HK: Scheme({
       'vowels': s("""a A i I u U R RR lR lRR e ai o au"""),
       'marks': s("""A i I u U R RR lR lRR e ai o au"""),
       'virama': [''],
-      'other': s('M H ~'),
+      'yogavaahas': s('M H ~'),
       'consonants': s("""
                             k kh g gh G
                             c ch j jh J
@@ -508,12 +491,12 @@ def _setup():
                        OM ' | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
-    }),
+    }, name=HK),
     VELTHUIS: Scheme({
       'vowels': s("""a aa i ii u uu .r .rr .l .ll e ai o au"""),
       'marks': s("""aa i ii u uu .r .rr .l .ll e ai o au"""),
       'virama': [''],
-      'other': s('.m .h /'),
+      'yogavaahas': s('.m .h /'),
       'consonants': s("""
                             k kh g gh "n
                             c ch j jh ~n
@@ -528,12 +511,39 @@ def _setup():
                        O .a | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
-    }),
+    }, name=VELTHUIS),
+    OPTITRANS: Scheme({
+      'vowels': s("""a A i I u U R RR LLi LLI e ai o au"""),
+      'marks': s("""A i I u U R RR LLi LLI e ai o au"""),
+      'virama': [''],
+      'yogavaahas': s('M H .N'),
+      'consonants': s("""
+                            k kh g gh ~N
+                            ch Ch j jh ~n
+                            T Th D Dh N
+                            t th d dh n
+                            p ph b bh m
+                            y r l v
+                            sh Sh s h
+                            L kSh jn
+                            """),
+      'symbols': s("""
+                       OM .a | ||
+                       0 1 2 3 4 5 6 7 8 9
+                       """)
+    }, synonym_map={
+      "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "R": ["R^i", "RRi"], "RR": ["R^I", "RRI"], "LLi": ["L^i"], "LLI": ["L^I"],
+      "M": [".m", ".n"],
+      "kh": ["K"], "gh": ["G"],
+      "ch": ["c"], "Ch": ["C"], "jh": ["J"],
+      "ph": ["P"], "bh": ["B"], "Sh": ["S"],
+      "v": ["w"], "kSh": ["x", "kS", "ksh"], "jn": ["GY", "jJN"],
+    }, name=OPTITRANS),
     ITRANS: Scheme({
       'vowels': s("""a A i I u U RRi RRI LLi LLI e ai o au"""),
       'marks': s("""A i I u U RRi RRI LLi LLI e ai o au"""),
       'virama': [''],
-      'other': s('M H .N'),
+      'yogavaahas': s('M H .N'),
       'consonants': s("""
                             k kh g gh ~N
                             ch Ch j jh ~n
@@ -549,14 +559,15 @@ def _setup():
                        0 1 2 3 4 5 6 7 8 9
                        """)
     }, synonym_map={
-      "A": ["aa"], "I": ["ii"], "U": ["uu"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
-      "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY"]
-    }),
+      "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
+      "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY", "jJN"]
+      # "||": [".."], "|": ["."],
+    }, name=ITRANS),
     IAST: Scheme({
       'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"""),
       'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"""),
       'virama': [''],
-      'other': s('ṃ ḥ m̐'),
+      'yogavaahas': s('ṃ ḥ m̐'),
       'consonants': s("""
                             k kh g gh ṅ
                             c ch j jh ñ
@@ -571,12 +582,12 @@ def _setup():
                        oṃ ' । ॥
                        0 1 2 3 4 5 6 7 8 9
                        """)
-    }),
+    }, name=IAST),
     KOLKATA: Scheme({
       'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au"""),
       'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au"""),
       'virama': [''],
-      'other': s('ṃ ḥ m̐'),
+      'yogavaahas': s('ṃ ḥ m̐'),
       'consonants': s("""
                             k kh g gh ṅ
                             c ch j jh ñ
@@ -591,12 +602,12 @@ def _setup():
                        oṃ ' । ॥
                        0 1 2 3 4 5 6 7 8 9
                        """)
-    }),
+    }, name=IAST),
     KANNADA: Scheme({
       'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ"""),
       'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ"""),
       'virama': s('್'),
-      'other': s('ಂ ಃ ँ'),
+      'yogavaahas': s('ಂ ಃ ँ'),
       'consonants': s("""
                             ಕ ಖ ಗ ಘ ಙ
                             ಚ ಛ ಜ ಝ ಞ
@@ -611,12 +622,12 @@ def _setup():
                        ಓಂ ऽ । ॥
                        ೦ ೧ ೨ ೩ ೪ ೫ ೬ ೭ ೮ ೯
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=KANNADA),
     MALAYALAM: Scheme({
       'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ"""),
       'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ"""),
       'virama': s('്'),
-      'other': s('ം ഃ ँ'),
+      'yogavaahas': s('ം ഃ ँ'),
       'consonants': s("""
                             ക ഖ ഗ ഘ ങ
                             ച ഛ ജ ഝ ഞ
@@ -631,13 +642,13 @@ def _setup():
                        ഓം ഽ । ॥
                        ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=MALAYALAM),
     ORIYA: Scheme({
       'vowels': s("""ଅ ଆ ଇ ଈ ଉ ଊ ଋ ୠ ଌ ୡ ଏ ଐ ଓ ଔ"""),
       'marks': ['ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'ୃ', 'ୄ',
                 '', '', 'େ', 'ୈ', 'ୋ', 'ୌ'],
       'virama': s('୍'),
-      'other': s('ଂ ଃ ଁ'),
+      'yogavaahas': s('ଂ ଃ ଁ'),
       'consonants': s("""
                             କ ଖ ଗ ଘ ଙ
                             ଚ ଛ ଜ ଝ ଞ
@@ -652,12 +663,12 @@ def _setup():
                        ଓଂ ଽ । ॥
                        ୦ ୧ ୨ ୩ ୪ ୫ ୬ ୭ ୮ ୯
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=ORIYA),
     SLP1: Scheme({
       'vowels': s("""a A i I u U f F x X e E o O"""),
       'marks': s("""A i I u U f F x X e E o O"""),
       'virama': [''],
-      'other': s('M H ~'),
+      'yogavaahas': s('M H ~'),
       'consonants': s("""
                             k K g G N
                             c C j J Y
@@ -672,12 +683,12 @@ def _setup():
                        oM ' . ..
                        0 1 2 3 4 5 6 7 8 9
                        """)
-    }),
+    }, name=SLP1),
     WX: Scheme({
       'vowels': s("""a A i I u U q Q L ḹ e E o O"""),
       'marks': s("""A i I u U q Q L ḹ e E o O"""),
       'virama': [''],
-      'other': s('M H ~'),
+      'yogavaahas': s('M H ~'),
       'consonants': s("""
                             k K g G f
                             c C j J F
@@ -692,13 +703,13 @@ def _setup():
                        oM ' . ..
                        0 1 2 3 4 5 6 7 8 9
                        """)
-    }),
+    }, name=WX),
     TAMIL: Scheme({
       'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ ஏ ஐ ஓ ஔ"""),
       'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '', '',
                 '', '', 'ே', 'ை', 'ோ', 'ௌ'],
       'virama': s('்'),
-      'other': s('ஂ ஃ ँ'),
+      'yogavaahas': s('ஂ ஃ ँ'),
       'consonants': s("""
                             க க க க ங
                             ச ச ஜ ச ஞ
@@ -713,12 +724,12 @@ def _setup():
                        ௐ ऽ । ॥
                        ௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯
                        """)
-    }, is_roman=False),
+    }, is_roman=False, name=TAMIL),
     TELUGU: Scheme({
       'vowels': s("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ"""),
       'marks': s("""ా ి ీ ు ూ ృ ౄ ౢ ౣ ే ై ో ౌ"""),
       'virama': s('్'),
-      'other': s('ం ః ఁ'),
+      'yogavaahas': s('ం ః ఁ'),
       'consonants': s("""
                             క ఖ గ ఘ ఙ
                             చ ఛ జ ఝ ఞ
@@ -733,80 +744,9 @@ def _setup():
                        ఓం ఽ । ॥
                        ౦ ౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯
                        """)
-    }, is_roman=False)
+    }, is_roman=False, name=TELUGU)
   })
-
 
 _setup()
 
-
-def get_approx_deduplicating_key(text, encoding_scheme=DEVANAGARI):
-  """
-  Given some devanAgarI sanskrit text, this function produces a "key" so
-  that
-
-  1] The key should be the same for different observed orthographical
-  forms of the same text. For example:
-
-  ::
-
-      - "dharmma" vs "dharma"
-      - "rAmaM gacChati" vs "rAma~N gacChati" vs "rAma~N gacChati"
-      - "kurvan eva" vs "kurvanneva"
-
-  2] The key should be different for different for different texts.
-
-  -  "stamba" vs "stambha"
-
-  This function attempts to succeed at [1] and [2] almostall the time.
-  Longer the text, probability of failing at [2] decreases, while
-  probability of failing at [1] increases (albeit very slightly).
-
-  Sources of orthographically divergent forms:
-
-  -  Phonetically sensible grammar rules
-  -  Neglect of sandhi while writing
-  -  Punctuation, spaces, avagraha-s.
-  -  Regional-language-influenced mistakes (La instead of la.)
-
-  Some example applications of this function:
-
-  -  Create a database of quotes or words with minimal duplication.
-  -  Search a database of quotes or words while being robust to optional
-     forms.
-
-  Also see equivalent function in the scala indic-transliteration package.
-  """
-  if encoding_scheme == DEVANAGARI:
-    key = text
-    key = regex.sub("\\P{IsDevanagari}", "", key)
-    # Remove spaces
-    key = regex.sub("\\s", "", key)
-    # Remove punctuations
-    key = regex.sub("\\p{P}", "", key)
-    # Remove digits, abbreviation sign, svara-s, avagraha
-    key = regex.sub("[०-९।॥॰ऽ]|[॑-॔]", "", key)
-    # Collapse semi-vowel-anunAsika-s संलग्नम् सल्ँलग्नम् into m
-    key = regex.sub("[यरल]्ँ", "म्", key)
-    # Collapse all panchama-s into m
-    key = regex.sub("[ङञणन]", "म", key)
-    # Collapse anusvAra into m
-    key = regex.sub("ँ|ं", "म्", key)
-    key = regex.sub("ॐ", "ओम्", key)
-    key = regex.sub("[ळऴ]", "ल", key)
-    # Deal with optional forms where consonants are duplicated - like dharmma
-    # Details in https://docs.google.com/spreadsheets/d/1GP8Ps_hmgCGLZPWKIVBCfQB9ZmPQOaCwTrH9OybaWaQ/edit#gid=21
-    key = regex.sub("([क-हक़-य़])्\\1+", "\\1", key)
-    key = regex.sub("[कग]्ख्", "ख्", key)
-    key = regex.sub("[कग]्घ्", "घ्", key)
-    key = regex.sub("च्छ्", "छ्", key)
-    key = regex.sub("ज्झ्", "झ्", key)
-    key = regex.sub("त्थ्", "थ्", key)
-    key = regex.sub("द्ध्", "ध्", key)
-    key = regex.sub("ड्ढ्", "ढ्", key)
-    key = regex.sub("प्फ्", "फ्", key)
-    key = regex.sub("ब्भ्", "भ्", key)
-    return key
-  else:
-    logging.warning("got script {} for '{}'".format(encoding_scheme, text))
-    return regex.sub("\\s", "", text)
+logging.info(transliterate("shankara", OPTITRANS, DEVANAGARI))

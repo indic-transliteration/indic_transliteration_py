@@ -1,0 +1,152 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>indic_transliteration.deduplication &#8212; indic_transliteration 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="indic_transliteration.detect" href="indic_transliteration_detect.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-indic_transliteration.deduplication">
+<span id="indic-transliteration-deduplication"></span><h1>indic_transliteration.deduplication<a class="headerlink" href="#module-indic_transliteration.deduplication" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="indic_transliteration.deduplication.fix_lazy_anusvaara_itrans">
+<code class="descclassname">indic_transliteration.deduplication.</code><code class="descname">fix_lazy_anusvaara_itrans</code><span class="sig-paren">(</span><em>data_in</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/indic_transliteration/deduplication.html#fix_lazy_anusvaara_itrans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#indic_transliteration.deduplication.fix_lazy_anusvaara_itrans" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="indic_transliteration.deduplication.get_approx_deduplicating_key">
+<code class="descclassname">indic_transliteration.deduplication.</code><code class="descname">get_approx_deduplicating_key</code><span class="sig-paren">(</span><em>text</em>, <em>encoding_scheme='devanagari'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/indic_transliteration/deduplication.html#get_approx_deduplicating_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#indic_transliteration.deduplication.get_approx_deduplicating_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given some devanAgarI sanskrit text, this function produces a “key” so
+that</p>
+<p>1] The key should be the same for different observed orthographical
+forms of the same text. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="s2">&quot;dharmma&quot;</span> <span class="n">vs</span> <span class="s2">&quot;dharma&quot;</span>
+<span class="o">-</span> <span class="s2">&quot;rAmaM gacChati&quot;</span> <span class="n">vs</span> <span class="s2">&quot;rAma~N gacChati&quot;</span> <span class="n">vs</span> <span class="s2">&quot;rAma~N gacChati&quot;</span>
+<span class="o">-</span> <span class="s2">&quot;kurvan eva&quot;</span> <span class="n">vs</span> <span class="s2">&quot;kurvanneva&quot;</span>
+</pre></div>
+</div>
+<p>2] The key should be different for different for different texts.</p>
+<ul class="simple">
+<li>“stamba” vs “stambha”</li>
+</ul>
+<p>This function attempts to succeed at [1] and [2] almostall the time.
+Longer the text, probability of failing at [2] decreases, while
+probability of failing at [1] increases (albeit very slightly).</p>
+<p>Sources of orthographically divergent forms:</p>
+<ul class="simple">
+<li>Phonetically sensible grammar rules</li>
+<li>Neglect of sandhi while writing</li>
+<li>Punctuation, spaces, avagraha-s.</li>
+<li>Regional-language-influenced mistakes (La instead of la.)</li>
+</ul>
+<p>Some example applications of this function:</p>
+<ul class="simple">
+<li>Create a database of quotes or words with minimal duplication.</li>
+<li>Search a database of quotes or words while being robust to optional
+forms.</li>
+</ul>
+<p>Also see equivalent function in the scala indic-transliteration package.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="indic_transliteration.html">indic_transliteration</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="indic_transliteration_sanscript.html">indic_transliteration.sanscript</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indic_transliteration_xsanscript.html">indic_transliteration.xsanscript</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indic_transliteration_detect.html">indic_transliteration.detect</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">indic_transliteration.deduplication</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="indic_transliteration.html">Documentation overview</a><ul>
+      <li>Previous: <a href="indic_transliteration_detect.html" title="previous chapter">indic_transliteration.detect</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, sanskrit-programmers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/indic_transliteration_deduplication.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

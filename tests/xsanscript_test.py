@@ -34,7 +34,8 @@ def test_to_devanagari(test_conversions):
         if script == "dev" or (script not in xsanscript.SCHEMES.keys()):
             logging.debug("Skipping over script - " + script)
             continue
-        assert xsanscript.transliterate(text, script, xsanscript.DEVANAGARI) == dev_string, "Failed to convert " + script + " to devanAgarI"
+        transliteration = xsanscript.transliterate(text, script, xsanscript.DEVANAGARI)
+        assert transliteration == dev_string, "Failed to convert " + script + " to devanAgarI. Compare: " + transliteration + " vs " + dev_string
 
 @pytest.mark.parametrize("test_conversions", test_data["tests"])
 def test_from_devanagari(test_conversions):

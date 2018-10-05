@@ -122,8 +122,8 @@ class SchemeMap(object):
     self.vowels = {}
     self.consonants = {}
     self.non_marks_viraama = {}
-    self.from_roman = from_scheme.is_roman
-    self.to_roman = to_scheme.is_roman
+    self.from_scheme = from_scheme
+    self.to_scheme = to_scheme
     self.max_key_length_from_scheme = max(len(x) for g in from_scheme
                                           for x in from_scheme[g])
 
@@ -209,7 +209,7 @@ def _roman(data, scheme_map, **kw):
   consonants = scheme_map.consonants
   non_marks_viraama = scheme_map.non_marks_viraama
   max_key_length_from_scheme = scheme_map.max_key_length_from_scheme
-  to_roman = scheme_map.to_roman
+  to_roman = scheme_map.to_scheme.is_roman
 
   togglers = kw.pop('togglers', set())
   suspend_on = kw.pop('suspend_on', set())
@@ -312,7 +312,7 @@ def _brahmic(data, scheme_map, **kw):
   virama = scheme_map.virama
   consonants = scheme_map.consonants
   non_marks_viraama = scheme_map.non_marks_viraama
-  to_roman = scheme_map.to_roman
+  to_roman = scheme_map.to_scheme.is_roman
 
   buf = []
   had_consonant = False
@@ -331,8 +331,10 @@ def _brahmic(data, scheme_map, **kw):
 
   if had_consonant:
     append('a')
-  return ''.join(buf)
-
+  output = ''.join(buf)
+  if scheme_map.to_scheme.name == OPTITRANS:
+    output = output.replace("~N", "n").replace("~n", "n")
+  return output
 
 @lru_cache(maxsize=8)
 def _get_scheme_map(input_encoding, output_encoding):
@@ -371,7 +373,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   }
   options.update(kw)
 
-  func = _roman if scheme_map.from_roman else _brahmic
+  func = _roman if scheme_map.from_scheme.is_roman else _brahmic
   return func(data, scheme_map, **options)
 
 

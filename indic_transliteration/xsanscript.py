@@ -54,16 +54,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
         from_scheme = SCHEMES[_from]
         to_scheme = SCHEMES[_to]
         scheme_map = sanscript.SchemeMap(from_scheme, to_scheme)
-
-    options = {
-        'togglers': {'##'},
-        'suspend_on': set('<'),
-        'suspend_off': set('>')
-    }
-    options.update(kw)
-
-    func = sanscript._roman if scheme_map.from_roman else sanscript._brahmic
-    return func(data, scheme_map, **options)
+    return sanscript.transliterate(data=data, scheme_map=scheme_map)
 
 
 def _setup():
@@ -80,51 +71,51 @@ def _setup():
     SCHEMES = copy.deepcopy(sanscript.SCHEMES)
     pop_all(SCHEMES, [sanscript.ORIYA, sanscript.BENGALI, sanscript.GUJARATI])
     SCHEMES[DEVANAGARI].update({
-        'vowels': SCHEMES[DEVANAGARI]['vowels'] + s("""ऎ ऒ"""),
-        'marks': SCHEMES[DEVANAGARI]['marks'] + s("""ॆ ॊ"""),
-        'consonants': SCHEMES[DEVANAGARI]['consonants'] + s("""ऩ ऱ ऴ""")
+        'vowels': sanscript.SCHEMES[DEVANAGARI]['vowels'] + s("""ऎ ऒ"""),
+        'marks': sanscript.SCHEMES[DEVANAGARI]['marks'] + s("""ॆ ॊ"""),
+        'consonants': sanscript.SCHEMES[DEVANAGARI]['consonants'] + s("""ऩ ऱ ऴ""")
     })
     SCHEMES[HK].update({
-        'vowels': SCHEMES[HK]['vowels'] + s("""e o"""),
-        'marks': SCHEMES[HK]['marks'] + s("""e o"""),
-        'consonants': SCHEMES[HK]['consonants'] + s("""n2 r2 zh""")
+        'vowels': s("""a A i I u U R RR lR lRR E ai O au""") + s("""e o"""),
+        'marks': s("""A i I u U R RR lR lRR E ai O au""") + s("""e o"""),
+        'consonants': sanscript.SCHEMES[HK]['consonants'] + s("""n2 r2 zh""")
     })
     SCHEMES[ITRANS].update({
-        'vowels': SCHEMES[ITRANS]['vowels'] + s("""e o"""),
-        'marks': SCHEMES[ITRANS]['marks'] + s("""e o"""),
-        'consonants': SCHEMES[ITRANS]['consonants'] + s("""n2 r2 zh""")
+        'vowels': s("""a A i I u U R RR LLi LLI E ai O au""") + s("""e o"""),
+        'marks': s("""A i I u U R RR LLi LLI E ai O au""") + s("""e o"""),
+        'consonants': sanscript.SCHEMES[ITRANS]['consonants'] + s("""n2 r2 zh""")
     })
     pop_all(SCHEMES[ITRANS].synonym_map, s("""e o"""))
     SCHEMES[OPTITRANS].update({
-        'vowels': SCHEMES[OPTITRANS]['vowels'] + s("""e o"""),
-        'marks': SCHEMES[OPTITRANS]['marks'] + s("""e o"""),
-        'consonants': SCHEMES[OPTITRANS]['consonants'] + s("""n2 r2 zh""")
+        'vowels': s("""a A i I u U R RR LLi LLI E ai O au""") + s("""e o"""),
+        'marks': s("""A i I u U R RR LLi LLI E ai O au""") + s("""e o"""),
+        'consonants': sanscript.SCHEMES[OPTITRANS]['consonants'] + s("""n2 r2 zh""")
     })
     pop_all(SCHEMES[OPTITRANS].synonym_map, s("""e o"""))
     SCHEMES[IAST].update({
-        'vowels': SCHEMES[ITRANS]['vowels'] + s("""ê ô"""),
-        'marks': SCHEMES[ITRANS]['marks'] + s("""ê ô"""),
-        'consonants': SCHEMES[ITRANS]['consonants'] + s("""n r̂ ḷ""")
+        'vowels': sanscript.SCHEMES[ITRANS]['vowels'] + s("""ê ô"""),
+        'marks': sanscript.SCHEMES[ITRANS]['marks'] + s("""ê ô"""),
+        'consonants': sanscript.SCHEMES[ITRANS]['consonants'] + s("""n r̂ ḷ""")
     })
     SCHEMES[KANNADA].update({
-        'vowels': SCHEMES[KANNADA]['vowels'] + s("""ಎ ಒ"""),
-        'marks': SCHEMES[KANNADA]['marks'] + s("""ೆ ೊ"""),
-        'consonants': SCHEMES[KANNADA]['consonants'] + s("""ऩ ಱ ೞ""")
+        'vowels': sanscript.SCHEMES[KANNADA]['vowels'] + s("""ಎ ಒ"""),
+        'marks': sanscript.SCHEMES[KANNADA]['marks'] + s("""ೆ ೊ"""),
+        'consonants': sanscript.SCHEMES[KANNADA]['consonants'] + s("""ऩ ಱ ೞ""")
     })
     SCHEMES[MALAYALAM].update({
-        'vowels': SCHEMES[MALAYALAM]['vowels'] + s("""എ ഓ"""),
-        'marks': SCHEMES[MALAYALAM]['marks'] + s("""െ ൊ"""),
-        'consonants': SCHEMES[MALAYALAM]['consonants'] + s("""ഩ ള ൟ"""),
+        'vowels': sanscript.SCHEMES[MALAYALAM]['vowels'] + s("""എ ഓ"""),
+        'marks': sanscript.SCHEMES[MALAYALAM]['marks'] + s("""െ ൊ"""),
+        'consonants': sanscript.SCHEMES[MALAYALAM]['consonants'] + s("""ഩ ള ൟ"""),
     })
     SCHEMES[TAMIL].update({
-        'vowels': SCHEMES[TAMIL]['vowels'] + SCHEMES[TAMIL]['vowels'] + s("""எ ஒ"""),
-        'marks': SCHEMES[TAMIL]['marks'] + ['ெ', 'ொ'],
-        'consonants': SCHEMES[TAMIL]['consonants'] + s("""ன ற ழ""")
+        'vowels': sanscript.SCHEMES[TAMIL]['vowels'] + SCHEMES[TAMIL]['vowels'] + s("""எ ஒ"""),
+        'marks': sanscript.SCHEMES[TAMIL]['marks'] + ['ெ', 'ொ'],
+        'consonants': sanscript.SCHEMES[TAMIL]['consonants'] + s("""ன ற ழ""")
     })
     SCHEMES[TELUGU].update({
-        'vowels': SCHEMES[TELUGU]['vowels'] + s("""ఎ ఒ"""),
-        'marks': SCHEMES[TELUGU]['marks'] + s("""ె  ొ"""),
-        'consonants': SCHEMES[TELUGU]['consonants'] + s("""ऩ ఴ ౚ""")
+        'vowels': sanscript.SCHEMES[TELUGU]['vowels'] + s("""ఎ ఒ"""),
+        'marks': sanscript.SCHEMES[TELUGU]['marks'] + s("""ె  ొ"""),
+        'consonants': sanscript.SCHEMES[TELUGU]['consonants'] + s("""ऩ ఴ ౚ""")
     })
 
 

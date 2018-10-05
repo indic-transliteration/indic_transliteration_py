@@ -3,12 +3,12 @@
 "comments": "Shared transliteration tests for dravidian scripts. In each test, the dev field is compulsory.",
 "tests": [
 {
-  "dev": "असय औषधिः ग्रन्थः। ऎ ऒ यॆक्ककॊ?",
-  "telugu": "అసయ ఔషధిః గ్రన్థః। ఎ ఒ యెక్కకొ?",
-  "kannada": "ಅಸಯ ಔಷಧಿಃ ಗ್ರನ್ಥಃ। ಎ ಒ ಯೆಕ್ಕಕೊ?",
+  "dev": "असय औषधिः ग्रन्थः। ऎ ऒ यॆक्ककॊ? शङ्कर",
+  "telugu": "అసయ ఔషధిః గ్రన్థః। ఎ ఒ యెక్కకొ? శఙ్కర",
+  "kannada": "ಅಸಯ ಔಷಧಿಃ ಗ್ರನ್ಥಃ। ಎ ಒ ಯೆಕ್ಕಕೊ? ಶಙ್ಕರ",
   "tamil_failing": "அஸய ஔஷதிஃ க்ரந்தஃ। எ ஒ யெக்ககொ?",
-  "optitrans": "asaya OShadhiH granthaH| e o yekkako?",
-  "hk": "asaya OShadhiH granthaH| e o yekkako?"
+  "optitrans": "asaya auShadhiH granthaH| e o yekkako? shankara",
+  "hk": "asaya auSadhiH granthaH| e o yekkako? zaGkara"
 }
 ]
 }

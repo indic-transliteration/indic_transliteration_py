@@ -441,7 +441,7 @@ def transliterate(text, inFormat, outFormat, requestOptions={}):
         if inFormat is outFormat:
             # They're trying to trick us. Just do a quick sanity check & bounce it back.
             if inFormat._longestEntry == 1:
-                [inFormat[c] for c in Set(text) if not c.isspace()] 
+                [inFormat[c] for c in set(text) if not c.isspace()] 
                 # -> KeyError for extraneous chars.
                 return text
             

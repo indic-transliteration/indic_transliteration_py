@@ -40,14 +40,14 @@ USAGE
 --------
 Transliterate a text:
 
->>> import transliterator
+>>> import indic_transliteration_unmaintained.little.transliterator
 >>> transliterator.transliterate('yogazcittavRttinirodhaH', 'harvardkyoto',
 ...     'devanagari', {'outputASCIIEncoded' : True})
 '&#x92f;&#x94b;&#x917;&#x936;&#x94d;&#x91a;&#x93f;&#x924;&#x94d;&#x924;&#x935;&#x943;&#x924;&#x94d;&#x924;&#x93f;&#x928;&#x93f;&#x930;&#x94b;&#x927;&#x903;'
 
 Create a new CharacterBlock and TransliterationScheme:
 
->>> import transliterator
+>>> import indic_transliteration_unmaintained.little.transliterator
 >>> cb = transliterator.CharacterBlock('NEWBLOCK', range(0x901, 0x9FF))
 >>> scheme = transliterator.TransliterationScheme(cb.name, 'NEWSCHEME',
 ...                          {'ab': 0x901, 'cd': 0x902})
@@ -441,7 +441,7 @@ def transliterate(text, inFormat, outFormat, requestOptions={}):
         if inFormat is outFormat:
             # They're trying to trick us. Just do a quick sanity check & bounce it back.
             if inFormat._longestEntry == 1:
-                [inFormat[c] for c in Set(text) if not c.isspace()] 
+                [inFormat[c] for c in set(text) if not c.isspace()] 
                 # -> KeyError for extraneous chars.
                 return text
             

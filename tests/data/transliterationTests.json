@@ -1,7 +1,7 @@
 {
   "canonical_source": "https://github.com/sanskrit-coders/indic-transliteration/blob/master/src/test/resources/transliterationTests.json",
   "comments": "Shared transliteration tests. In each test, the dev field is compulsory.",
-  "tests": [
+  "to_devanaagarii": [
     {
       "dev": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  काष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
       "iast_avagrahaDoesntWork": "asaya auṣadhiḥ granthaḥ! ḹkāro.`sti. nāsti leś`opi saṃśayaḥ. kīlakam? kūpiḥ?  kāṣṭhaṃ bhoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. aum tat.",
@@ -10,6 +10,19 @@
       "optitrans": "asaya auShadhiH granthaH! LLIkaaro|.asti| naasti lesho.api saMshayaH| kiilakam? kuupiH?  kAShThaM bhoH| shankara! jnaanam|  sanjiivaya| 12345|| OM tat|",
       "slp": "asaya OzaDiH granTaH! XkAro.'sti. nAsti leSo'pi saMSayaH. kIlakam? kUpiH?  kAzWaM BoH. SaNkara! jYAnam.  saYjIvaya. 12345.. oM tat.",
       "wx": "asaya ORaXiH granWaH! ḹkAro.'swi. nAswi leSo'pi saMSayaH. kIlakam? kUpiH?  kARTaM BoH. Safkara! jFAnam.  saFjIvaya. 12345.. oM waw."
+    }
+  ],
+  "from_devanaagarii": [
+    {
+      "description": "A general test for scripts without equivalents for some devanAgarI letters, like gurmukhI, bengali and tamil",
+      "dev": "असय औषधिः ग्रन्थः! ॡकारो नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  कष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्। अब अव",
+      "bengali": "অসয ঔষধিঃ গ্রন্থঃ! ৡকারো নাস্তি লেশোঽপি সংশযঃ। কীলকম্? কূপিঃ?  কষ্ঠং ভোঃ। শঙ্কর! জ্ঞানম্।  সঞ্জীবয। ১২৩৪৫॥ ॐ তত্। অব অব",
+      "gurmukhi": "ਅਸਯ ਔਸ਼ਧਿਃ ਗ੍ਰਨ੍ਥਃ! ॡਕਾਰੋ ਨਾਸ੍ਤਿ ਲੇਸ਼ੋఽਪਿ ਸਂਸ਼ਯਃ। ਕੀਲਕਮ੍? ਕੂਪਿਃ?  ਕਸ਼੍ਠਂ ਭੋਃ। ਸ਼ਙ੍ਕਰ! ਜ੍ਞਾਨਮ੍।  ਸਞ੍ਜੀਵਯ। ੧੨੩੪੫॥ ੴ ਤਤ੍। ਅਬ ਅਵ"
+    },
+    {
+      "description": "optitrans preferred simple conjugate representation",
+      "dev": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  काष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
+      "optitrans": "asaya auShadhiH granthaH! LLIkAro|.asti| nAsti lesho.api saMshayaH| kIlakam? kUpiH?  kAShThaM bhoH| shankara! jnAnam|  sanjIvaya| 12345|| OM tat|"
     }
   ]
 }

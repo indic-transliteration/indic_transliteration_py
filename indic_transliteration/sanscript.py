@@ -58,6 +58,8 @@ from __future__ import unicode_literals
 # ---------------
 #: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
 #: as `ব`.
+import logging
+import pprint
 import sys
 
 try:
@@ -182,15 +184,19 @@ class SchemeMap(object):
 
     if to_scheme.name == OPTITRANS:
       inv_map = {v: k for k, v in self.consonants.items()}
+      if len(from_scheme['virama']) == 0:
+          from_scheme_virama = ''
+      else:
+          from_scheme_virama = from_scheme['virama'][0]
       conjunct_map = {
-        inv_map["~N"] + inv_map["k"]: "nk",
-        inv_map["~N"] + inv_map["kh"]: "nkh",
-        inv_map["~N"] + inv_map["g"]: "ng",
-        inv_map["~N"] + inv_map["gh"]: "ngh",
-        inv_map["~n"] + inv_map["ch"]: "nch",
-        inv_map["~n"] + inv_map["Ch"]: "nCh",
-        inv_map["~n"] + inv_map["j"]: "nj",
-        inv_map["~n"] + inv_map["jh"]: "njh",
+        inv_map["~N"] + from_scheme_virama + inv_map["k"]: "nk",
+        inv_map["~N"] + from_scheme_virama + inv_map["kh"]: "nkh",
+        inv_map["~N"] + from_scheme_virama + inv_map["g"]: "ng",
+        inv_map["~N"] + from_scheme_virama + inv_map["gh"]: "ngh",
+        inv_map["~n"] + from_scheme_virama + inv_map["ch"]: "nch",
+        inv_map["~n"] + from_scheme_virama + inv_map["Ch"]: "nCh",
+        inv_map["~n"] + from_scheme_virama + inv_map["j"]: "nj",
+        inv_map["~n"] + from_scheme_virama + inv_map["jh"]: "njh",
       }
       self.consonants.update(conjunct_map)
       self.non_marks_viraama.update(conjunct_map)
@@ -320,29 +326,69 @@ def _brahmic(data, scheme_map, **kw):
   consonants = scheme_map.consonants
   non_marks_viraama = scheme_map.non_marks_viraama
   to_roman = scheme_map.to_scheme.is_roman
+  max_key_length_from_scheme = scheme_map.max_key_length_from_scheme
 
   buf = []
-  had_consonant = False
+  i = 0
+  to_roman_had_consonant = found = False
   append = buf.append
+  logging.debug(pprint.pformat(scheme_map.consonants))
 
-  for L in data:
-    if L in marks:
-      append(marks[L])
-    elif L in virama:
-      append(virama[L])
-    else:
-      if had_consonant:
-        append('a')
-      append(non_marks_viraama.get(L, L))
-    had_consonant = to_roman and L in consonants
+  while i <= len(data):
+    # The longest token in the source scheme has length `max_key_length_from_scheme`. Iterate
+    # over `data` while taking `max_key_length_from_scheme` characters at a time. If we don`t
+    # find the character group in our scheme map, lop off a character and
+    # try again.
+    #
+    # If we've finished reading through `data`, then `token` will be empty
+    # and the loop below will be skipped.
+    token = data[i:i + max_key_length_from_scheme]
 
-  if had_consonant:
+    while token:
+      if len(token) == 1:
+        if token in marks:
+          append(marks[token])
+          found = True
+        elif token in virama:
+          append(virama[token])
+          found = True
+        else:
+          if to_roman_had_consonant:
+            append('a')
+          append(non_marks_viraama.get(token, token))
+          found = True
+      else:
+        if token in non_marks_viraama:
+          if to_roman_had_consonant:
+            append('a')
+          append(non_marks_viraama.get(token))
+          found = True
+
+      if found:
+        to_roman_had_consonant = to_roman and token in consonants
+        i += len(token)
+        break        
+      else:
+        token = token[:-1]
+
+    # Continuing the outer while loop.
+    # We've exhausted the token; this must be some other character. Due to
+    # the implicit 'a', we must explicitly end any lingering consonants
+    # before we can handle the current token.
+    if not found:
+      if to_roman_had_consonant:
+        append(next(iter(virama.values())))
+      if i < len(data):
+        append(data[i])
+        to_roman_had_consonant = False
+      i += 1
+
+    found = False
+
+  if to_roman_had_consonant:
     append('a')
-  output = ''.join(buf)
-  if scheme_map.to_scheme.name == OPTITRANS:
-    import regex
-    output = regex.sub(r"~[Nn]([kKgGcC])", r"n\1", output)
-  return output
+  return ''.join(buf)
+
 
 @lru_cache(maxsize=8)
 def _get_scheme_map(input_encoding, output_encoding):
@@ -470,7 +516,7 @@ def _setup():
                             ਲ਼ ਕ੍ਸ਼ ਜ੍ਞ
                             """),
       'symbols': s("""
-                       ॐ ऽ । ॥
+                       ੴ ఽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
     }, is_roman=False, name=GURMUKHI),

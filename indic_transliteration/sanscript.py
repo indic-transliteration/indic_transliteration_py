@@ -58,8 +58,6 @@ from __future__ import unicode_literals
 # ---------------
 #: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
 #: as `ব`.
-import logging
-import pprint
 import sys
 
 try:
@@ -84,6 +82,8 @@ TELUGU = 'telugu'
 HK = 'hk'
 IAST = 'iast'
 ITRANS = 'itrans'
+
+"""Optitransv1 is described in https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1 . OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु)."""
 OPTITRANS = 'optitrans'
 KOLKATA = 'kolkata'
 SLP1 = 'slp1'
@@ -100,8 +100,8 @@ class Scheme(dict):
 
   :class:`Scheme` is just a subclass of :class:`dict`.
 
-  :param data: a :class:`dict` of initial values.
-  :param synonym_map: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS.
+  :param data: a :class:`dict` of initial values. Note that the particular characters present here are also assumed to be the _preferred_ transliterations when transliterating to this scheme. 
+  :param synonym_map: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS. This synonym_map is not used in transliterating to this scheme.
   :param is_roman: `True` if the scheme is a romanization and `False`
                    otherwise.
   """
@@ -332,8 +332,9 @@ def _brahmic(data, scheme_map, **kw):
   i = 0
   to_roman_had_consonant = found = False
   append = buf.append
-  logging.debug(pprint.pformat(scheme_map.consonants))
+  # logging.debug(pprint.pformat(scheme_map.consonants))
 
+  # We dont just translate each brAhmic character one after another in order to prefer concise transliterations when possible - for example ज्ञ -> jn in optitrans rather than j~n.
   while i <= len(data):
     # The longest token in the source scheme has length `max_key_length_from_scheme`. Iterate
     # over `data` while taking `max_key_length_from_scheme` characters at a time. If we don`t
@@ -438,6 +439,7 @@ def _setup():
     # noinspection PyUnresolvedReferences
     s = unicode.split
 
+  ## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.
   SCHEMES.update({
     BENGALI: Scheme({
       'vowels': s("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
@@ -573,8 +575,9 @@ def _setup():
                             p ph b bh m
                             y r l v
                             sh Sh s h
-                            L kSh jn
+                            L x jn
                             """),
+      # All those special conversions like nk -> ङ्क् are hard-coded when this scheme definition is consumed to produce a scheme map. Hence, they don't show up here.
       'symbols': s("""
                        OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
@@ -585,7 +588,7 @@ def _setup():
       "kh": ["K"], "gh": ["G"],
       "ch": ["c"], "Ch": ["C"], "jh": ["J"],
       "ph": ["P"], "bh": ["B"], "Sh": ["S"],
-      "v": ["w"], "kSh": ["x", "kS", "ksh"], "jn": ["GY", "jJN"],
+      "v": ["w"], "x": ["kSh", "kS", "ksh"], "jn": ["GY", "jJN"],
       "|": ["."], "||": [".."]
     }, name=OPTITRANS),
     ITRANS: Scheme({

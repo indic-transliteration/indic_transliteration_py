@@ -5,6 +5,7 @@ Some useful functions for converting and disambiguating between common alternati
 
 import logging
 
+# Not using the more standard library re here : We need to support `key = re.sub("\\P{IsDevanagari}", "", key)`.
 import regex
 from indic_transliteration import sanscript
 

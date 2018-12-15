@@ -43,11 +43,11 @@
 <span class="c1"># Not using the more standard library re here : We need to support `key = re.sub(&quot;\\P{IsDevanagari}&quot;, &quot;&quot;, key)`.</span>
 <span class="kn">import</span> <span class="nn">regex</span>
 <span class="kn">from</span> <span class="nn">indic_transliteration</span> <span class="k">import</span> <span class="n">sanscript</span>
-<span class="kn">from</span> <span class="nn">indic_transliteration.sanscript</span> <span class="k">import</span> <span class="n">schemes</span>
+<span class="kn">from</span> <span class="nn">indic_transliteration.sanscript.schemes</span> <span class="k">import</span> <span class="n">roman</span> 
 
 
 <div class="viewcode-block" id="fix_lazy_anusvaara_itrans"><a class="viewcode-back" href="../../indic_transliteration_deduplication.html#indic_transliteration.deduplication.fix_lazy_anusvaara_itrans">[docs]</a><span class="k">def</span> <span class="nf">fix_lazy_anusvaara_itrans</span><span class="p">(</span><span class="n">data_in</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">schemes</span><span class="o">.</span><span class="n">ItransScheme</span><span class="o">.</span><span class="n">fix_lazy_anusvaara</span><span class="p">(</span><span class="n">data_in</span><span class="o">=</span><span class="n">data_in</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">roman</span><span class="o">.</span><span class="n">ItransScheme</span><span class="o">.</span><span class="n">fix_lazy_anusvaara</span><span class="p">(</span><span class="n">data_in</span><span class="o">=</span><span class="n">data_in</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="get_approx_deduplicating_key"><a class="viewcode-back" href="../../indic_transliteration_deduplication.html#indic_transliteration.deduplication.get_approx_deduplicating_key">[docs]</a><span class="k">def</span> <span class="nf">get_approx_deduplicating_key</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding_scheme</span><span class="o">=</span><span class="n">sanscript</span><span class="o">.</span><span class="n">DEVANAGARI</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

@@ -19,3 +19,9 @@ class Scheme(dict):
         self.synonym_map = synonym_map
         self.is_roman = is_roman
         self.name = name
+
+    def fix_lazy_anusvaara(self, data_in):
+        from indic_transliteration import sanscript
+        data_itrans = sanscript.transliterate(data=data_in, _from=self.name, _to=sanscript.ITRANS)
+        itrans_fixed = sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara(data_in=data_itrans)
+        return sanscript.transliterate(data=itrans_fixed, _from=sanscript.ITRANS, _to=self.name)

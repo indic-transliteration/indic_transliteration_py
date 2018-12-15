@@ -64,8 +64,7 @@ class ItransScheme(RomanScheme):
             "||": [".."], "|": ["."],
         }, name=ITRANS)
 
-    @classmethod
-    def fix_lazy_anusvaara(cls, data_in):
+    def fix_lazy_anusvaara(self, data_in):
         data_out = data_in
         import regex
         data_out = regex.sub(r'M( *)([kg])', r'~N\1\2',   data_out)
@@ -110,6 +109,7 @@ class OptitransScheme(RomanScheme):
         }, name=OPTITRANS)
 
     def to_lay_indian(self, text, jn_replacement="GY", t_replacement="t"):
+        text = self.get_standard_form(data=text)
         text = text.replace('RR', 'ri')
         text = text.replace('R', 'ri')
         text = text.replace('LLi', 'lri')

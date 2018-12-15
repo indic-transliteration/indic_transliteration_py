@@ -1,11 +1,12 @@
 import json
-import os
-import pytest
 import logging
+import os
+
+import pytest
+
 from indic_transliteration import sanscript
 
 # Remove all handlers associated with the root logger object.
-from indic_transliteration.sanscript.schemes import roman
 
 for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)
@@ -85,3 +86,6 @@ def test_fix_lazy_anusvaara_itrans():
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMyukta") == "say.Nyukta"
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMlagna") == "sal.Nlagna"
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("taM jitvA") == "ta~n jitvA"
+
+def test_fix_lazy_anusvaara_devanagari():
+    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("तं जित्वा") == "तञ् जित्वा"

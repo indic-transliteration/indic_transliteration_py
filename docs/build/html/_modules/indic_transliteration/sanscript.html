@@ -42,15 +42,15 @@
 
 <span class="sd">By default, the module supports the following scripts:</span>
 
-<span class="sd">- Bengali_</span>
-<span class="sd">- Devanagari_</span>
-<span class="sd">- Gujarati_</span>
-<span class="sd">- Kannada_</span>
-<span class="sd">- Malayalam_</span>
-<span class="sd">- Telugu_</span>
-<span class="sd">- Tamil_</span>
-<span class="sd">- Oriya_</span>
-<span class="sd">- Gurmukhi/ Punjabi/ Panjabi_</span>
+<span class="sd">- Bengali</span>
+<span class="sd">- Devanagari</span>
+<span class="sd">- Gujarati</span>
+<span class="sd">- Kannada</span>
+<span class="sd">- Malayalam</span>
+<span class="sd">- Telugu</span>
+<span class="sd">- Tamil</span>
+<span class="sd">- Oriya</span>
+<span class="sd">- Gurmukhi/ Punjabi/ Panjabi</span>
 
 <span class="sd">and the following romanizations:</span>
 
@@ -94,58 +94,37 @@
 <span class="c1">#: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered</span>
 <span class="c1">#: as `ব`.</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">indic_transliteration.sanscript</span> <span class="k">import</span> <span class="n">schemes</span>
+<span class="kn">from</span> <span class="nn">indic_transliteration.sanscript.schemes</span> <span class="k">import</span> <span class="n">Scheme</span>
+<span class="kn">from</span> <span class="nn">indic_transliteration.sanscript.schemes</span> <span class="k">import</span> <span class="n">roman</span>
+<span class="kn">from</span> <span class="nn">indic_transliteration.sanscript.schemes</span> <span class="k">import</span> <span class="n">brahmi</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">lru_cache</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">backports.functools_lru_cache</span> <span class="k">import</span> <span class="n">lru_cache</span>
 
-<span class="c1"># Brahmi schemes</span>
+<span class="c1"># These variables are replicated here for backward compatibility.</span>
 <span class="c1"># -------------</span>
-<span class="n">BENGALI</span> <span class="o">=</span> <span class="s1">&#39;bengali&#39;</span>
-<span class="n">DEVANAGARI</span> <span class="o">=</span> <span class="s1">&#39;devanagari&#39;</span>
-<span class="n">GUJARATI</span> <span class="o">=</span> <span class="s1">&#39;gujarati&#39;</span>
-<span class="n">GURMUKHI</span> <span class="o">=</span> <span class="s1">&#39;gurmukhi&#39;</span>
-<span class="n">KANNADA</span> <span class="o">=</span> <span class="s1">&#39;kannada&#39;</span>
-<span class="n">MALAYALAM</span> <span class="o">=</span> <span class="s1">&#39;malayalam&#39;</span>
-<span class="n">ORIYA</span> <span class="o">=</span> <span class="s1">&#39;oriya&#39;</span>
-<span class="n">TAMIL</span> <span class="o">=</span> <span class="s1">&#39;tamil&#39;</span>
-<span class="n">TELUGU</span> <span class="o">=</span> <span class="s1">&#39;telugu&#39;</span>
-
-<span class="c1"># Roman schemes</span>
-<span class="c1"># -------------</span>
-<span class="n">HK</span> <span class="o">=</span> <span class="s1">&#39;hk&#39;</span>
-<span class="n">IAST</span> <span class="o">=</span> <span class="s1">&#39;iast&#39;</span>
-<span class="n">ITRANS</span> <span class="o">=</span> <span class="s1">&#39;itrans&#39;</span>
-<span class="n">OPTITRANS</span> <span class="o">=</span> <span class="s1">&#39;optitrans&#39;</span>
-<span class="n">KOLKATA</span> <span class="o">=</span> <span class="s1">&#39;kolkata&#39;</span>
-<span class="n">SLP1</span> <span class="o">=</span> <span class="s1">&#39;slp1&#39;</span>
-<span class="n">VELTHUIS</span> <span class="o">=</span> <span class="s1">&#39;velthuis&#39;</span>
-<span class="n">WX</span> <span class="o">=</span> <span class="s1">&#39;wx&#39;</span>
+<span class="n">BENGALI</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">BENGALI</span>
+<span class="n">DEVANAGARI</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">DEVANAGARI</span>
+<span class="n">GUJARATI</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">GUJARATI</span>
+<span class="n">GURMUKHI</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">GURMUKHI</span>
+<span class="n">KANNADA</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">KANNADA</span>
+<span class="n">MALAYALAM</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">MALAYALAM</span>
+<span class="n">ORIYA</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">ORIYA</span>
+<span class="n">TAMIL</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">TAMIL</span>
+<span class="n">TELUGU</span> <span class="o">=</span> <span class="n">brahmi</span><span class="o">.</span><span class="n">TELUGU</span>
+<span class="n">HK</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">HK</span>
+<span class="n">IAST</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">IAST</span>
+<span class="n">ITRANS</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">ITRANS</span>
+<span class="n">OPTITRANS</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">OPTITRANS</span>
+<span class="n">KOLKATA</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">KOLKATA</span>
+<span class="n">SLP1</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">SLP1</span>
+<span class="n">VELTHUIS</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">VELTHUIS</span>
+<span class="n">WX</span> <span class="o">=</span> <span class="n">roman</span><span class="o">.</span><span class="n">WX</span>
 
 <span class="n">SCHEMES</span> <span class="o">=</span> <span class="p">{}</span>
-
-
-<div class="viewcode-block" id="Scheme"><a class="viewcode-back" href="../../indic_transliteration_sanscript.html#indic_transliteration.sanscript.Scheme">[docs]</a><span class="k">class</span> <span class="nc">Scheme</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;Represents all of the data associated with a given scheme. In addition</span>
-<span class="sd">  to storing whether or not a scheme is roman, :class:`Scheme` partitions</span>
-<span class="sd">  a scheme&#39;s characters into important functional groups.</span>
-
-<span class="sd">  :class:`Scheme` is just a subclass of :class:`dict`.</span>
-
-<span class="sd">  :param data: a :class:`dict` of initial values.</span>
-<span class="sd">  :param synonym_map: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -&gt; [&#39;.n&#39;, .&#39;m&#39;] in ITRANS.</span>
-<span class="sd">  :param is_roman: `True` if the scheme is a romanization and `False`</span>
-<span class="sd">                   otherwise.</span>
-<span class="sd">  &quot;&quot;&quot;</span>
-
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">synonym_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_roman</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="nb">super</span><span class="p">(</span><span class="n">Scheme</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span> <span class="ow">or</span> <span class="p">{})</span>
-    <span class="k">if</span> <span class="n">synonym_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="n">synonym_map</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">synonym_map</span> <span class="o">=</span> <span class="n">synonym_map</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">is_roman</span> <span class="o">=</span> <span class="n">is_roman</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span></div>
 
 
 <div class="viewcode-block" id="SchemeMap"><a class="viewcode-back" href="../../indic_transliteration_sanscript.html#indic_transliteration.sanscript.SchemeMap">[docs]</a><span class="k">class</span> <span class="nc">SchemeMap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -217,15 +196,19 @@
 
     <span class="k">if</span> <span class="n">to_scheme</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">OPTITRANS</span><span class="p">:</span>
       <span class="n">inv_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">consonants</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">from_scheme</span><span class="p">[</span><span class="s1">&#39;virama&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">from_scheme_virama</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="n">from_scheme_virama</span> <span class="o">=</span> <span class="n">from_scheme</span><span class="p">[</span><span class="s1">&#39;virama&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
       <span class="n">conjunct_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">]:</span> <span class="s2">&quot;nk&quot;</span><span class="p">,</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;kh&quot;</span><span class="p">]:</span> <span class="s2">&quot;nkh&quot;</span><span class="p">,</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;g&quot;</span><span class="p">]:</span> <span class="s2">&quot;ng&quot;</span><span class="p">,</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;gh&quot;</span><span class="p">]:</span> <span class="s2">&quot;ngh&quot;</span><span class="p">,</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;ch&quot;</span><span class="p">]:</span> <span class="s2">&quot;nch&quot;</span><span class="p">,</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;Ch&quot;</span><span class="p">]:</span> <span class="s2">&quot;nCh&quot;</span><span class="p">,</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;j&quot;</span><span class="p">]:</span> <span class="s2">&quot;nj&quot;</span><span class="p">,</span>
-        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;jh&quot;</span><span class="p">]:</span> <span class="s2">&quot;njh&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">]:</span> <span class="s2">&quot;nk&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;kh&quot;</span><span class="p">]:</span> <span class="s2">&quot;nkh&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;g&quot;</span><span class="p">]:</span> <span class="s2">&quot;ng&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~N&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;gh&quot;</span><span class="p">]:</span> <span class="s2">&quot;ngh&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;ch&quot;</span><span class="p">]:</span> <span class="s2">&quot;nch&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;Ch&quot;</span><span class="p">]:</span> <span class="s2">&quot;nCh&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;j&quot;</span><span class="p">]:</span> <span class="s2">&quot;nj&quot;</span><span class="p">,</span>
+        <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;~n&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">from_scheme_virama</span> <span class="o">+</span> <span class="n">inv_map</span><span class="p">[</span><span class="s2">&quot;jh&quot;</span><span class="p">]:</span> <span class="s2">&quot;njh&quot;</span><span class="p">,</span>
       <span class="p">}</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">consonants</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">conjunct_map</span><span class="p">)</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">non_marks_viraama</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">conjunct_map</span><span class="p">)</span>
@@ -355,29 +338,70 @@
   <span class="n">consonants</span> <span class="o">=</span> <span class="n">scheme_map</span><span class="o">.</span><span class="n">consonants</span>
   <span class="n">non_marks_viraama</span> <span class="o">=</span> <span class="n">scheme_map</span><span class="o">.</span><span class="n">non_marks_viraama</span>
   <span class="n">to_roman</span> <span class="o">=</span> <span class="n">scheme_map</span><span class="o">.</span><span class="n">to_scheme</span><span class="o">.</span><span class="n">is_roman</span>
+  <span class="n">max_key_length_from_scheme</span> <span class="o">=</span> <span class="n">scheme_map</span><span class="o">.</span><span class="n">max_key_length_from_scheme</span>
 
   <span class="n">buf</span> <span class="o">=</span> <span class="p">[]</span>
-  <span class="n">had_consonant</span> <span class="o">=</span> <span class="kc">False</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">to_roman_had_consonant</span> <span class="o">=</span> <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
   <span class="n">append</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">append</span>
+  <span class="c1"># logging.debug(pprint.pformat(scheme_map.consonants))</span>
 
-  <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">marks</span><span class="p">:</span>
-      <span class="n">append</span><span class="p">(</span><span class="n">marks</span><span class="p">[</span><span class="n">L</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">virama</span><span class="p">:</span>
-      <span class="n">append</span><span class="p">(</span><span class="n">virama</span><span class="p">[</span><span class="n">L</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="k">if</span> <span class="n">had_consonant</span><span class="p">:</span>
-        <span class="n">append</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-      <span class="n">append</span><span class="p">(</span><span class="n">non_marks_viraama</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
-    <span class="n">had_consonant</span> <span class="o">=</span> <span class="n">to_roman</span> <span class="ow">and</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">consonants</span>
+  <span class="c1"># We dont just translate each brAhmic character one after another in order to prefer concise transliterations when possible - for example ज्ञ -&gt; jn in optitrans rather than j~n.</span>
+  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1"># The longest token in the source scheme has length `max_key_length_from_scheme`. Iterate</span>
+    <span class="c1"># over `data` while taking `max_key_length_from_scheme` characters at a time. If we don`t</span>
+    <span class="c1"># find the character group in our scheme map, lop off a character and</span>
+    <span class="c1"># try again.</span>
+    <span class="c1">#</span>
+    <span class="c1"># If we&#39;ve finished reading through `data`, then `token` will be empty</span>
+    <span class="c1"># and the loop below will be skipped.</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">max_key_length_from_scheme</span><span class="p">]</span>
 
-  <span class="k">if</span> <span class="n">had_consonant</span><span class="p">:</span>
+    <span class="k">while</span> <span class="n">token</span><span class="p">:</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">marks</span><span class="p">:</span>
+          <span class="n">append</span><span class="p">(</span><span class="n">marks</span><span class="p">[</span><span class="n">token</span><span class="p">])</span>
+          <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">virama</span><span class="p">:</span>
+          <span class="n">append</span><span class="p">(</span><span class="n">virama</span><span class="p">[</span><span class="n">token</span><span class="p">])</span>
+          <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">to_roman_had_consonant</span><span class="p">:</span>
+            <span class="n">append</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+          <span class="n">append</span><span class="p">(</span><span class="n">non_marks_viraama</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">token</span><span class="p">))</span>
+          <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">non_marks_viraama</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">to_roman_had_consonant</span><span class="p">:</span>
+            <span class="n">append</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+          <span class="n">append</span><span class="p">(</span><span class="n">non_marks_viraama</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+          <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+
+      <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+        <span class="n">to_roman_had_consonant</span> <span class="o">=</span> <span class="n">to_roman</span> <span class="ow">and</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">consonants</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="k">break</span>        
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Continuing the outer while loop.</span>
+    <span class="c1"># We&#39;ve exhausted the token; this must be some other character. Due to</span>
+    <span class="c1"># the implicit &#39;a&#39;, we must explicitly end any lingering consonants</span>
+    <span class="c1"># before we can handle the current token.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">to_roman_had_consonant</span><span class="p">:</span>
+        <span class="n">append</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">virama</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+      <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">to_roman_had_consonant</span> <span class="o">=</span> <span class="kc">False</span>
+      <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+
+  <span class="k">if</span> <span class="n">to_roman_had_consonant</span><span class="p">:</span>
     <span class="n">append</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-  <span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
-  <span class="k">if</span> <span class="n">scheme_map</span><span class="o">.</span><span class="n">to_scheme</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">OPTITRANS</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">regex</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;~[Nn]([kKgGcC])&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;n\1&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-  <span class="k">return</span> <span class="n">output</span>
+  <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
 
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_get_scheme_map</span><span class="p">(</span><span class="n">input_encoding</span><span class="p">,</span> <span class="n">output_encoding</span><span class="p">):</span>
@@ -420,6 +444,9 @@
   <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">scheme_map</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="get_standard_form"><a class="viewcode-back" href="../../indic_transliteration_sanscript.html#indic_transliteration.sanscript.get_standard_form">[docs]</a><span class="k">def</span> <span class="nf">get_standard_form</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">scheme_name</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">transliterate</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">transliterate</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">_from</span><span class="o">=</span><span class="n">scheme_name</span><span class="p">,</span> <span class="n">_to</span><span class="o">=</span><span class="n">DEVANAGARI</span><span class="p">),</span> <span class="n">_from</span><span class="o">=</span><span class="n">DEVANAGARI</span><span class="p">,</span> <span class="n">_to</span><span class="o">=</span><span class="n">scheme_name</span><span class="p">)</span></div>
+
 <span class="k">def</span> <span class="nf">_setup</span><span class="p">():</span>
   <span class="sd">&quot;&quot;&quot;Add a variety of default schemes.&quot;&quot;&quot;</span>
   <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">split</span>
@@ -427,7 +454,16 @@
     <span class="c1"># noinspection PyUnresolvedReferences</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">unicode</span><span class="o">.</span><span class="n">split</span>
 
+  <span class="c1">## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.</span>
   <span class="n">SCHEMES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="n">HK</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">HkScheme</span><span class="p">(),</span>
+    <span class="n">VELTHUIS</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">VelthiusScheme</span><span class="p">(),</span>
+    <span class="n">OPTITRANS</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">OptitransScheme</span><span class="p">(),</span>
+    <span class="n">ITRANS</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">ItransScheme</span><span class="p">(),</span>
+    <span class="n">IAST</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">IastScheme</span><span class="p">(),</span>
+    <span class="n">KOLKATA</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">IastScheme</span><span class="p">(</span><span class="n">kolkata_variant</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">SLP1</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">Slp1Scheme</span><span class="p">(),</span>
+    <span class="n">WX</span><span class="p">:</span> <span class="n">roman</span><span class="o">.</span><span class="n">WxScheme</span><span class="p">(),</span>
     <span class="n">BENGALI</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
       <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ&quot;&quot;&quot;</span><span class="p">),</span>
       <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;া ি ী ু ূ ৃ ৄ ৢ ৣ ে ৈ ো ৌ&quot;&quot;&quot;</span><span class="p">),</span>
@@ -505,142 +541,10 @@
 <span class="s2">                            ਲ਼ ਕ੍ਸ਼ ਜ੍ਞ</span>
 <span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
       <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       ॐ ऽ । ॥</span>
+<span class="s2">                       ੴ ఽ । ॥</span>
 <span class="s2">                       ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯</span>
 <span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
     <span class="p">},</span> <span class="n">is_roman</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">GURMUKHI</span><span class="p">),</span>
-    <span class="n">HK</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a A i I u U R RR lR lRR e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;A i I u U R RR lR lRR e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;M H ~&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k kh g gh G</span>
-<span class="s2">                            c ch j jh J</span>
-<span class="s2">                            T Th D Dh N</span>
-<span class="s2">                            t th d dh n</span>
-<span class="s2">                            p ph b bh m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            z S s h</span>
-<span class="s2">                            L kS jJ</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       OM &#39; | ||</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">HK</span><span class="p">,</span> <span class="n">synonym_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;|&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">],</span> <span class="s2">&quot;||&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;..&quot;</span><span class="p">]}),</span>
-    <span class="n">VELTHUIS</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a aa i ii u uu .r .rr .l .ll e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;aa i ii u uu .r .rr .l .ll e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;.m .h /&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k kh g gh &quot;n</span>
-<span class="s2">                            c ch j jh ~n</span>
-<span class="s2">                            .t .th .d .dh .n</span>
-<span class="s2">                            t th d dh n</span>
-<span class="s2">                            p ph b bh m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            &quot;s .s s h</span>
-<span class="s2">                            L k.s j~n</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       O .a | ||</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">VELTHUIS</span><span class="p">),</span>
-    <span class="n">OPTITRANS</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a A i I u U R RR LLi LLI e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;A i I u U R RR LLi LLI e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;M H .N&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k kh g gh ~N</span>
-<span class="s2">                            ch Ch j jh ~n</span>
-<span class="s2">                            T Th D Dh N</span>
-<span class="s2">                            t th d dh n</span>
-<span class="s2">                            p ph b bh m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            sh Sh s h</span>
-<span class="s2">                            L kSh jn</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       OM .a | ||</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">synonym_map</span><span class="o">=</span><span class="p">{</span>
-      <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;aa&quot;</span><span class="p">],</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ii&quot;</span><span class="p">],</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;uu&quot;</span><span class="p">],</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">],</span> <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;O&quot;</span><span class="p">],</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;R^i&quot;</span><span class="p">,</span> <span class="s2">&quot;RRi&quot;</span><span class="p">],</span> <span class="s2">&quot;RR&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;R^I&quot;</span><span class="p">,</span> <span class="s2">&quot;RRI&quot;</span><span class="p">],</span> <span class="s2">&quot;LLi&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;L^i&quot;</span><span class="p">],</span> <span class="s2">&quot;LLI&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;L^I&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;M&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.m&quot;</span><span class="p">,</span> <span class="s2">&quot;.n&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;kh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;K&quot;</span><span class="p">],</span> <span class="s2">&quot;gh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;ch&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;Ch&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="s2">&quot;jh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;J&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;ph&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;P&quot;</span><span class="p">],</span> <span class="s2">&quot;bh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span> <span class="s2">&quot;Sh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">],</span> <span class="s2">&quot;kSh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;kS&quot;</span><span class="p">,</span> <span class="s2">&quot;ksh&quot;</span><span class="p">],</span> <span class="s2">&quot;jn&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;GY&quot;</span><span class="p">,</span> <span class="s2">&quot;jJN&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;|&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">],</span> <span class="s2">&quot;||&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;..&quot;</span><span class="p">]</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">OPTITRANS</span><span class="p">),</span>
-    <span class="n">ITRANS</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a A i I u U RRi RRI LLi LLI e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;A i I u U RRi RRI LLi LLI e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;M H .N&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k kh g gh ~N</span>
-<span class="s2">                            ch Ch j jh ~n</span>
-<span class="s2">                            T Th D Dh N</span>
-<span class="s2">                            t th d dh n</span>
-<span class="s2">                            p ph b bh m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            sh Sh s h</span>
-<span class="s2">                            L kSh j~n</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       OM .a | ||</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">synonym_map</span><span class="o">=</span><span class="p">{</span>
-      <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;aa&quot;</span><span class="p">],</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ii&quot;</span><span class="p">],</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;uu&quot;</span><span class="p">],</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">],</span> <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;O&quot;</span><span class="p">],</span> <span class="s2">&quot;RRi&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;R^i&quot;</span><span class="p">],</span> <span class="s2">&quot;RRI&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;R^I&quot;</span><span class="p">],</span> <span class="s2">&quot;LLi&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;L^i&quot;</span><span class="p">],</span> <span class="s2">&quot;LLI&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;L^I&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;M&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.m&quot;</span><span class="p">,</span> <span class="s2">&quot;.n&quot;</span><span class="p">],</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">],</span> <span class="s2">&quot;kSh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;kS&quot;</span><span class="p">],</span> <span class="s2">&quot;j~n&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;GY&quot;</span><span class="p">,</span> <span class="s2">&quot;jJN&quot;</span><span class="p">],</span>
-      <span class="s2">&quot;||&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;..&quot;</span><span class="p">],</span> <span class="s2">&quot;|&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">],</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">ITRANS</span><span class="p">),</span>
-    <span class="n">IAST</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ā i ī u ū ṛ ṝ ḷ ḹ e ai o au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;ṃ ḥ m̐&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k kh g gh ṅ</span>
-<span class="s2">                            c ch j jh ñ</span>
-<span class="s2">                            ṭ ṭh ḍ ḍh ṇ</span>
-<span class="s2">                            t th d dh n</span>
-<span class="s2">                            p ph b bh m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            ś ṣ s h</span>
-<span class="s2">                            ḻ kṣ jñ</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       oṃ &#39; । ॥</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">IAST</span><span class="p">),</span>
-    <span class="n">KOLKATA</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;ṃ ḥ m̐&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k kh g gh ṅ</span>
-<span class="s2">                            c ch j jh ñ</span>
-<span class="s2">                            ṭ ṭh ḍ ḍh ṇ</span>
-<span class="s2">                            t th d dh n</span>
-<span class="s2">                            p ph b bh m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            ś ṣ s h</span>
-<span class="s2">                            ḻ kṣ jñ</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       oṃ &#39; । ॥</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">IAST</span><span class="p">),</span>
     <span class="n">KANNADA</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
       <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ&quot;&quot;&quot;</span><span class="p">),</span>
       <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ&quot;&quot;&quot;</span><span class="p">),</span>
@@ -702,46 +606,6 @@
 <span class="s2">                       ୦ ୧ ୨ ୩ ୪ ୫ ୬ ୭ ୮ ୯</span>
 <span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
     <span class="p">},</span> <span class="n">is_roman</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">ORIYA</span><span class="p">),</span>
-    <span class="n">SLP1</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a A i I u U f F x X e E o O&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;A i I u U f F x X e E o O&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;M H ~&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k K g G N</span>
-<span class="s2">                            c C j J Y</span>
-<span class="s2">                            w W q Q R</span>
-<span class="s2">                            t T d D n</span>
-<span class="s2">                            p P b B m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            S z s h</span>
-<span class="s2">                            L kz jY</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       oM &#39; . ..</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">SLP1</span><span class="p">),</span>
-    <span class="n">WX</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
-      <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;a A i I u U q Q L ḹ e E o O&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;A i I u U q Q L ḹ e E o O&quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;virama&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;yogavaahas&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s1">&#39;M H ~&#39;</span><span class="p">),</span>
-      <span class="s1">&#39;consonants&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                            k K g G f</span>
-<span class="s2">                            c C j J F</span>
-<span class="s2">                            t T d D N</span>
-<span class="s2">                            w W x X n</span>
-<span class="s2">                            p P b B m</span>
-<span class="s2">                            y r l v</span>
-<span class="s2">                            S R s h</span>
-<span class="s2">                            ḻ kR jF</span>
-<span class="s2">                            &quot;&quot;&quot;</span><span class="p">),</span>
-      <span class="s1">&#39;symbols&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                       oM &#39; . ..</span>
-<span class="s2">                       0 1 2 3 4 5 6 7 8 9</span>
-<span class="s2">                       &quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="n">WX</span><span class="p">),</span>
     <span class="n">TAMIL</span><span class="p">:</span> <span class="n">Scheme</span><span class="p">({</span>
       <span class="s1">&#39;vowels&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ ஏ ஐ ஓ ஔ&quot;&quot;&quot;</span><span class="p">),</span>
       <span class="s1">&#39;marks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ா&#39;</span><span class="p">,</span> <span class="s1">&#39;ி&#39;</span><span class="p">,</span> <span class="s1">&#39;ீ&#39;</span><span class="p">,</span> <span class="s1">&#39;ு&#39;</span><span class="p">,</span> <span class="s1">&#39;ூ&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>

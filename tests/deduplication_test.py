@@ -34,14 +34,3 @@ def test_non_duplicates(non_duplicates):
   keys = set(map(get_approx_deduplicating_key, non_duplicates))
   assert len(keys) > 1, str(non_duplicates) + "-----" + str(keys)
 
-
-def test_fix_lazy_anusvaara_itrans():
-  assert deduplication.fix_lazy_anusvaara_itrans("shaMkara") == "sha~Nkara"
-  assert deduplication.fix_lazy_anusvaara_itrans("saMchara") == "sa~nchara"
-  assert deduplication.fix_lazy_anusvaara_itrans("ShaMDa") == "ShaNDa"
-  assert deduplication.fix_lazy_anusvaara_itrans("shAMta") == "shAnta"
-  assert deduplication.fix_lazy_anusvaara_itrans("sAMba") == "sAmba"
-  assert deduplication.fix_lazy_anusvaara_itrans("saMvara") == "sav.Nvara"
-  assert deduplication.fix_lazy_anusvaara_itrans("saMyukta") == "say.Nyukta"
-  assert deduplication.fix_lazy_anusvaara_itrans("saMlagna") == "sal.Nlagna"
-  assert deduplication.fix_lazy_anusvaara_itrans("taM jitvA") == "ta~n jitvA"

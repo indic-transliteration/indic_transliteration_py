@@ -88,7 +88,7 @@ DATA = {
     'symbols': 'OM | || 0 1 2 3 4 5 6 7 8 9',
     'putra': 'putra',
     'naraIti': 'nara iti',
-    'sentence': 'dharmakShetre kurukShetre samavetA yuyutsavaH |'
+    'sentence': 'dharmaxetre kuruxetre samavetA yuyutsavaH |'
   },
   sanscript.VELTHUIS: {
     'vowels': 'a aa i ii u uu .r .rr .l .ll e ai o au',

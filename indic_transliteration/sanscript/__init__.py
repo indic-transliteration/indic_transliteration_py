@@ -7,15 +7,15 @@ Transliteration functions for Sanskrit. The most important function is
 
 By default, the module supports the following scripts:
 
-- Bengali_
-- Devanagari_
-- Gujarati_
-- Kannada_
-- Malayalam_
-- Telugu_
-- Tamil_
-- Oriya_
-- Gurmukhi/ Punjabi/ Panjabi_
+- Bengali
+- Devanagari
+- Gujarati
+- Kannada
+- Malayalam
+- Telugu
+- Tamil
+- Oriya
+- Gurmukhi/ Punjabi/ Panjabi
 
 and the following romanizations:
 
@@ -59,60 +59,37 @@ from __future__ import unicode_literals
 #: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
 #: as `ব`.
 import sys
+from indic_transliteration.sanscript import schemes
+from indic_transliteration.sanscript.schemes import Scheme
+from indic_transliteration.sanscript.schemes import roman
+from indic_transliteration.sanscript.schemes import brahmi
 
 try:
     from functools import lru_cache
 except ImportError:
     from backports.functools_lru_cache import lru_cache
 
-# Brahmi schemes
+# These variables are replicated here for backward compatibility.
 # -------------
-BENGALI = 'bengali'
-DEVANAGARI = 'devanagari'
-GUJARATI = 'gujarati'
-GURMUKHI = 'gurmukhi'
-KANNADA = 'kannada'
-MALAYALAM = 'malayalam'
-ORIYA = 'oriya'
-TAMIL = 'tamil'
-TELUGU = 'telugu'
-
-# Roman schemes
-# -------------
-HK = 'hk'
-IAST = 'iast'
-ITRANS = 'itrans'
-
-"""Optitransv1 is described in https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1 . OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु)."""
-OPTITRANS = 'optitrans'
-KOLKATA = 'kolkata'
-SLP1 = 'slp1'
-VELTHUIS = 'velthuis'
-WX = 'wx'
+BENGALI = brahmi.BENGALI
+DEVANAGARI = brahmi.DEVANAGARI
+GUJARATI = brahmi.GUJARATI
+GURMUKHI = brahmi.GURMUKHI
+KANNADA = brahmi.KANNADA
+MALAYALAM = brahmi.MALAYALAM
+ORIYA = brahmi.ORIYA
+TAMIL = brahmi.TAMIL
+TELUGU = brahmi.TELUGU
+HK = roman.HK
+IAST = roman.IAST
+ITRANS = roman.ITRANS
+OPTITRANS = roman.OPTITRANS
+KOLKATA = roman.KOLKATA
+SLP1 = roman.SLP1
+VELTHUIS = roman.VELTHUIS
+WX = roman.WX
 
 SCHEMES = {}
-
-
-class Scheme(dict):
-  """Represents all of the data associated with a given scheme. In addition
-  to storing whether or not a scheme is roman, :class:`Scheme` partitions
-  a scheme's characters into important functional groups.
-
-  :class:`Scheme` is just a subclass of :class:`dict`.
-
-  :param data: a :class:`dict` of initial values. Note that the particular characters present here are also assumed to be the _preferred_ transliterations when transliterating to this scheme. 
-  :param synonym_map: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS. This synonym_map is not used in transliterating to this scheme.
-  :param is_roman: `True` if the scheme is a romanization and `False`
-                   otherwise.
-  """
-
-  def __init__(self, data=None, synonym_map=None, is_roman=True, name=None):
-    super(Scheme, self).__init__(data or {})
-    if synonym_map is None:
-      synonym_map = {}
-    self.synonym_map = synonym_map
-    self.is_roman = is_roman
-    self.name = name
 
 
 class SchemeMap(object):
@@ -432,6 +409,9 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   return func(data, scheme_map, **options)
 
 
+def get_standard_form(data, scheme_name):
+  return transliterate(data=transliterate(data=data, _from=scheme_name, _to=DEVANAGARI), _from=DEVANAGARI, _to=scheme_name)
+
 def _setup():
   """Add a variety of default schemes."""
   s = str.split
@@ -441,6 +421,14 @@ def _setup():
 
   ## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.
   SCHEMES.update({
+    HK: roman.HkScheme(),
+    VELTHUIS: roman.VelthiusScheme(),
+    OPTITRANS: roman.OptitransScheme(),
+    ITRANS: roman.ItransScheme(),
+    IAST: roman.IastScheme(),
+    KOLKATA: roman.IastScheme(kolkata_variant=True),
+    SLP1: roman.Slp1Scheme(),
+    WX: roman.WxScheme(),
     BENGALI: Scheme({
       'vowels': s("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
       'marks': s("""া ি ী ু ূ ৃ ৄ ৢ ৣ ে ৈ ো ৌ"""),
@@ -522,139 +510,6 @@ def _setup():
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
     }, is_roman=False, name=GURMUKHI),
-    HK: Scheme({
-      'vowels': s("""a A i I u U R RR lR lRR e ai o au"""),
-      'marks': s("""A i I u U R RR lR lRR e ai o au"""),
-      'virama': [''],
-      'yogavaahas': s('M H ~'),
-      'consonants': s("""
-                            k kh g gh G
-                            c ch j jh J
-                            T Th D Dh N
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            z S s h
-                            L kS jJ
-                            """),
-      'symbols': s("""
-                       OM ' | ||
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, name=HK, synonym_map={"|": ["."], "||": [".."]}),
-    VELTHUIS: Scheme({
-      'vowels': s("""a aa i ii u uu .r .rr .l .ll e ai o au"""),
-      'marks': s("""aa i ii u uu .r .rr .l .ll e ai o au"""),
-      'virama': [''],
-      'yogavaahas': s('.m .h /'),
-      'consonants': s("""
-                            k kh g gh "n
-                            c ch j jh ~n
-                            .t .th .d .dh .n
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            "s .s s h
-                            L k.s j~n
-                            """),
-      'symbols': s("""
-                       O .a | ||
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, name=VELTHUIS),
-    OPTITRANS: Scheme({
-      'vowels': s("""a A i I u U R RR LLi LLI e ai o au"""),
-      'marks': s("""A i I u U R RR LLi LLI e ai o au"""),
-      'virama': [''],
-      'yogavaahas': s('M H .N'),
-      'consonants': s("""
-                            k kh g gh ~N
-                            ch Ch j jh ~n
-                            T Th D Dh N
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            sh Sh s h
-                            L x jn
-                            """),
-      # All those special conversions like nk -> ङ्क् are hard-coded when this scheme definition is consumed to produce a scheme map. Hence, they don't show up here.
-      'symbols': s("""
-                       OM .a | ||
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, synonym_map={
-      "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "R": ["R^i", "RRi"], "RR": ["R^I", "RRI"], "LLi": ["L^i"], "LLI": ["L^I"],
-      "M": [".m", ".n"],
-      "kh": ["K"], "gh": ["G"],
-      "ch": ["c"], "Ch": ["C"], "jh": ["J"],
-      "ph": ["P"], "bh": ["B"], "Sh": ["S"],
-      "v": ["w"], "x": ["kSh", "kS", "ksh"], "jn": ["GY", "jJN"],
-      "|": ["."], "||": [".."]
-    }, name=OPTITRANS),
-    ITRANS: Scheme({
-      'vowels': s("""a A i I u U RRi RRI LLi LLI e ai o au"""),
-      'marks': s("""A i I u U RRi RRI LLi LLI e ai o au"""),
-      'virama': [''],
-      'yogavaahas': s('M H .N'),
-      'consonants': s("""
-                            k kh g gh ~N
-                            ch Ch j jh ~n
-                            T Th D Dh N
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            sh Sh s h
-                            L kSh j~n
-                            """),
-      'symbols': s("""
-                       OM .a | ||
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, synonym_map={
-      "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
-      "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY", "jJN"],
-      "||": [".."], "|": ["."],
-    }, name=ITRANS),
-    IAST: Scheme({
-      'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"""),
-      'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"""),
-      'virama': [''],
-      'yogavaahas': s('ṃ ḥ m̐'),
-      'consonants': s("""
-                            k kh g gh ṅ
-                            c ch j jh ñ
-                            ṭ ṭh ḍ ḍh ṇ
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            ś ṣ s h
-                            ḻ kṣ jñ
-                            """),
-      'symbols': s("""
-                       oṃ ' । ॥
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, name=IAST),
-    KOLKATA: Scheme({
-      'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au"""),
-      'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au"""),
-      'virama': [''],
-      'yogavaahas': s('ṃ ḥ m̐'),
-      'consonants': s("""
-                            k kh g gh ṅ
-                            c ch j jh ñ
-                            ṭ ṭh ḍ ḍh ṇ
-                            t th d dh n
-                            p ph b bh m
-                            y r l v
-                            ś ṣ s h
-                            ḻ kṣ jñ
-                            """),
-      'symbols': s("""
-                       oṃ ' । ॥
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, name=IAST),
     KANNADA: Scheme({
       'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ"""),
       'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ"""),
@@ -716,46 +571,6 @@ def _setup():
                        ୦ ୧ ୨ ୩ ୪ ୫ ୬ ୭ ୮ ୯
                        """)
     }, is_roman=False, name=ORIYA),
-    SLP1: Scheme({
-      'vowels': s("""a A i I u U f F x X e E o O"""),
-      'marks': s("""A i I u U f F x X e E o O"""),
-      'virama': [''],
-      'yogavaahas': s('M H ~'),
-      'consonants': s("""
-                            k K g G N
-                            c C j J Y
-                            w W q Q R
-                            t T d D n
-                            p P b B m
-                            y r l v
-                            S z s h
-                            L kz jY
-                            """),
-      'symbols': s("""
-                       oM ' . ..
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, name=SLP1),
-    WX: Scheme({
-      'vowels': s("""a A i I u U q Q L ḹ e E o O"""),
-      'marks': s("""A i I u U q Q L ḹ e E o O"""),
-      'virama': [''],
-      'yogavaahas': s('M H ~'),
-      'consonants': s("""
-                            k K g G f
-                            c C j J F
-                            t T d D N
-                            w W x X n
-                            p P b B m
-                            y r l v
-                            S R s h
-                            ḻ kR jF
-                            """),
-      'symbols': s("""
-                       oM ' . ..
-                       0 1 2 3 4 5 6 7 8 9
-                       """)
-    }, name=WX),
     TAMIL: Scheme({
       'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ ஏ ஐ ஓ ஔ"""),
       'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '', '',

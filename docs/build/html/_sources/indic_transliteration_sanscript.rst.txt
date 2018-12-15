@@ -6,3 +6,9 @@ indic_transliteration.sanscript
 	:undoc-members:
 		:show-inheritance:
 
+Submodules
+-------------
+.. toctree::
+	:maxdepth: 5
+
+	indic_transliteration_sanscript_schemes

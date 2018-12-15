@@ -5,6 +5,8 @@ import logging
 from indic_transliteration import sanscript
 
 # Remove all handlers associated with the root logger object.
+from indic_transliteration.sanscript.schemes import roman
+
 for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)
 logging.basicConfig(
@@ -67,3 +69,19 @@ def test_optitrans_to_itrans():
 def test_itrans_to_optitrans():
     assert sanscript.transliterate("sha~Nkara", sanscript.ITRANS, sanscript.OPTITRANS) == "shankara"
     assert sanscript.transliterate("ma~njIra", sanscript.ITRANS, sanscript.OPTITRANS) == "manjIra"
+
+def test_optitrans_to_lay_indian():
+    assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("taM jitvA") == "tam jitva"
+    assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("kRShNa") == "krishna"
+
+
+def test_fix_lazy_anusvaara_itrans():
+    assert roman.ItransScheme.fix_lazy_anusvaara("shaMkara") == "sha~Nkara"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMchara") == "sa~nchara"
+    assert roman.ItransScheme.fix_lazy_anusvaara("ShaMDa") == "ShaNDa"
+    assert roman.ItransScheme.fix_lazy_anusvaara("shAMta") == "shAnta"
+    assert roman.ItransScheme.fix_lazy_anusvaara("sAMba") == "sAmba"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMvara") == "sav.Nvara"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMyukta") == "say.Nyukta"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMlagna") == "sal.Nlagna"
+    assert roman.ItransScheme.fix_lazy_anusvaara("taM jitvA") == "ta~n jitvA"

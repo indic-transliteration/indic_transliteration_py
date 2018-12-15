@@ -16,7 +16,7 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="indic_transliteration.xsanscript" href="indic_transliteration_xsanscript.html" />
+    <link rel="next" title="indic_transliteration.sanscript.schemes" href="indic_transliteration_sanscript_schemes.html" />
     <link rel="prev" title="indic_transliteration’s documentation" href="indic_transliteration.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -43,15 +43,15 @@
 </div>
 <p>By default, the module supports the following scripts:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Bengali_alphabet">Bengali</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Devanagari">Devanagari</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Gujarati_alphabet">Gujarati</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Kannada_alphabet">Kannada</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Malayalam_alphabet">Malayalam</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Telugu_alphabet">Telugu</a></li>
-<li><a href="#id1"><span class="problematic" id="id2">Tamil_</span></a></li>
-<li><a href="#id3"><span class="problematic" id="id4">Oriya_</span></a></li>
-<li>Gurmukhi/ Punjabi/ <a href="#id5"><span class="problematic" id="id6">Panjabi_</span></a></li>
+<li>Bengali</li>
+<li>Devanagari</li>
+<li>Gujarati</li>
+<li>Kannada</li>
+<li>Malayalam</li>
+<li>Telugu</li>
+<li>Tamil</li>
+<li>Oriya</li>
+<li>Gurmukhi/ Punjabi/ Panjabi</li>
 </ul>
 <p>and the following romanizations:</p>
 <ul class="simple">
@@ -83,32 +83,9 @@ keys are strings:</p>
 </tbody>
 </table>
 <dl class="class">
-<dt id="indic_transliteration.sanscript.Scheme">
-<em class="property">class </em><code class="descclassname">indic_transliteration.sanscript.</code><code class="descname">Scheme</code><span class="sig-paren">(</span><em>data=None</em>, <em>synonym_map=None</em>, <em>is_roman=True</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/indic_transliteration/sanscript.html#Scheme"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#indic_transliteration.sanscript.Scheme" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents all of the data associated with a given scheme. In addition
-to storing whether or not a scheme is roman, <a class="reference internal" href="#indic_transliteration.sanscript.Scheme" title="indic_transliteration.sanscript.Scheme"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scheme</span></code></a> partitions
-a scheme’s characters into important functional groups.</p>
-<p><a class="reference internal" href="#indic_transliteration.sanscript.Scheme" title="indic_transliteration.sanscript.Scheme"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scheme</span></code></a> is just a subclass of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> – a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of initial values.</li>
-<li><strong>synonym_map</strong> – A map from keys appearing in <cite>data</cite> to lists of symbols with equal meaning. For example: M -&gt; [‘.n’, .’m’] in ITRANS.</li>
-<li><strong>is_roman</strong> – <cite>True</cite> if the scheme is a romanization and <cite>False</cite>
-otherwise.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
 <dt id="indic_transliteration.sanscript.SchemeMap">
 <em class="property">class </em><code class="descclassname">indic_transliteration.sanscript.</code><code class="descname">SchemeMap</code><span class="sig-paren">(</span><em>from_scheme</em>, <em>to_scheme</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/indic_transliteration/sanscript.html#SchemeMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#indic_transliteration.sanscript.SchemeMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Maps one <a class="reference internal" href="#indic_transliteration.sanscript.Scheme" title="indic_transliteration.sanscript.Scheme"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scheme</span></code></a> to another. This class grabs the metadata and
+<dd><p>Maps one <code class="xref py py-class docutils literal notranslate"><span class="pre">Scheme</span></code> to another. This class grabs the metadata and
 character data required for <a class="reference internal" href="#indic_transliteration.sanscript.transliterate" title="indic_transliteration.sanscript.transliterate"><code class="xref py py-func docutils literal notranslate"><span class="pre">transliterate()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -123,6 +100,11 @@ character data required for <a class="reference internal" href="#indic_translite
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="function">
+<dt id="indic_transliteration.sanscript.get_standard_form">
+<code class="descclassname">indic_transliteration.sanscript.</code><code class="descname">get_standard_form</code><span class="sig-paren">(</span><em>data</em>, <em>scheme_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/indic_transliteration/sanscript.html#get_standard_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#indic_transliteration.sanscript.get_standard_form" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="indic_transliteration.sanscript.transliterate">
@@ -155,6 +137,21 @@ pre-computed <a class="reference internal" href="#indic_transliteration.sanscrip
 </table>
 </dd></dl>
 
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="indic_transliteration_sanscript_schemes.html">indic_transliteration.sanscript.schemes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="indic_transliteration_sanscript_schemes.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="indic_transliteration_sanscript_schemes_roman.html">indic_transliteration.sanscript.schemes.roman</a></li>
+<li class="toctree-l3"><a class="reference internal" href="indic_transliteration_sanscript_schemes_brahmi.html">indic_transliteration.sanscript.schemes.brahmi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -175,7 +172,13 @@ pre-computed <a class="reference internal" href="#indic_transliteration.sanscrip
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">indic_transliteration.sanscript</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">indic_transliteration.sanscript</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="indic_transliteration_sanscript_schemes.html">indic_transliteration.sanscript.schemes</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="indic_transliteration_xsanscript.html">indic_transliteration.xsanscript</a></li>
 <li class="toctree-l1"><a class="reference internal" href="indic_transliteration_detect.html">indic_transliteration.detect</a></li>
 <li class="toctree-l1"><a class="reference internal" href="indic_transliteration_deduplication.html">indic_transliteration.deduplication</a></li>
@@ -186,7 +189,7 @@ pre-computed <a class="reference internal" href="#indic_transliteration.sanscrip
 <ul>
   <li><a href="indic_transliteration.html">Documentation overview</a><ul>
       <li>Previous: <a href="indic_transliteration.html" title="previous chapter">indic_transliteration’s documentation</a></li>
-      <li>Next: <a href="indic_transliteration_xsanscript.html" title="next chapter">indic_transliteration.xsanscript</a></li>
+      <li>Next: <a href="indic_transliteration_sanscript_schemes.html" title="next chapter">indic_transliteration.sanscript.schemes</a></li>
   </ul></li>
 </ul>
 </div>

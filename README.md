@@ -38,11 +38,17 @@ In [6]: print(transliterate(data, scheme_map=scheme_map))
 
 ### Lazy anusvaara-s
 ```
-    assert deduplication.fix_lazy_anusvaara_itrans("shaMkara") == "sha~Nkara"
-    assert deduplication.fix_lazy_anusvaara_itrans("saMchara") == "sa~nchara"
-    assert deduplication.fix_lazy_anusvaara_itrans("saMvara") == "sav.Nvara"
-    assert deduplication.fix_lazy_anusvaara_itrans("saMyukta") == "say.Nyukta"
-    assert deduplication.fix_lazy_anusvaara_itrans("saMlagna") == "sal.Nlagna"
+    assert roman.ItransScheme.fix_lazy_anusvaara("shaMkara") == "sha~Nkara"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMchara") == "sa~nchara"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMvara") == "sav.Nvara"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMyukta") == "say.Nyukta"
+    assert roman.ItransScheme.fix_lazy_anusvaara("saMlagna") == "sal.Nlagna"
+```
+
+### Lay Indian search terms
+```
+    assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("taM jitvA") == "tam jitva"
+    assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("kRShNa") == "krishna"
 ```
 
 ## Dravidian language extension

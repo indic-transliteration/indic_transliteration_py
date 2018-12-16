@@ -506,7 +506,7 @@ def _setup():
                             ਲ਼ ਕ੍ਸ਼ ਜ੍ਞ
                             """),
       'symbols': s("""
-                       ੴ ఽ । ॥
+                       ੴ ऽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
     }, is_roman=False, name=GURMUKHI),

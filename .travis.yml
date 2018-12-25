@@ -4,13 +4,13 @@ python:
   - "3.6"
 install: pip install tox-travis
 dist: trusty
-addons:
-  chrome: stable
-#before_script:
-#  - wget http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
-#  - unzip chromedriver_linux64.zip -d
-#  /home/travis/virtualenv/python3.6.3/bin/
-#  - export CHROME_BIN=chromium-browser
+#addons:
+#  chrome: stable
+before_script:
+  - wget http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip -d
+  /home/travis/virtualenv/python3.6.3/bin/
+  - export CHROME_BIN=chromium-browser
 script: tox
 notifications:
   email:

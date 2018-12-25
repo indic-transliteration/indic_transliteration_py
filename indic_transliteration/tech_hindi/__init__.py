@@ -6,7 +6,7 @@ from splinter.browser import Browser
 class DVTTVedicConverter(object):
     def __init__(self):
         # We presume that you've installed chrome driver as per https://splinter.readthedocs.io/en/latest/drivers/chrome.html .
-        self.browser = Browser('chrome')
+        self.browser = Browser('chrome', headless=True)
         self.browser.visit('file://' + os.path.join(os.path.dirname(__file__), "data", 'DV-TTVedicNormal ==_ यूनिकोड परिवर्तित्र.html'))
         
     def convert(self, text):

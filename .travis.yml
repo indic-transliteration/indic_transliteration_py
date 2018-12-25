@@ -2,16 +2,21 @@ sudo: false
 language: python
 python:
   - "3.6"
-install: pip install tox-travis
 dist: trusty
-#addons:
-#  chrome: stable
-before_script:
-  - wget http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip -d
-  /home/travis/virtualenv/python3.6.3/bin/
-  - export CHROME_BIN=chromium-browser
-script: tox
+addons: # get google-chrome-stable
+  chrome: stable
+install: # Install ChromeDriver (64bits; replace 64 with 32 for 32bits).
+  - wget -N http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip -P ~/
+  - unzip ~/chromedriver_linux64.zip -d ~/
+  - rm ~/chromedriver_linux64.zip
+  - sudo mv -f ~/chromedriver /usr/local/share/
+  - sudo chmod +x /usr/local/share/chromedriver
+  - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+  - pip install tox travis
+script:
+  - whereis google-chrome-stable
+  - whereis chromedriver
+  - tox
 notifications:
   email:
     on_success: never # default: change

@@ -1,7 +1,7 @@
 sudo: false
 language: python
 python:
-  - "3.6"
+  - "3.7"
 dist: trusty
 addons: # get google-chrome-stable
   chrome: stable

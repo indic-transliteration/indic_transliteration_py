@@ -15,13 +15,19 @@ TAMIL = 'tamil'
 TELUGU = 'telugu'
 
 
-
 s = str.split
 if sys.version_info < (3, 0):
     # noinspection PyUnresolvedReferences
     s = unicode.split
 
-class DevanagariScheme(Scheme):
+
+class BrahmiScheme(Scheme):
+    def __init__(self, data=None, synonym_map=None, name=None):
+        super(BrahmiScheme, self).__init__(data=data, synonym_map=synonym_map, name=name, is_roman=False)
+        self.vowel_to_mark_map = dict(zip(self["vowels"], [""] + self["marks"]))
+
+
+class DevanagariScheme(BrahmiScheme):
     def __init__(self):
         super(DevanagariScheme, self).__init__({
             'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ"""),
@@ -42,7 +48,7 @@ class DevanagariScheme(Scheme):
                        ॐ ऽ । ॥
                        ० १ २ ३ ४ ५ ६ ७ ८ ९
                        """)
-        }, is_roman=False, name=DEVANAGARI)
+        }, name=DEVANAGARI)
 
     @classmethod
     def fix_lazy_visarga(cls, data_in):
@@ -53,7 +59,7 @@ class DevanagariScheme(Scheme):
         return data_out
 
 
-class GujaratiScheme(Scheme):
+class GujaratiScheme(BrahmiScheme):
     def __init__(self):
         super(GujaratiScheme, self).__init__({
             'vowels': s("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
@@ -74,11 +80,11 @@ class GujaratiScheme(Scheme):
                        ૐ ઽ ૤ ૥
                        ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯
                        """)
-        }, is_roman=False, name=GUJARATI)
+        }, name=GUJARATI)
 
 
 
-class GurmukhiScheme(Scheme):
+class GurmukhiScheme(BrahmiScheme):
     def __init__(self):
         super(GurmukhiScheme, self).__init__({
             'vowels': s("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),
@@ -100,11 +106,11 @@ class GurmukhiScheme(Scheme):
                        ੴ ऽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
-        }, is_roman=False, name=GURMUKHI)
+        }, name=GURMUKHI)
 
 
 
-class KannadaScheme(Scheme):
+class KannadaScheme(BrahmiScheme):
     def __init__(self):
         super(KannadaScheme, self).__init__({
             'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ ಎ ಒ"""),
@@ -125,11 +131,11 @@ class KannadaScheme(Scheme):
                        ಓಂ ऽ । ॥
                        ೦ ೧ ೨ ೩ ೪ ೫ ೬ ೭ ೮ ೯
                        """)
-        }, is_roman=False, name=KANNADA)
+        }, name=KANNADA)
 
 
 
-class MalayalamScheme(Scheme):
+class MalayalamScheme(BrahmiScheme):
     def __init__(self):
         super(MalayalamScheme, self).__init__({
             'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഓ"""),
@@ -150,11 +156,11 @@ class MalayalamScheme(Scheme):
                        ഓം ഽ । ॥
                        ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯
                        """)
-        }, is_roman=False, name=MALAYALAM)
+        }, name=MALAYALAM)
 
 
 
-class OriyaScheme(Scheme):
+class OriyaScheme(BrahmiScheme):
     def __init__(self):
         super(OriyaScheme, self).__init__({
             'vowels': s("""ଅ ଆ ଇ ଈ ଉ ଊ ଋ ୠ ଌ ୡ ଏ ଐ ଓ ଔ"""),
@@ -176,11 +182,11 @@ class OriyaScheme(Scheme):
                        ଓଂ ଽ । ॥
                        ୦ ୧ ୨ ୩ ୪ ୫ ୬ ୭ ୮ ୯
                        """)
-        }, is_roman=False, name=ORIYA)
+        }, name=ORIYA)
 
 
 
-class TamilScheme(Scheme):
+class TamilScheme(BrahmiScheme):
     def __init__(self):
         super(TamilScheme, self).__init__({
             'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ ஏ ஐ ஓ ஔ எ ஒ"""),
@@ -202,10 +208,10 @@ class TamilScheme(Scheme):
                        ௐ ऽ । ॥
                        ௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯
                        """)
-        }, is_roman=False, name=TAMIL)
+        }, name=TAMIL)
 
 
-class TeluguScheme(Scheme):
+class TeluguScheme(BrahmiScheme):
     def __init__(self):
         super(TeluguScheme, self).__init__({
             'vowels': s("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ ఎ ఒ"""),
@@ -226,10 +232,10 @@ class TeluguScheme(Scheme):
                        ఓం ఽ । ॥
                        ౦ ౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯
                        """)
-        }, is_roman=False, name=TELUGU)
+        }, name=TELUGU)
 
 
-class BengaliScheme(Scheme):
+class BengaliScheme(BrahmiScheme):
     def __init__(self):
         super(BengaliScheme, self).__init__({
             'vowels': s("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
@@ -250,4 +256,4 @@ class BengaliScheme(Scheme):
                        ॐ ঽ । ॥
                        ০ ১ ২ ৩ ৪ ৫ ৬ ৭ ৮ ৯
                        """)
-        }, is_roman=False, name=BENGALI)
+        }, name=BENGALI)

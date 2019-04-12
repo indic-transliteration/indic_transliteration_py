@@ -25,7 +25,7 @@ class DevanagariScheme(Scheme):
     def __init__(self):
         super(DevanagariScheme, self).__init__({
             'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ"""),
-            'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ ॆ ॊ"""),
+            'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ"""),
             'virama': s('्'),
             'yogavaahas': s('ं ः ँ'),
             'consonants': s("""

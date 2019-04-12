@@ -140,7 +140,7 @@ class KannadaScheme(BrahmiScheme):
 class MalayalamScheme(BrahmiScheme):
     def __init__(self):
         super(MalayalamScheme, self).__init__({
-            'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഓ"""),
+            'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഒ"""),
             'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ െ ൊ"""),
             'virama': s('്'),
             'yogavaahas': s('ം ഃ ँ'),

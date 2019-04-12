@@ -255,8 +255,10 @@ def test_devanagari_to_brahmic(to_scheme):
 @pytest.mark.parametrize("scheme_id", brahmic.ALL_SCHEME_IDS)
 def test_vowel_to_mark_map(scheme_id):
   brahmic_scheme = sanscript.SCHEMES[scheme_id]
-  assert brahmic_scheme.vowel_to_mark_map[sanscript.transliterate(data="अ", _from=sanscript.DEVANAGARI, _to=scheme_id)] == ""
-
+  assert brahmic_scheme.vowel_to_mark_map[brahmic_scheme.from_devanagari("अ")] == ""
+  assert brahmic_scheme.vowel_to_mark_map[brahmic_scheme.from_devanagari("आ")] == brahmic_scheme.from_devanagari("ा")
+  for vowel in "इ ई उ ऊ ए ऐ ओ औ".split(" "):
+    assert brahmic_scheme.vowel_to_mark_map[brahmic_scheme.from_devanagari(vowel)] == brahmic_scheme.from_devanagari(sanscript.SCHEMES[sanscript.DEVANAGARI].vowel_to_mark_map[vowel]), vowel
 
 ## Toggle tests
 def _toggle_test_helper(_from, _to):

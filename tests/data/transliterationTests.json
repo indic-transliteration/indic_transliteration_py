@@ -1,5 +1,5 @@
 {
-  "canonical_source": "https://github.com/sanskrit-coders/indic-transliteration/blob/master/src/test/resources/transliterationTests.json",
+  "canonical_source": "https://github.com/sanskrit-coders/indic-transliteration/blob/master/src/test/data/transliterationTests.json",
   "comments": "Shared transliteration tests. In each test, the dev field is compulsory.",
   "to_devanaagarii": [
     {

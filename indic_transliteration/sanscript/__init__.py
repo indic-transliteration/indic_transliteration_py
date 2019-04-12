@@ -59,7 +59,6 @@ from __future__ import unicode_literals
 #: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
 #: as `ব`.
 import sys
-from indic_transliteration.sanscript import schemes
 from indic_transliteration.sanscript.schemes import Scheme
 from indic_transliteration.sanscript.schemes import roman
 from indic_transliteration.sanscript.schemes import brahmi
@@ -449,26 +448,7 @@ def _setup():
                        ০ ১ ২ ৩ ৪ ৫ ৬ ৭ ৮ ৯
                        """)
     }, is_roman=False, name=BENGALI),
-    DEVANAGARI: Scheme({
-      'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ"""),
-      'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ"""),
-      'virama': s('्'),
-      'yogavaahas': s('ं ः ँ'),
-      'consonants': s("""
-                            क ख ग घ ङ
-                            च छ ज झ ञ
-                            ट ठ ड ढ ण
-                            त थ द ध न
-                            प फ ब भ म
-                            य र ल व
-                            श ष स ह
-                            ळ क्ष ज्ञ
-                            """),
-      'symbols': s("""
-                       ॐ ऽ । ॥
-                       ० १ २ ३ ४ ५ ६ ७ ८ ९
-                       """)
-    }, is_roman=False, name=DEVANAGARI),
+    DEVANAGARI: brahmi.DevanagariScheme(),
     GUJARATI: Scheme({
       'vowels': s("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
       'marks': s("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),

@@ -71,8 +71,6 @@ def _setup():
     SCHEMES = copy.deepcopy(sanscript.SCHEMES)
     pop_all(SCHEMES, [sanscript.ORIYA, sanscript.BENGALI, sanscript.GUJARATI])
     SCHEMES[DEVANAGARI].update({
-        'vowels': sanscript.SCHEMES[DEVANAGARI]['vowels'] + s("""ऎ ऒ"""),
-        'marks': sanscript.SCHEMES[DEVANAGARI]['marks'] + s("""ॆ ॊ"""),
         'consonants': sanscript.SCHEMES[DEVANAGARI]['consonants'] + s("""ऩ ऱ ऴ""")
     })
     SCHEMES[HK].update({
@@ -93,28 +91,18 @@ def _setup():
     })
     pop_all(SCHEMES[OPTITRANS].synonym_map, s("""e o"""))
     SCHEMES[IAST].update({
-        'vowels': sanscript.SCHEMES[ITRANS]['vowels'] + s("""ê ô"""),
-        'marks': sanscript.SCHEMES[ITRANS]['marks'] + s("""ê ô"""),
         'consonants': sanscript.SCHEMES[ITRANS]['consonants'] + s("""n r̂ ḷ""")
     })
     SCHEMES[KANNADA].update({
-        'vowels': sanscript.SCHEMES[KANNADA]['vowels'] + s("""ಎ ಒ"""),
-        'marks': sanscript.SCHEMES[KANNADA]['marks'] + s("""ೆ ೊ"""),
         'consonants': sanscript.SCHEMES[KANNADA]['consonants'] + s("""ऩ ಱ ೞ""")
     })
     SCHEMES[MALAYALAM].update({
-        'vowels': sanscript.SCHEMES[MALAYALAM]['vowels'] + s("""എ ഓ"""),
-        'marks': sanscript.SCHEMES[MALAYALAM]['marks'] + s("""െ ൊ"""),
         'consonants': sanscript.SCHEMES[MALAYALAM]['consonants'] + s("""ഩ ള ൟ"""),
     })
     SCHEMES[TAMIL].update({
-        'vowels': sanscript.SCHEMES[TAMIL]['vowels'] + SCHEMES[TAMIL]['vowels'] + s("""எ ஒ"""),
-        'marks': sanscript.SCHEMES[TAMIL]['marks'] + ['ெ', 'ொ'],
         'consonants': sanscript.SCHEMES[TAMIL]['consonants'] + s("""ன ற ழ""")
     })
     SCHEMES[TELUGU].update({
-        'vowels': sanscript.SCHEMES[TELUGU]['vowels'] + s("""ఎ ఒ"""),
-        'marks': sanscript.SCHEMES[TELUGU]['marks'] + s("""ె  ొ"""),
         'consonants': sanscript.SCHEMES[TELUGU]['consonants'] + s("""ऩ ఴ ౚ""")
     })
 

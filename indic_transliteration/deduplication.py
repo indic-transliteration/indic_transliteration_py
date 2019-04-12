@@ -8,11 +8,7 @@ import logging
 # Not using the more standard library re here : We need to support `key = re.sub("\\P{IsDevanagari}", "", key)`.
 import regex
 from indic_transliteration import sanscript
-from indic_transliteration.sanscript.schemes import roman 
 
-
-def fix_lazy_anusvaara_itrans(data_in):
-    return roman.ItransScheme.fix_lazy_anusvaara(data_in=data_in)
 
 def get_approx_deduplicating_key(text, encoding_scheme=sanscript.DEVANAGARI):
     """

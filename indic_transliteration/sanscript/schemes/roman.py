@@ -27,7 +27,7 @@ class RomanScheme(Scheme):
         super(RomanScheme, self).__init__(data=data, synonym_map=synonym_map, name=name, is_roman=True)
     
     def get_standard_form(self, data):
-        """Roman schemes define multiple representations of the same devanAgarI character. This method get's a library-standard representation.
+        """Roman schemes define multiple representations of the same devanAgarI character. This method gets a library-standard representation.
         
         data : a text in the given scheme.
         """

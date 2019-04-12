@@ -17,6 +17,8 @@ import pytest
 from indic_transliteration import sanscript
 
 # Remove all handlers associated with the root logger object.
+from indic_transliteration.sanscript.schemes import roman, brahmic
+
 for handler in logging.root.handlers[:]:
   logging.root.removeHandler(handler)
 logging.basicConfig(
@@ -179,27 +181,27 @@ DATA = {
   }
 }
 
-roman={sanscript.HK,sanscript.IAST,sanscript.SLP1,sanscript.ITRANS,sanscript.WX,sanscript.KOLKATA,sanscript.VELTHUIS,sanscript.OPTITRANS}
-brahmic= {x for x in sanscript.SCHEMES} - roman
 
-def compare_all(_from,_to):
+def _compare_all_data_between_schemes(_from, _to):
   """Compare all data for `_from` and `_to`"""
+
+  def compare_group(_from, _to, group):
+    """Compare data for `_from` and `_to` in the test group `group`."""
+    source = DATA[_from][group]
+    actual = ' '.join(sanscript.transliterate(source, _from, _to).split())
+    expected = ' '.join(DATA[_to][group].split())
+    assert expected == actual, "Failure ahoy: %s to %s: expected %s, got %s" % (_from, _to, expected, actual)
+
   for group in DATA[_from]:
     if _to in DATA and group in DATA[_to]:
-      compare(_from, _to, group)
+      compare_group(_from, _to, group)
 
-def compare(_from, _to, group):
-  """Compare data for `_from` and `_to` in the test group `group`."""
-  source = DATA[_from][group]
-  actual = ' '.join(sanscript.transliterate(source, _from, _to).split())
-  expected = ' '.join(DATA[_to][group].split())
-  assert expected == actual, "Failure ahoy: %s to %s: expected %s, got %s" % (_from, _to, expected, actual)
 
 
 @pytest.mark.parametrize("name", sanscript.SCHEMES)
 def test_membership(name):
   """Test that a scheme is roman iff `is_roman`"""
-  assert sanscript.SCHEMES[name].is_roman == (name in roman)
+  assert sanscript.SCHEMES[name].is_roman == (name in roman.ALL_SCHEME_IDS)
 
 
 @pytest.mark.parametrize("name,scheme", sanscript.SCHEMES.items())
@@ -214,21 +216,21 @@ def test_correspondence(name, scheme ):
     logging.debug(name)
     logging.debug(group)
     assert group in groups
-    # self.assertEqual(len(scheme[group]), len(dev[group]))
 
 
-@pytest.mark.parametrize("from_scheme", roman)
-@pytest.mark.parametrize("to_scheme", roman)
+@pytest.mark.parametrize("from_scheme", roman.ALL_SCHEME_IDS)
+@pytest.mark.parametrize("to_scheme", roman.ALL_SCHEME_IDS)
 def test_to_roman(from_scheme, to_scheme):
   """Test roman to roman."""
-  compare_all(from_scheme, to_scheme)
+  _compare_all_data_between_schemes(from_scheme, to_scheme)
 
 
-@pytest.mark.parametrize("from_scheme", roman)
-@pytest.mark.parametrize("to_scheme", brahmic)
+@pytest.mark.parametrize("from_scheme", roman.ALL_SCHEME_IDS)
+@pytest.mark.parametrize("to_scheme", brahmic.ALL_SCHEME_IDS)
 def test_to_brahmic(from_scheme, to_scheme):
   """Test roman to Brahmic."""
-  compare_all(from_scheme, to_scheme)
+  _compare_all_data_between_schemes(from_scheme, to_scheme)
+
 
 def test_devanaagarii_equivalence():
   """Test all synonmous transliterations."""
@@ -237,28 +239,34 @@ def test_devanaagarii_equivalence():
                    sanscript.transliterate("raamo guuDhaM vaktii~NgitaGYaH xetre", sanscript.ITRANS, sanscript.DEVANAGARI)
 
 
-@pytest.mark.parametrize("to_scheme", roman)
+@pytest.mark.parametrize("to_scheme", roman.ALL_SCHEME_IDS)
 def test_brahmic_to_roman(to_scheme):
   """Test Brahmic to roman."""
   from_scheme = sanscript.DEVANAGARI
-  compare_all(from_scheme, to_scheme)
+  _compare_all_data_between_schemes(from_scheme, to_scheme)
 
 
-@pytest.mark.parametrize("to_scheme", brahmic)
+@pytest.mark.parametrize("to_scheme", brahmic.ALL_SCHEME_IDS)
 def test_devanagari_to_brahmic(to_scheme):
   """Test Brahmic to Brahmic."""
   from_scheme = sanscript.DEVANAGARI
-  compare_all(from_scheme, to_scheme)
+  _compare_all_data_between_schemes(from_scheme, to_scheme)
+
+@pytest.mark.parametrize("scheme_id", brahmic.ALL_SCHEME_IDS)
+def test_vowel_to_mark_map(scheme_id):
+  brahmic_scheme = sanscript.SCHEMES[scheme_id]
+  assert brahmic_scheme.vowel_to_mark_map[sanscript.transliterate(data="अ", _from=sanscript.DEVANAGARI, _to=scheme_id)] == ""
 
 
-def _t_helper(_from, _to):
+## Toggle tests
+def _toggle_test_helper(_from, _to):
   def func(data, output):
     assert output == sanscript.transliterate(data, _from, _to), "_from: %s, _to: %s, _input: %s" % (_from, _to, data)
 
   return func
 
 def test_toggle():
-  f = _t_helper(sanscript.HK, sanscript.DEVANAGARI)
+  f = _toggle_test_helper(sanscript.HK, sanscript.DEVANAGARI)
   f('akSa##kSa##ra', 'अक्षkSaर')
   f('##akSa##kSa##ra', 'akSaक्षra')
   f('akSa##ra##', 'अक्षra')
@@ -268,9 +276,10 @@ def test_toggle():
   f('a#kSara', 'अ#क्षर')
 
 def test_suspend():
-  f = _t_helper(sanscript.HK, sanscript.DEVANAGARI)
+  f = _toggle_test_helper(sanscript.HK, sanscript.DEVANAGARI)
   f('<p>nara iti</p>', '<p>नर इति</p>')
 
 def test_suspend_and_toggle():
-  f = _t_helper(sanscript.HK, sanscript.DEVANAGARI)
+  f = _toggle_test_helper(sanscript.HK, sanscript.DEVANAGARI)
   f('<p>##na##ra## iti</p>', '<p>naर iti</p>')
+

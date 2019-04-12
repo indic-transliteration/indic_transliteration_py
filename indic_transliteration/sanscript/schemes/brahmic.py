@@ -14,6 +14,8 @@ ORIYA = 'oriya'
 TAMIL = 'tamil'
 TELUGU = 'telugu'
 
+ALL_SCHEME_IDS = [BENGALI, DEVANAGARI, GUJARATI, GURMUKHI, KANNADA, MALAYALAM, ORIYA, TAMIL, TELUGU]
+
 
 s = str.split
 if sys.version_info < (3, 0):
@@ -257,3 +259,16 @@ class BengaliScheme(BrahmiScheme):
                        ০ ১ ২ ৩ ৪ ৫ ৬ ৭ ৮ ৯
                        """)
         }, name=BENGALI)
+
+
+SCHEMES = {
+    BENGALI: BengaliScheme(),
+    DEVANAGARI: DevanagariScheme(),
+    GUJARATI: GujaratiScheme(),
+    GURMUKHI: GurmukhiScheme(),
+    KANNADA: KannadaScheme(),
+    MALAYALAM: MalayalamScheme(),
+    ORIYA: OriyaScheme(),
+    TAMIL: TamilScheme(),
+    TELUGU: TeluguScheme()
+}

@@ -61,7 +61,7 @@ from __future__ import unicode_literals
 import sys
 from indic_transliteration.sanscript.schemes import Scheme
 from indic_transliteration.sanscript.schemes import roman
-from indic_transliteration.sanscript.schemes import brahmi
+from indic_transliteration.sanscript.schemes import brahmic
 
 try:
     from functools import lru_cache
@@ -70,15 +70,15 @@ except ImportError:
 
 # These variables are replicated here for backward compatibility.
 # -------------
-BENGALI = brahmi.BENGALI
-DEVANAGARI = brahmi.DEVANAGARI
-GUJARATI = brahmi.GUJARATI
-GURMUKHI = brahmi.GURMUKHI
-KANNADA = brahmi.KANNADA
-MALAYALAM = brahmi.MALAYALAM
-ORIYA = brahmi.ORIYA
-TAMIL = brahmi.TAMIL
-TELUGU = brahmi.TELUGU
+BENGALI = brahmic.BENGALI
+DEVANAGARI = brahmic.DEVANAGARI
+GUJARATI = brahmic.GUJARATI
+GURMUKHI = brahmic.GURMUKHI
+KANNADA = brahmic.KANNADA
+MALAYALAM = brahmic.MALAYALAM
+ORIYA = brahmic.ORIYA
+TAMIL = brahmic.TAMIL
+TELUGU = brahmic.TELUGU
 HK = roman.HK
 IAST = roman.IAST
 ITRANS = roman.ITRANS
@@ -87,8 +87,6 @@ KOLKATA = roman.KOLKATA
 SLP1 = roman.SLP1
 VELTHUIS = roman.VELTHUIS
 WX = roman.WX
-
-SCHEMES = {}
 
 
 class SchemeMap(object):
@@ -411,32 +409,8 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
 def get_standard_form(data, scheme_name):
   return transliterate(data=transliterate(data=data, _from=scheme_name, _to=DEVANAGARI), _from=DEVANAGARI, _to=scheme_name)
 
-def _setup():
-  """Add a variety of default schemes."""
-  s = str.split
-  if sys.version_info < (3, 0):
-    # noinspection PyUnresolvedReferences
-    s = unicode.split
 
-  ## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.
-  SCHEMES.update({
-    HK: roman.HkScheme(),
-    VELTHUIS: roman.VelthiusScheme(),
-    OPTITRANS: roman.OptitransScheme(),
-    ITRANS: roman.ItransScheme(),
-    IAST: roman.IastScheme(),
-    KOLKATA: roman.IastScheme(kolkata_variant=True),
-    SLP1: roman.Slp1Scheme(),
-    WX: roman.WxScheme(),
-    BENGALI: brahmi.BengaliScheme(),
-    DEVANAGARI: brahmi.DevanagariScheme(),
-    GUJARATI: brahmi.GujaratiScheme(),
-    GURMUKHI: brahmi.GurmukhiScheme(),
-    KANNADA: brahmi.KannadaScheme(),
-    MALAYALAM: brahmi.MalayalamScheme(),
-    ORIYA: brahmi.OriyaScheme(),
-    TAMIL: brahmi.TamilScheme(),
-    TELUGU: brahmi.TeluguScheme()
-  })
-
-_setup()
+## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.
+SCHEMES = {}
+SCHEMES.update(roman.SCHEMES)
+SCHEMES.update(brahmic.SCHEMES)

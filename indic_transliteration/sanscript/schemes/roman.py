@@ -15,6 +15,7 @@ SLP1 = 'slp1'
 VELTHUIS = 'velthuis'
 WX = 'wx'
 
+ALL_SCHEME_IDS = [ HK,IAST, SLP1, ITRANS,WX, KOLKATA, VELTHUIS, OPTITRANS ]
 
 s = str.split
 if sys.version_info < (3, 0):
@@ -242,3 +243,14 @@ class WxScheme(RomanScheme):
                        0 1 2 3 4 5 6 7 8 9
                        """)
         }, name=WX)
+
+SCHEMES = {
+    HK: HkScheme(),
+    VELTHUIS: VelthiusScheme(),
+    OPTITRANS: OptitransScheme(),
+    ITRANS: ItransScheme(),
+    IAST: IastScheme(),
+    KOLKATA: IastScheme(kolkata_variant=True),
+    SLP1: Slp1Scheme(),
+    WX: WxScheme()
+}

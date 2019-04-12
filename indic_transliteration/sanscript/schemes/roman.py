@@ -144,8 +144,8 @@ class IastScheme(RomanScheme):
                        """)
         }, name=IAST)
         if kolkata_variant:
-            self['vowels'] = s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au""")
-            self['marks'] = s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au""")
+            self['vowels'] = s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
+            self['marks'] = s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self.name = KOLKATA
 
 class HkScheme(RomanScheme):

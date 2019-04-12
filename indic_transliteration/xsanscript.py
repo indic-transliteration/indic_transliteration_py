@@ -70,9 +70,6 @@ def _setup():
     global SCHEMES
     SCHEMES = copy.deepcopy(sanscript.SCHEMES)
     pop_all(SCHEMES, [sanscript.ORIYA, sanscript.BENGALI, sanscript.GUJARATI])
-    SCHEMES[DEVANAGARI].update({
-        'consonants': sanscript.SCHEMES[DEVANAGARI]['consonants'] + s("""ऩ ऱ ऴ""")
-    })
     SCHEMES[HK].update({
         'vowels': s("""a A i I u U R RR lR lRR E ai O au""") + s("""e o"""),
         'marks': s("""A i I u U R RR lR lRR E ai O au""") + s("""e o"""),
@@ -90,21 +87,6 @@ def _setup():
         'consonants': sanscript.SCHEMES[OPTITRANS]['consonants'] + s("""n2 r2 zh""")
     })
     pop_all(SCHEMES[OPTITRANS].synonym_map, s("""e o"""))
-    SCHEMES[IAST].update({
-        'consonants': sanscript.SCHEMES[ITRANS]['consonants'] + s("""n r̂ ḷ""")
-    })
-    SCHEMES[KANNADA].update({
-        'consonants': sanscript.SCHEMES[KANNADA]['consonants'] + s("""ऩ ಱ ೞ""")
-    })
-    SCHEMES[MALAYALAM].update({
-        'consonants': sanscript.SCHEMES[MALAYALAM]['consonants'] + s("""ഩ ള ൟ"""),
-    })
-    SCHEMES[TAMIL].update({
-        'consonants': sanscript.SCHEMES[TAMIL]['consonants'] + s("""ன ற ழ""")
-    })
-    SCHEMES[TELUGU].update({
-        'consonants': sanscript.SCHEMES[TELUGU]['consonants'] + s("""ऩ ఴ ౚ""")
-    })
 
 
 _setup()

@@ -124,8 +124,8 @@ class OptitransScheme(RomanScheme):
 class IastScheme(RomanScheme):
     def __init__(self, kolkata_variant=False):
         super(IastScheme, self).__init__({
-            'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"""),
-            'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"""),
+            'vowels': s("""a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au ê ô"""),
+            'marks': s("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au ê ô"""),
             'virama': [''],
             'yogavaahas': s('ṃ ḥ m̐'),
             'consonants': s("""

@@ -70,6 +70,13 @@ In [3]: print(transliterate(data, xsanscript.DEVANAGARI, xsanscript.KANNADA))
 ```
 
 
+## Font converters
+```
+    converter = tech_hindi.DVTTVedicConverter()
+    text_in = "    +<=hÉÂ *1* +EòÉ®úÉä Ê´É´ÉÞiÉ ={ÉÊnù¹]õ& |ÉÉÊGòªÉÉnù¶ÉÉªÉÉÆ SÉäiªÉjÉ \"+ +' (ºÉÚ.8-4-68)  "
+    output = converter.convert(text_in)
+```
+
 # For contributors
 
 ## Contact

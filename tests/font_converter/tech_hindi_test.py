@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import logging
 
-from indic_transliteration import tech_hindi
+from indic_transliteration.font_converter import tech_hindi
 
 # Remove all handlers associated with the root logger object.
 for handler in logging.root.handlers[:]:

@@ -1,7 +1,7 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmiScheme, s, DEVANAGARI, GUJARATI, GURMUKHI
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s, DEVANAGARI, GUJARATI, GURMUKHI
 
 
-class DevanagariScheme(BrahmiScheme):
+class DevanagariScheme(BrahmicScheme):
     def __init__(self):
         super(DevanagariScheme, self).__init__({
             'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ"""),
@@ -34,7 +34,7 @@ class DevanagariScheme(BrahmiScheme):
         return data_out
 
 
-class GujaratiScheme(BrahmiScheme):
+class GujaratiScheme(BrahmicScheme):
     def __init__(self):
         super(GujaratiScheme, self).__init__({
             'vowels': s("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
@@ -59,7 +59,7 @@ class GujaratiScheme(BrahmiScheme):
         }, name=GUJARATI)
 
 
-class GurmukhiScheme(BrahmiScheme):
+class GurmukhiScheme(BrahmicScheme):
     def __init__(self):
         super(GurmukhiScheme, self).__init__({
             'vowels': s("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),

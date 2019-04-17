@@ -1,7 +1,7 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmiScheme, s, KANNADA, MALAYALAM, TAMIL, TELUGU
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s, KANNADA, MALAYALAM, TAMIL, TELUGU
 
 
-class KannadaScheme(BrahmiScheme):
+class KannadaScheme(BrahmicScheme):
     def __init__(self):
         super(KannadaScheme, self).__init__({
             'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ ಎ ಒ"""),
@@ -26,7 +26,7 @@ class KannadaScheme(BrahmiScheme):
         }, name=KANNADA)
 
 
-class MalayalamScheme(BrahmiScheme):
+class MalayalamScheme(BrahmicScheme):
     def __init__(self):
         super(MalayalamScheme, self).__init__({
             'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഒ"""),
@@ -50,7 +50,7 @@ class MalayalamScheme(BrahmiScheme):
         }, name=MALAYALAM)
 
 
-class TamilScheme(BrahmiScheme):
+class TamilScheme(BrahmicScheme):
     def __init__(self):
         super(TamilScheme, self).__init__({
             'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ ஏ ஐ ஓ ஔ எ ஒ"""),
@@ -75,7 +75,7 @@ class TamilScheme(BrahmiScheme):
         }, name=TAMIL)
 
 
-class TeluguScheme(BrahmiScheme):
+class TeluguScheme(BrahmicScheme):
     def __init__(self):
         super(TeluguScheme, self).__init__({
             'vowels': s("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ ఎ ఒ"""),

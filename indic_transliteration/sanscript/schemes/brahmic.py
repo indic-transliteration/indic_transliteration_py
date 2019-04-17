@@ -86,7 +86,7 @@ class GujaratiScheme(BrahmiScheme):
                             ળ ક્ષ જ્ઞ
                             """),
             'symbols': s("""
-                       ૐ ઽ ૤ ૥
+                       ૐ ઽ ૤। ॥૥
                        ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯
                        """)
         }, name=GUJARATI)
@@ -125,7 +125,7 @@ class KannadaScheme(BrahmiScheme):
             'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ ಎ ಒ"""),
             'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ ೆ ೊ"""),
             'virama': s('್'),
-            'yogavaahas': s('ಂ ಃ ँ'),
+            'yogavaahas': s('ಂ ಃ ಁ'),
             'consonants': s("""
                             ಕ ಖ ಗ ಘ ಙ
                             ಚ ಛ ಜ ಝ ಞ
@@ -137,7 +137,7 @@ class KannadaScheme(BrahmiScheme):
                             ಳ ಕ್ಷ ಜ್ಞ
                             """) + s("""ऩ ಱ ೞ"""),
             'symbols': s("""
-                       ಓಂ ऽ । ॥
+                       ಓಂ ಽ । ॥
                        ೦ ೧ ೨ ೩ ೪ ೫ ೬ ೭ ೮ ೯
                        """)
         }, name=KANNADA)
@@ -160,7 +160,7 @@ class MalayalamScheme(BrahmiScheme):
                             യ ര ല വ
                             ശ ഷ സ ഹ
                             ള ക്ഷ ജ്ഞ
-                            """) + s("""ഩ ള ൟ"""),
+                            """) + s("""ഩ റ ഴ"""),
             'symbols': s("""
                        ഓം ഽ । ॥
                        ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯

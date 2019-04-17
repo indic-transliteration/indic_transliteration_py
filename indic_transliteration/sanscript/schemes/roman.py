@@ -80,8 +80,8 @@ class ItransScheme(RomanScheme):
 class OptitransScheme(RomanScheme):
     def __init__(self):
         super(OptitransScheme, self).__init__({
-            'vowels': s("""a A i I u U R RR LLi LLI e ai o au"""),
-            'marks': s("""A i I u U R RR LLi LLI e ai o au"""),
+            'vowels': s("""a A i I u U R RR LLi LLI e ai o au E O"""),
+            'marks': s("""A i I u U R RR LLi LLI e ai o au E O"""),
             'virama': [''],
             'yogavaahas': s('M H .N'),
             'consonants': s("""
@@ -105,7 +105,7 @@ class OptitransScheme(RomanScheme):
             "kh": ["K"], "gh": ["G"],
             "ch": ["c"], "Ch": ["C"], "jh": ["J"],
             "ph": ["P"], "bh": ["B"], "Sh": ["S"],
-            "v": ["w"], "x": ["kSh", "kS", "ksh"], "jn": ["GY", "jJN"],
+            "v": ["w"], "x": ["kSh", "kS", "ksh"], "jn": ["GY", "jJN", "JN"],
             "|": ["."], "||": [".."]
         }, name=OPTITRANS)
 
@@ -140,7 +140,7 @@ class IastScheme(RomanScheme):
                             ḻ kṣ jñ
                             """),
             'symbols': s("""
-                       oṃ ' . ||
+                       oṃ ' | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
         }, name=IAST)
@@ -148,7 +148,7 @@ class IastScheme(RomanScheme):
             self['vowels'] = s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self['marks'] = s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self.name = KOLKATA
-        self.synonym_map = {}
+        self.synonym_map = {"|": ["."], "||": [".."], "'": ["`"]}
         def add_capitalized_synonyms(some_list):
             self.synonym_map.update(zip(some_list, [[x.capitalize()] for x in some_list]))
         add_capitalized_synonyms(self["vowels"])
@@ -249,7 +249,10 @@ class WxScheme(RomanScheme):
                        oM ' . ..
                        0 1 2 3 4 5 6 7 8 9
                        """)
-        }, name=WX)
+        }, name=WX, 
+            # Reference for the below:
+            synonym_map={"'": ["Z"], "~": ["z"]})
+        
 
 SCHEMES = {
     HK: HkScheme(),

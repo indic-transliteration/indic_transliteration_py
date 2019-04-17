@@ -1,4 +1,4 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s, BENGALI, ORIYA
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s
 
 
 class BengaliScheme(BrahmicScheme):
@@ -50,3 +50,11 @@ class OriyaScheme(BrahmicScheme):
                        ୦ ୧ ୨ ୩ ୪ ୫ ୬ ୭ ୮ ୯
                        """)
         }, name=ORIYA)
+
+
+BENGALI = 'bengali'
+ORIYA = 'oriya'
+SCHEMES = {
+    BENGALI: BengaliScheme(),
+    ORIYA: OriyaScheme(),
+}

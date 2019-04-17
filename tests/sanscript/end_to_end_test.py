@@ -48,7 +48,7 @@ def get_test_cases(test_tuples, ignored_cases=None):
 
 
 test_tuples = test_data["to_devanaagarii"] + test_data["devanaagarii_round_trip"]
-test_cases = get_test_cases(test_tuples=test_tuples, ignored_cases=[])
+test_cases = get_test_cases(test_tuples=test_tuples, ignored_cases=['अब्भर अक्क अभंग भुल्ला'])
 
 @pytest.mark.parametrize("test_case", test_cases)
 def test_to_devanagari(test_case):
@@ -56,9 +56,6 @@ def test_to_devanagari(test_case):
     dev_string = test_case["dev_string"]
     script = test_case["script"]
     text = test_case["text"]
-    if script == "gurmukhi" and regex.search("ੱ", text):
-        logging.warning("TODO: Ignoring test: " + text)
-        return
     result = sanscript.transliterate(text, script, sanscript.DEVANAGARI)
     assert result == dev_string, "Failed to convert " + script + " to devanAgarI: got " + result + " instead of " + dev_string
 

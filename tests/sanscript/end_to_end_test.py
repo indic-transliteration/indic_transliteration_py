@@ -48,7 +48,7 @@ def get_test_cases(test_tuples, ignored_cases=None):
 
 
 test_tuples = test_data["to_devanaagarii"] + test_data["devanaagarii_round_trip"]
-test_cases = get_test_cases(test_tuples=test_tuples, ignored_cases=["ᳵ ᳶ", "छीड़ा चुदाकड़", "अँअळा", "अएल् अंशाइ पड़िब"])
+test_cases = get_test_cases(test_tuples=test_tuples, ignored_cases=["ᳵ ᳶ", "छीड़ा चुदाकड़", "अँअळा"])
 
 @pytest.mark.parametrize("test_case", test_cases)
 def test_to_devanagari(test_case):

@@ -7,7 +7,7 @@ class BengaliScheme(BrahmicScheme):
             'vowels': s("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
             'marks': s("""া ি ী ু ূ ৃ ৄ ৢ ৣ ে ৈ ো ৌ"""),
             'virama': s('্'),
-            'yogavaahas': s('ং ঃ ঁ'),
+            'yogavaahas': s('ং ঃ ঁ ᳵ ᳶ ়'),
             'consonants': s("""
                             ক খ গ ঘ ঙ
                             চ ছ জ ঝ ঞ
@@ -33,7 +33,7 @@ class OriyaScheme(BrahmicScheme):
             'marks': ['ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'ୃ', 'ୄ',
                       '', '', 'େ', 'ୈ', 'ୋ', 'ୌ'],
             'virama': s('୍'),
-            'yogavaahas': s('ଂ ଃ ଁ'),
+            'yogavaahas': s('ଂ ଃ ଁ ᳵ ᳶ ଼'),
             'consonants': s("""
                             କ ଖ ଗ ଘ ଙ
                             ଚ ଛ ଜ ଝ ଞ

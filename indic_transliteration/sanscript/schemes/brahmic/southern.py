@@ -1,4 +1,4 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s, KANNADA, MALAYALAM, TAMIL, TELUGU
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s
 
 
 class KannadaScheme(BrahmicScheme):
@@ -98,3 +98,15 @@ class TeluguScheme(BrahmicScheme):
                        ౦ ౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯
                        """)
         }, name=TELUGU)
+
+
+KANNADA = 'kannada'
+MALAYALAM = 'malayalam'
+TAMIL = 'tamil'
+TELUGU = 'telugu'
+SCHEMES = {
+    KANNADA: KannadaScheme(),
+    MALAYALAM: MalayalamScheme(),
+    TAMIL: TamilScheme(),
+    TELUGU: TeluguScheme()
+}

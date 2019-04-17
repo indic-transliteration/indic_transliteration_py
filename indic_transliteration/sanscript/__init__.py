@@ -59,9 +59,10 @@ from __future__ import unicode_literals
 #: Internal name of Bengali. Bengali ``ba`` and ``va`` are both rendered
 #: as `ব`.
 import sys
+
 from indic_transliteration.sanscript.schemes import Scheme
 from indic_transliteration.sanscript.schemes import roman
-from indic_transliteration.sanscript.schemes import brahmic
+from indic_transliteration.sanscript.schemes.brahmic import northern, southern, eastern
 
 try:
     from functools import lru_cache
@@ -70,15 +71,15 @@ except ImportError:
 
 # These variables are replicated here for backward compatibility.
 # -------------
-BENGALI = brahmic.BENGALI
-DEVANAGARI = brahmic.DEVANAGARI
-GUJARATI = brahmic.GUJARATI
-GURMUKHI = brahmic.GURMUKHI
-KANNADA = brahmic.KANNADA
-MALAYALAM = brahmic.MALAYALAM
-ORIYA = brahmic.ORIYA
-TAMIL = brahmic.TAMIL
-TELUGU = brahmic.TELUGU
+BENGALI = eastern.BENGALI
+DEVANAGARI = northern.DEVANAGARI
+GUJARATI = northern.GUJARATI
+GURMUKHI = northern.GURMUKHI
+KANNADA = southern.KANNADA
+MALAYALAM = southern.MALAYALAM
+ORIYA = eastern.ORIYA
+TAMIL = southern.TAMIL
+TELUGU = southern.TELUGU
 HK = roman.HK
 IAST = roman.IAST
 ITRANS = roman.ITRANS
@@ -413,4 +414,6 @@ def get_standard_form(data, scheme_name):
 ## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.
 SCHEMES = {}
 SCHEMES.update(roman.SCHEMES)
-SCHEMES.update(brahmic.SCHEMES)
+SCHEMES.update(northern.SCHEMES)
+SCHEMES.update(southern.SCHEMES)
+SCHEMES.update(eastern.SCHEMES)

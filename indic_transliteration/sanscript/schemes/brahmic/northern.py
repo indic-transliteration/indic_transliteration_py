@@ -1,4 +1,4 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s, DEVANAGARI, GUJARATI, GURMUKHI
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s
 
 
 class DevanagariScheme(BrahmicScheme):
@@ -83,3 +83,13 @@ class GurmukhiScheme(BrahmicScheme):
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
         }, name=GURMUKHI, synonym_map={"ਂ": ["ੰ"]})
+
+
+DEVANAGARI = 'devanagari'
+GUJARATI = 'gujarati'
+GURMUKHI = 'gurmukhi'
+SCHEMES = {
+    DEVANAGARI: DevanagariScheme(),
+    GUJARATI: GujaratiScheme(),
+    GURMUKHI: GurmukhiScheme(),
+}

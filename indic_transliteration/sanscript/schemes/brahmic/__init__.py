@@ -4,18 +4,6 @@ import sys
 
 from indic_transliteration.sanscript import Scheme
 
-BENGALI = 'bengali'
-DEVANAGARI = 'devanagari'
-GUJARATI = 'gujarati'
-GURMUKHI = 'gurmukhi'
-KANNADA = 'kannada'
-MALAYALAM = 'malayalam'
-ORIYA = 'oriya'
-TAMIL = 'tamil'
-TELUGU = 'telugu'
-
-ALL_SCHEME_IDS = [BENGALI, DEVANAGARI, GUJARATI, GURMUKHI, KANNADA, MALAYALAM, ORIYA, TAMIL, TELUGU]
-
 
 s = str.split
 if sys.version_info < (3, 0):
@@ -34,20 +22,3 @@ class BrahmicScheme(Scheme):
             return vyanjanaanta[:-1] + self.vowel_to_mark_map[svaraadi[0]] + svaraadi[1:]
         else:
             raise ValueError(svaraadi + " is not svaraadi.")
-
-
-from indic_transliteration.sanscript.schemes.brahmic.eastern import BengaliScheme, OriyaScheme
-from indic_transliteration.sanscript.schemes.brahmic.northern import DevanagariScheme, GujaratiScheme, GurmukhiScheme
-from indic_transliteration.sanscript.schemes.brahmic.southern import KannadaScheme, MalayalamScheme, TamilScheme, \
-    TeluguScheme
-SCHEMES = {
-    BENGALI: BengaliScheme(),
-    DEVANAGARI: DevanagariScheme(),
-    GUJARATI: GujaratiScheme(),
-    GURMUKHI: GurmukhiScheme(),
-    KANNADA: KannadaScheme(),
-    MALAYALAM: MalayalamScheme(),
-    ORIYA: OriyaScheme(),
-    TAMIL: TamilScheme(),
-    TELUGU: TeluguScheme()
-}

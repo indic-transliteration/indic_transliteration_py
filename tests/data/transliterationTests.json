@@ -1,18 +1,103 @@
 {
-  "canonical_source": "https://github.com/sanskrit-coders/indic-transliteration/blob/master/src/test/data/transliterationTests.json",
+  "canonical_source": "https://github.com/sanskrit-coders/indic-transliteration/blob/master/src/test/resources/transliterationTests.json",
   "comments": "Shared transliteration tests. In each test, the dev field is compulsory.",
-  "to_devanaagarii": [
+  "TODO": [
+    "Add tests for ॐ, handling of .Da in kannada.",
+    "various fraction symbols in various scripts"
+  ],
+  "devanaagarii_round_trip": [
     {
-      "dev": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  काष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
-      "iast": "asaya auṣadhiḥ granthaḥ! ḹkāro.'sti. nāsti leśo'pi saṃśayaḥ. kīlakam? kūpiḥ?  kāṣṭhaṃ bhoḥ. śaṅkara! jñānam.  sañjīvaya. 12345|| oṃ tat.",
-      "hk_sanscript_avagraha_failing": "asaya auSadhiH granthaH! lRRkAro|'sti| nAsti lezopi saMzayaH| kIlakam? kUpiH?  kASThaM bhoH| zaGkara! jJAnam|  saJjIvaya| 12345|| OM tat|",
-      "optitrans": "asaya auShadhiH granthaH! LLIkaaro|.asti| naasti lesho.api saMshayaH| kiilakam? kuupiH?  kAShThaM bhoH| shankara! jnaanam|  sanjiivaya| 12345|| OM tat|",
-      "slp": "asaya OzaDiH granTaH! XkAro.'sti. nAsti leSo'pi saMSayaH. kIlakam? kUpiH?  kAzWaM BoH. SaNkara! jYAnam.  saYjIvaya. 12345.. oM tat.",
-      "wx": "asaya ORaXiH granWaH! ḹkAro.'swi. nAswi leSo'pi saMSayaH. kIlakam? kUpiH?  kARTaM BoH. Safkara! jFAnam.  saFjIvaya. 12345.. oM waw."
+      "description": "A general test. Checks punctuations, OM.",
+      "dev": "असय औषधिः ग्रन्थः! ॡकारो नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  कष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
+      "iast": "asaya auṣadhiḥ granthaḥ! ḹkāro nāsti leśo`pi saṃśayaḥ. kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. oṃ tat.",
+      "iastDcs": "asaya auṣadhiḥ granthaḥ! ḹkāro nāsti leśo'pi saṃśayaḥ/ kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ/ śaṅkara! jñānam/  sañjīvaya/ 12345// aum tat/",
+      "hk": "asaya auSadhiH granthaH! lRRkAro nAsti lezo'pi saMzayaH| kIlakam? kUpiH?  kaSThaM bhoH| zaGkara! jJAnam|  saJjIvaya| 12345|| OM tat|",
+      "optitrans": "asaya auShadhiH granthaH! LLIkaaro naasti lesho.api saMshayaH. kiilakam? kuupiH?  kaShThaM bhoH. shankara! JNaanam.  sanjiivaya. 12345.. OM tat.",
+      "slp": "asaya OzaDiH granTaH! XkAro nAsti leSo'pi saMSayaH. kIlakam? kUpiH?  kazWaM BoH. SaNkara! jYAnam.  saYjIvaya. 12345.. oM tat.",
+      "wx": "asaya ORaXiH granWaH! ḹkAro nAswi leSo'pi saMSayaH. kIlakam? kUpiH?  kaRTaM BoH. Safkara! jFAnam.  saFjIvaya. 12345.. oM waw.",
+      "kannada": "ಅಸಯ ಔಷಧಿಃ ಗ್ರನ್ಥಃ! ೡಕಾರೋ ನಾಸ್ತಿ ಲೇಶೋಽಪಿ ಸಂಶಯಃ। ಕೀಲಕಮ್? ಕೂಪಿಃ?  ಕಷ್ಠಂ ಭೋಃ। ಶಙ್ಕರ! ಜ್ಞಾನಮ್।  ಸಞ್ಜೀವಯ। ೧೨೩೪೫॥ ಓಂ ತತ್।",
+      "malayalam": "അസയ ഔഷധിഃ ഗ്രന്ഥഃ! ൡകാരോ നാസ്തി ലേശോഽപി സംശയഃ। കീലകമ്? കൂപിഃ?  കഷ്ഠം ഭോഃ। ശങ്കര! ജ്ഞാനമ്।  സഞ്ജീവയ। ൧൨൩൪൫॥ ഓം തത്।",
+      "telugu": "అసయ ఔషధిః గ్రన్థః! ౡకారో నాస్తి లేశోఽపి సంశయః। కీలకమ్? కూపిః?  కష్ఠం భోః। శఙ్కర! జ్ఞానమ్।  సఞ్జీవయ। ౧౨౩౪౫॥ ఓం తత్।",
+      "gujarati": "અસય ઔષધિઃ ગ્રન્થઃ! ૡકારો નાસ્તિ લેશોઽપિ સંશયઃ। કીલકમ્? કૂપિઃ?  કષ્ઠં ભોઃ। શઙ્કર! જ્ઞાનમ્।  સઞ્જીવય। ૧૨૩૪૫॥ ૐ તત્।",
+      "assamese": "অসয ঔষধিঃ গ্ৰন্থঃ! ৡকাৰো নাস্তি লেশোঽপি সংশযঃ। কীলকম্? কূপিঃ?  কষ্ঠং ভোঃ। শঙ্কৰ! জ্ঞানম্।  সঞ্জীবয। ১২৩৪৫॥ ॐ তত্।",
+      "oriya": "ଅସଯ ଔଷଧିଃ ଗ୍ରନ୍ଥଃ! ୡକାରୋ ନାସ୍ତି ଲେଶୋଽପି ସଂଶଯଃ। କୀଲକମ୍? କୂପିଃ?  କଷ୍ଠଂ ଭୋଃ। ଶଙ୍କର! ଜ୍ଞାନମ୍।  ସଞ୍ଜୀଵଯ। ୧୨୩୪୫॥ ଓଂ ତତ୍।"
     },
     {
+      "description": "Tests La",
+      "dev": "अग्निमीळे पुरोहितं यज्ञस्य देवमृत्विजम्",
+      "iast": "agnimīḻe purohitaṃ yajñasya devamṛtvijam",
+      "iastDcs": "agnimīḻe purohitaṃ yajñasya devamṛtvijam",
+      "hk": "agnimILe purohitaM yajJasya devamRtvijam",
+      "optitrans": "agnimiiLe purohitaM yaJNasya devamRtvijam",
+      "slp": "agnimILe purohitaM yajYasya devamftvijam",
+      "wx": "agnimIḻe purohiwaM yajFasya xevamqwvijam",
+      "kannada": "ಅಗ್ನಿಮೀಳೇ ಪುರೋಹಿತಂ ಯಜ್ಞಸ್ಯ ದೇವಮೃತ್ವಿಜಮ್",
+      "malayalam": "അഗ്നിമീളേ പുരോഹിതം യജ്ഞസ്യ ദേവമൃത്വിജമ്",
+      "telugu": "అగ్నిమీళే పురోహితం యజ్ఞస్య దేవమృత్విజమ్",
+      "sinhala": "අග්නිමීළේ පුරෝහිතං යජ්ඤස්ය දේවමෘත්විජම්",
+      "oriya": "ଅଗ୍ନିମୀଳେ ପୁରୋହିତଂ ଯଜ୍ଞସ୍ଯ ଦେଵମୃତ୍ଵିଜମ୍",
+      "gurmukhi": "ਅਗ੍ਨਿਮੀਲ਼ੇ ਪੁਰੋਹਿਤਂ ਯਜ੍ਞਸ੍ਯ ਦੇਵਮृਤ੍ਵਿਜਮ੍",
+      "gujarati": "અગ્નિમીળે પુરોહિતં યજ્ઞસ્ય દેવમૃત્વિજમ્",
+      "assamese": "অগ্নিমীळে পুৰোহিতং যজ্ঞস্য দেবমৃত্বিজম্"
+    },
+    {
+      "description": "Tests Capitalized IAST",
       "dev": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  काष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
       "iast": "Asaya Auṣadhiḥ granthaḥ! ḹkāro.'sti. nāsti leśo'pi saṃśayaḥ. kīlakam? kūpiḥ?  kāṣṭhaṃ bhoḥ. Śaṅkara! jñānam.  sañjīvaya. 12345|| oṃ tat."
+    },
+    {
+      "description": "Tests WX avagraha and anunAsika options",
+      "dev": "लेशोऽपि साँयि",
+      "wx": "leSoZpi, sAzyi"
+    },
+    {
+      "description": "Tests glyphs with nuTka",
+      "TODO": "Fix gujrataati test",
+      "dev": "अएल् अंशाइ पड़िब",
+      "oriya": "ଅଏଲ୍ ଅଂଶାଇ ପଡ଼ିବ",
+      "gujarati": "અએલ્ અંશાઇ પड़િબ",
+      "assamese": "অএল্ অংশাই পড়িৱ",
+      "gurmukhi": "ਅਏਲ੍ ਅਂਸ਼ਾਇ ਪੜਿਬ"
+    },
+    {
+      "description": "Tests glyphs with nuTka - ऱ ऴ set",
+      "dev": "ऱ ऴ",
+      "malayalam": "റ ഴ",
+      "kannada": "ಱ ೞ"
+    },
+    {
+      "description": "ᳵ ᳶ",
+      "dev": "ᳵ ᳶ",
+      "kannada": "ೱ ೲ"
+    },
+    {
+      "description": "Tests nuTka",
+      "comments": "malayalam and telugu have no nuTka",
+      "dev": "छीड़ा चुदाकड़",
+      "oriya": "ଛୀଡ଼ା ଚୁଦାକଡ଼",
+      "gujarati": "છીડ઼ા ચુદાકડ઼",
+      "assamese": "ছীড়া চুদাকড়",
+      "bengali": "ছীড়া চুদাকড়",
+      "kannada": "ಛೀಡ಼ಾ ಚುದಾಕಡ಼",
+      "gurmukhi": "ਛੀਡ਼ਾ ਚੁਦਾਕਡ਼"
+    },
+    {
+      "description": "Tests anunAsika",
+      "dev": "अँअळा",
+      "oriya": "ଅଁଅଳା",
+      "kannada": "ಅಁಅಳಾ",
+      "malayalam": "അഁഅളാ",
+      "gujarati": "અઁઅળા",
+      "assamese": "অঁঅळা",
+      "bengali": "অঁঅळা",
+      "gurmukhi": "ਅਁਅਲ਼ਾ"
+    }
+  ],
+  "to_devanaagarii": [
+    {
+      "description": "Check aDDak and tippee",
+      "dev": "अब्भर अक्क अभंग भुल्ला",
+      "gurmukhi": "ਅੱਭਰ ਅਕੱ ਅਭੰਗ ਭੁਲਾੱ"
     }
   ],
   "from_devanaagarii": [
@@ -23,9 +108,14 @@
       "gurmukhi": "ਅਸਯ ਔਸ਼ਧਿਃ ਗ੍ਰਨ੍ਥਃ! ॡਕਾਰੋ ਨਾਸ੍ਤਿ ਲੇਸ਼ੋऽਪਿ ਸਂਸ਼ਯਃ। ਕੀਲਕਮ੍? ਕੂਪਿਃ?  ਕਸ਼੍ਠਂ ਭੋਃ। ਸ਼ਙ੍ਕਰ! ਜ੍ਞਾਨਮ੍।  ਸਞ੍ਜੀਵਯ। ੧੨੩੪੫॥ ੴ ਤਤ੍। ਅਬ ਅਵ"
     },
     {
-      "description": "optitrans preferred simple conjugate representation",
-      "dev": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  काष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्। क्षेत्रम्",
-      "optitrans": "asaya auShadhiH granthaH! LLIkAro|.asti| nAsti lesho.api saMshayaH| kIlakam? kUpiH?  kAShThaM bhoH| shankara! jnAnam|  sanjIvaya| 12345|| OM tat| xetram"
+      "description": "A general test for Roman scripts without equivalents for some devanAgarI letters, like optitrans",
+      "dev": "पड़िब छीड़ा ऴ ऱ",
+      "optitrans": "paDRiba ChiiDRaa La ra"
+    },
+    {
+      "description": "hrasva e and o",
+      "dev": "ऎट ऒट कॆकॊकि",
+      "optitrans": "ETa OTa kEkOki"
     }
   ]
 }

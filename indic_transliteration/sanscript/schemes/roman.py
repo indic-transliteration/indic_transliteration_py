@@ -140,7 +140,7 @@ class IastScheme(RomanScheme):
                             ḻ kṣ jñ
                             """),
             'symbols': s("""
-                       oṃ ' । ॥
+                       oṃ ' . ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
         }, name=IAST)
@@ -148,6 +148,13 @@ class IastScheme(RomanScheme):
             self['vowels'] = s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self['marks'] = s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self.name = KOLKATA
+        self.synonym_map = {}
+        def add_capitalized_synonyms(some_list):
+            self.synonym_map.update(zip(some_list, [[x.capitalize()] for x in some_list]))
+        add_capitalized_synonyms(self["vowels"])
+        add_capitalized_synonyms(self["consonants"])
+        add_capitalized_synonyms(["oṃ"])
+
 
 class HkScheme(RomanScheme):
     def __init__(self):

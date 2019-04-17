@@ -82,4 +82,4 @@ class GurmukhiScheme(BrahmicScheme):
                        ੴ ऽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
-        }, name=GURMUKHI)
+        }, name=GURMUKHI, synonym_map={"ਂ": ["ੰ"]})

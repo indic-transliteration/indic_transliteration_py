@@ -3,10 +3,6 @@
 import sys
 
 from indic_transliteration.sanscript import Scheme
-from indic_transliteration.sanscript.schemes.brahmic.eastern import BengaliScheme, OriyaScheme
-from indic_transliteration.sanscript.schemes.brahmic.northern import DevanagariScheme, GujaratiScheme, GurmukhiScheme
-from indic_transliteration.sanscript.schemes.brahmic.southern import KannadaScheme, MalayalamScheme, TamilScheme, \
-    TeluguScheme
 
 BENGALI = 'bengali'
 DEVANAGARI = 'devanagari'
@@ -27,9 +23,9 @@ if sys.version_info < (3, 0):
     s = unicode.split
 
 
-class BrahmiScheme(Scheme):
+class BrahmicScheme(Scheme):
     def __init__(self, data=None, synonym_map=None, name=None):
-        super(BrahmiScheme, self).__init__(data=data, synonym_map=synonym_map, name=name, is_roman=False)
+        super(BrahmicScheme, self).__init__(data=data, synonym_map=synonym_map, name=name, is_roman=False)
         self.vowel_to_mark_map = dict(zip(self["vowels"], [""] + self["marks"]))
 
     def do_vyanjana_svara_join(self, vyanjanaanta, svaraadi):
@@ -40,6 +36,10 @@ class BrahmiScheme(Scheme):
             raise ValueError(svaraadi + " is not svaraadi.")
 
 
+from indic_transliteration.sanscript.schemes.brahmic.eastern import BengaliScheme, OriyaScheme
+from indic_transliteration.sanscript.schemes.brahmic.northern import DevanagariScheme, GujaratiScheme, GurmukhiScheme
+from indic_transliteration.sanscript.schemes.brahmic.southern import KannadaScheme, MalayalamScheme, TamilScheme, \
+    TeluguScheme
 SCHEMES = {
     BENGALI: BengaliScheme(),
     DEVANAGARI: DevanagariScheme(),

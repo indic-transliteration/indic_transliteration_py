@@ -1,7 +1,7 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmiScheme, s, BENGALI, ORIYA
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s, BENGALI, ORIYA
 
 
-class BengaliScheme(BrahmiScheme):
+class BengaliScheme(BrahmicScheme):
     def __init__(self):
         super(BengaliScheme, self).__init__({
             'vowels': s("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
@@ -26,7 +26,7 @@ class BengaliScheme(BrahmiScheme):
         }, name=BENGALI)
 
 
-class OriyaScheme(BrahmiScheme):
+class OriyaScheme(BrahmicScheme):
     def __init__(self):
         super(OriyaScheme, self).__init__({
             'vowels': s("""ଅ ଆ ଇ ଈ ଉ ଊ ଋ ୠ ଌ ୡ ଏ ଐ ଓ ଔ"""),

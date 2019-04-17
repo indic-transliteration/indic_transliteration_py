@@ -83,7 +83,7 @@ class OptitransScheme(RomanScheme):
             'vowels': s("""a A i I u U R RR LLi LLI e ai o au E O"""),
             'marks': s("""A i I u U R RR LLi LLI e ai o au E O"""),
             'virama': [''],
-            'yogavaahas': s('M H .N'),
+            'yogavaahas': s('M H .N kH pH'),
             'consonants': s("""
                             k kh g gh ~N
                             ch Ch j jh ~n
@@ -93,7 +93,8 @@ class OptitransScheme(RomanScheme):
                             y r l v
                             sh Sh s h
                             L x jn
-                            """),
+                            """)
+                          + s("""ऩ .Rh ऴ .k q .g z .D .Dh f य़"""),
             # All those special conversions like nk -> ङ्क् are hard-coded when this scheme definition is consumed to produce a scheme map. Hence, they don't show up here.
             'symbols': s("""
                        OM .a | ||

@@ -7,7 +7,7 @@ class KannadaScheme(BrahmicScheme):
             'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ ಎ ಒ"""),
             'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ ೆ ೊ"""),
             'virama': s('್'),
-            'yogavaahas': s('ಂ ಃ ಁ'),
+            'yogavaahas': s('ಂ ಃ ಁ ೱ ೲ ಼'),
             'consonants': s("""
                             ಕ ಖ ಗ ಘ ಙ
                             ಚ ಛ ಜ ಝ ಞ
@@ -32,7 +32,7 @@ class MalayalamScheme(BrahmicScheme):
             'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഒ"""),
             'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ െ ൊ"""),
             'virama': s('്'),
-            'yogavaahas': s('ം ഃ ँ'),
+            'yogavaahas': s('ം ഃ ഁ'),
             'consonants': s("""
                             ക ഖ ഗ ഘ ങ
                             ച ഛ ജ ഝ ഞ

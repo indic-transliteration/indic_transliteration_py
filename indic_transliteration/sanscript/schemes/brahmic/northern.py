@@ -7,7 +7,7 @@ class DevanagariScheme(BrahmicScheme):
             'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ"""),
             'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ"""),
             'virama': s('्'),
-            'yogavaahas': s('ं ः ँ'),
+            'yogavaahas': s('ं ः ँ ᳵ ᳶ ़'),
             'consonants': s("""
                             क ख ग घ ङ
                             च छ ज झ ञ
@@ -40,7 +40,7 @@ class GujaratiScheme(BrahmicScheme):
             'vowels': s("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
             'marks': s("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),
             'virama': s('્'),
-            'yogavaahas': s('ં ઃ ઁ'),
+            'yogavaahas': s('ં ઃ ઁ ᳵ ᳶ ઼'),
             'consonants': s("""
                             ક ખ ગ ઘ ઙ
                             ચ છ જ ઝ ઞ
@@ -66,7 +66,7 @@ class GurmukhiScheme(BrahmicScheme):
             'marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', '', '',
                       '', '', 'ੇ', 'ੈ', 'ੋ', 'ੌ'],
             'virama': s('੍'),
-            'yogavaahas': s('ਂ ਃ ਁ'),
+            'yogavaahas': s('ਂ ਃ ਁ ᳵ ᳶ ਼'),
             'consonants': s("""
                             ਕ ਖ ਗ ਘ ਙ
                             ਚ ਛ ਜ ਝ ਞ

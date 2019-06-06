@@ -52,7 +52,7 @@ DATA = {
     'marks': 'ક ખા ગિ ઘી ઙુ ચૂ છૃ જૄ ઝૢ ઞૣ ટે ઠૈ ડો ઢૌ ણં તઃ થ્',
     'consonants': """ક ખ ગ ઘ ઙ ચ છ જ ઝ ઞ ટ ઠ ડ ઢ ણ ત થ દ ધ ન પ ફ બ ભ મ
                          ય ર લ વ શ ષ સ હ ળ""",
-    'symbols': 'ૐ ૤ ૥ ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯',
+    'symbols': 'ૐ । ॥૥ ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯',
     'putra': 'પુત્ર',
     'naraIti': 'નર ઇતિ',
     'sentence': 'ધર્મક્ષેત્રે કુરુક્ષેત્રે સમવેતા યુયુત્સવઃ ૤'
@@ -111,10 +111,10 @@ DATA = {
     'consonants': """ka kha ga gha ṅa ca cha ja jha ña ṭa ṭha ḍa ḍha ṇa
                          ta tha da dha na pa pha ba bha ma
                          ya ra la va śa ṣa sa ha ḻa""",
-    'symbols': 'oṃ । ॥ 0 1 2 3 4 5 6 7 8 9',
+    'symbols': 'oṃ | || 0 1 2 3 4 5 6 7 8 9',
     'putra': 'putra',
     'naraIti': 'nara iti',
-    'sentence': 'dharmakṣetre kurukṣetre samavetā yuyutsavaḥ ।'
+    'sentence': 'dharmakṣetre kurukṣetre samavetā yuyutsavaḥ |'
   },
   sanscript.KOLKATA: {
     'vowels': 'a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au',
@@ -122,10 +122,10 @@ DATA = {
     'consonants': """ka kha ga gha ṅa ca cha ja jha ña ṭa ṭha ḍa ḍha ṇa
                          ta tha da dha na pa pha ba bha ma
                          ya ra la va śa ṣa sa ha ḻa""",
-    'symbols': 'oṃ । ॥ 0 1 2 3 4 5 6 7 8 9',
+    'symbols': 'oṃ | || 0 1 2 3 4 5 6 7 8 9',
     'putra': 'putra',
     'naraIti': 'nara iti',
-    'sentence': 'dharmakṣētrē kurukṣētrē samavētā yuyutsavaḥ ।'
+    'sentence': 'dharmakṣētrē kurukṣētrē samavētā yuyutsavaḥ |'
   },
   sanscript.KANNADA: {
     'vowels': 'ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ',
@@ -226,7 +226,7 @@ def test_to_roman(from_scheme, to_scheme):
 
 
 @pytest.mark.parametrize("from_scheme", roman.ALL_SCHEME_IDS)
-@pytest.mark.parametrize("to_scheme", brahmic.ALL_SCHEME_IDS)
+@pytest.mark.parametrize("to_scheme", sanscript.BRAHMIC_SCHEMES.keys())
 def test_to_brahmic(from_scheme, to_scheme):
   """Test roman to Brahmic."""
   _compare_all_data_between_schemes(from_scheme, to_scheme)
@@ -246,13 +246,13 @@ def test_brahmic_to_roman(to_scheme):
   _compare_all_data_between_schemes(from_scheme, to_scheme)
 
 
-@pytest.mark.parametrize("to_scheme", brahmic.ALL_SCHEME_IDS)
+@pytest.mark.parametrize("to_scheme", sanscript.BRAHMIC_SCHEMES.keys())
 def test_devanagari_to_brahmic(to_scheme):
   """Test Brahmic to Brahmic."""
   from_scheme = sanscript.DEVANAGARI
   _compare_all_data_between_schemes(from_scheme, to_scheme)
 
-@pytest.mark.parametrize("scheme_id", brahmic.ALL_SCHEME_IDS)
+@pytest.mark.parametrize("scheme_id", sanscript.BRAHMIC_SCHEMES.keys())
 def test_vowel_to_mark_map(scheme_id):
   brahmic_scheme = sanscript.SCHEMES[scheme_id]
   assert brahmic_scheme.vowel_to_mark_map[brahmic_scheme.from_devanagari("अ")] == ""

@@ -90,6 +90,11 @@
   ],
   "to_devanaagarii": [
     {
+      "description": "Tests optitrans anunAsikas",
+      "dev": "सङ्क्षेपः",
+      "optitrans": "sanxepaH"
+    },
+    {
       "description": "Check aDDak and tippee",
       "dev": "अब्भर अक्क मूंडा भुल्ला",
       "gurmukhi": "ਅੱਭਰ ਅੱਕ ਮੂੰਡਾ ਭੁੱਲਾ"

@@ -53,7 +53,7 @@ class GujaratiScheme(BrahmicScheme):
                             """)
                           + s("""ન઼ ર઼ ળ઼ ક઼ ખ઼ ગ઼ જ઼ ડ઼ ઢ઼ ફ઼ ય઼"""),
             'symbols': s("""
-                       ૐ ઽ ૤। ॥૥
+                       ૐ ઽ । ॥
                        ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯
                        """)
         }, name=GUJARATI)

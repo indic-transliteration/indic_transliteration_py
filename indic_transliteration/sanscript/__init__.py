@@ -90,10 +90,13 @@ WX = roman.WX
 ## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.
 SCHEMES = {}
 SCHEMES.update(roman.SCHEMES)
-SCHEMES.update(northern.SCHEMES)
-SCHEMES.update(southern.SCHEMES)
-SCHEMES.update(eastern.SCHEMES)
 
+BRAHMIC_SCHEMES = {}
+BRAHMIC_SCHEMES.update(northern.SCHEMES)
+BRAHMIC_SCHEMES.update(southern.SCHEMES)
+BRAHMIC_SCHEMES.update(eastern.SCHEMES)
+
+SCHEMES.update(BRAHMIC_SCHEMES)
 
 class SchemeMap(object):
   """Maps one :class:`Scheme` to another. This class grabs the metadata and
@@ -144,6 +147,7 @@ class SchemeMap(object):
       conjunct_map = {
         "nk": self.consonants["~N"] + to_scheme_virama + self.consonants["k"],
         "nkh": self.consonants["~N"] + to_scheme_virama + self.consonants["kh"],
+        "nx": self.consonants["~N"] + to_scheme_virama + self.consonants["x"],
         "ng": self.consonants["~N"] + to_scheme_virama +self.consonants["g"],
         "ngh": self.consonants["~N"] + to_scheme_virama +self.consonants["gh"],
         "nch": self.consonants["~n"] + to_scheme_virama +self.consonants["ch"],

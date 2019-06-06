@@ -68,7 +68,7 @@ class ItransScheme(RomanScheme):
     def fix_lazy_anusvaara(self, data_in):
         data_out = data_in
         import regex
-        data_out = regex.sub(r'M( *)([kg])', r'~N\1\2',   data_out)
+        data_out = regex.sub(r'M( *)([kgx])', r'~N\1\2',   data_out)
         data_out = regex.sub(r'M( *)([cCj])', r'~n\1\2',   data_out)
         data_out = regex.sub(r'M( *)([tdn])', r'n\1\2',   data_out)
         data_out = regex.sub(r'M( *)([TDN])', r'N\1\2',   data_out)
@@ -122,6 +122,7 @@ class OptitransScheme(RomanScheme):
             text = text.replace("t", t_replacement)
         text = text.lower()
         return text
+
 
 class IastScheme(RomanScheme):
     def __init__(self, kolkata_variant=False):

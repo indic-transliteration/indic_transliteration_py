@@ -141,7 +141,7 @@ class IastScheme(RomanScheme):
                             ś ṣ s h
                             ḻ kṣ jñ
                             """)
-                          + s("""ṉa ṟa ḻa qa k͟ha ġa za ṛa ṛha fa ẏa"""),
+                          + s("""ṉa ṟa ḽa qa k͟ha ġa za ṛa ṛha fa ẏa"""),
             'symbols': s("""
                        oṃ ' | ||
                        0 1 2 3 4 5 6 7 8 9

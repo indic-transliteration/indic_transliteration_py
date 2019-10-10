@@ -1,5 +1,7 @@
 import sys
 
+import regex
+
 from indic_transliteration.sanscript import Scheme
 
 # Roman schemes
@@ -40,16 +42,19 @@ class RomanScheme(Scheme):
     def simplify_accent_notation(cls, text):
         # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
         text = text.replace("á", "á")
-        text = text.replace("é", "é")
         text = text.replace("í", "í")
-        text = text.replace("ó", "ó")
         text = text.replace("ú", "ú")
+        text = text.replace("ŕ", "ŕ")
+        text = text.replace("é", "é")
+        text = text.replace("ó", "ó")
 
         text = text.replace("à", "à")
-        text = text.replace("è", "è")
         text = text.replace("ì", "ì")
-        text = text.replace("ò", "ò")
         text = text.replace("ù", "ù")
+        text = text.replace("è", "è")
+        text = text.replace("ò", "ò")
+        
+        text = regex.sub("([̀́])([̥̇])", "\\2\\1", text)
         return text
 
     @classmethod
@@ -57,6 +62,8 @@ class RomanScheme(Scheme):
         # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
         text = text.replace("́", "᳘")
         text = text.replace("̀", "᳘")
+        text = text.replace("᳘ं", "ं᳘")
+        text = text.replace("᳘ः", "ः᳘")
         return text
 
 
@@ -228,7 +235,11 @@ class TitusScheme(RomanScheme):
                        oṃ ' . ..
                        0 1 2 3 4 5 6 7 8 9
                        """)
-        }, name=TITUS, synonym_map={})
+        }, name=TITUS, synonym_map={
+            "m̐": ["ṁ"], 
+            "r̥": ["ṛ"], "r̥̄": ["ṝ"], "oṃ": ["ŏṃ"],
+            ".": ["|", "/"], "..": ["||", "//"]
+        })
 
 
 class VelthiusScheme(RomanScheme):

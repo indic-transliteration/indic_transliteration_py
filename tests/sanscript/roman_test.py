@@ -16,3 +16,5 @@ def test_optitrans_to_lay_indian():
     assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("taM jitvA") == "tam jitva"
     assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("kRShNa") == "krishna"
 
+def test_simplify_accent_notation():
+    assert sanscript.roman.RomanScheme.simplify_accent_notation("dŕ̥ṃhasva") == "dŕ̥ṃhasva"

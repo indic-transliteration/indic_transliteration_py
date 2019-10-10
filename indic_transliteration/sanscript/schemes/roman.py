@@ -7,6 +7,7 @@ from indic_transliteration.sanscript import Scheme
 HK = 'hk'
 IAST = 'iast'
 ITRANS = 'itrans'
+TITUS = 'titus'
 
 """Optitransv1 is described in https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1 . OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु)."""
 OPTITRANS = 'optitrans'
@@ -14,8 +15,6 @@ KOLKATA = 'kolkata'
 SLP1 = 'slp1'
 VELTHUIS = 'velthuis'
 WX = 'wx'
-
-ALL_SCHEME_IDS = [ HK,IAST, SLP1, ITRANS,WX, KOLKATA, VELTHUIS, OPTITRANS ]
 
 s = str.split
 if sys.version_info < (3, 0):
@@ -181,8 +180,34 @@ class HkScheme(RomanScheme):
                        0 1 2 3 4 5 6 7 8 9
                        """)
         }, name=HK, synonym_map={"|": ["."], "||": [".."]})
-        
-        
+
+
+
+
+class TitusScheme(RomanScheme):
+    def __init__(self):
+        super(TitusScheme, self).__init__({
+            'vowels': s("""a ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"""),
+            'marks': s("""ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"""),
+            'virama': [''],
+            'yogavaahas': s('ṃ ḥ m̐'),
+            'consonants': s("""
+                            k kʰ g gʰ ṅ
+                            c cʰ j jʰ ñ
+                            ṭ ṭʰ ḍ ḍʰ ṇ
+                            t tʰ d dʰ n
+                            p pʰ b bʰ m
+                            y r l v
+                            ś ṣ s h
+                            ḷ kṣ jñ
+                            """),
+            'symbols': s("""
+                       oṃ ' . ..
+                       0 1 2 3 4 5 6 7 8 9
+                       """)
+        }, name=TITUS, synonym_map={})
+
+
 class VelthiusScheme(RomanScheme):
     def __init__(self):
         super(VelthiusScheme, self).__init__({
@@ -265,5 +290,9 @@ SCHEMES = {
     IAST: IastScheme(),
     KOLKATA: IastScheme(kolkata_variant=True),
     SLP1: Slp1Scheme(),
-    WX: WxScheme()
+    WX: WxScheme(),
+    TITUS: TitusScheme()
 }
+
+ALL_SCHEME_IDS = SCHEMES.keys()
+

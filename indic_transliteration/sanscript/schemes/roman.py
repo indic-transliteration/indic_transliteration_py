@@ -54,7 +54,7 @@ class RomanScheme(Scheme):
         text = text.replace("è", "è")
         text = text.replace("ò", "ò")
         
-        text = regex.sub("([̀́])([̥̇])", "\\2\\1", text)
+        text = regex.sub("([̀́])([̥̇¯̄]+)", "\\2\\1", text)
         return text
 
     @classmethod
@@ -62,8 +62,7 @@ class RomanScheme(Scheme):
         # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
         text = text.replace("́", "᳘")
         text = text.replace("̀", "᳘")
-        text = text.replace("᳘ं", "ं᳘")
-        text = text.replace("᳘ः", "ः᳘")
+        text = regex.sub("᳘([ंःँ])", "\\1᳘", text)
         return text
 
 
@@ -170,7 +169,7 @@ class IastScheme(RomanScheme):
                             ś ṣ s h
                             ḻ kṣ jñ
                             """)
-                          + s("""ṉa ṟa ḽa qa k͟ha ġa za ṛa ṛha fa ẏa"""),
+                          + s("""ṉa ṟa ḽa qa k͟ha ġa za   fa ẏa"""),
             'symbols': s("""
                        oṃ ' | ||
                        0 1 2 3 4 5 6 7 8 9
@@ -180,9 +179,19 @@ class IastScheme(RomanScheme):
             self['vowels'] = s("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self['marks'] = s("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self.name = KOLKATA
-        self.synonym_map = {"|": ["."], "||": [".."], "'": ["`"]}
+        self.synonym_map = {
+            "|": [".", "/"], "||": ["..", "//"], "'": ["`"],
+            "m̐": ["ṁ"],
+            "ṛ": ["r̥"], "ṝ": ["ṝ", "r̥̄", "r̥̄"]
+        }
+        
+        # A local function.
         def add_capitalized_synonyms(some_list):
-            self.synonym_map.update(zip(some_list, [[x.capitalize()] for x in some_list]))
+            for x in some_list:
+                synonyms = [x.capitalize()]
+                if x in self.synonym_map:
+                    synonyms = self.synonym_map[x] + [y.capitalize() for y in self.synonym_map[x]]
+                self.synonym_map[x] = synonyms
         add_capitalized_synonyms(self["vowels"])
         add_capitalized_synonyms(self["consonants"])
         add_capitalized_synonyms(["oṃ"])
@@ -212,6 +221,7 @@ class HkScheme(RomanScheme):
         }, name=HK, synonym_map={"|": ["."], "||": [".."]})
 
 
+iast_scheme = IastScheme()
 
 
 class TitusScheme(RomanScheme):
@@ -220,7 +230,7 @@ class TitusScheme(RomanScheme):
             'vowels': s("""a ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"""),
             'marks': s("""ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"""),
             'virama': [''],
-            'yogavaahas': s('ṃ ḥ m̐'),
+            'yogavaahas': iast_scheme['yogavaahas'],
             'consonants': s("""
                             k kʰ g gʰ ṅ
                             c cʰ j jʰ ñ
@@ -237,7 +247,7 @@ class TitusScheme(RomanScheme):
                        """)
         }, name=TITUS, synonym_map={
             "m̐": ["ṁ"], 
-            "r̥": ["ṛ"], "r̥̄": ["ṝ"], "oṃ": ["ŏṃ"],
+            "r̥": ["ṛ"], "r̥̄": ["ṝ", "ṝ", "r̥̄"], "oṃ": ["ŏṃ"],
             ".": ["|", "/"], "..": ["||", "//"]
         })
 
@@ -321,7 +331,7 @@ SCHEMES = {
     VELTHUIS: VelthiusScheme(),
     OPTITRANS: OptitransScheme(),
     ITRANS: ItransScheme(),
-    IAST: IastScheme(),
+    IAST: iast_scheme,
     KOLKATA: IastScheme(kolkata_variant=True),
     SLP1: Slp1Scheme(),
     WX: WxScheme(),

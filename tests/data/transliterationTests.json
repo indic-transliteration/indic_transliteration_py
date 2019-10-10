@@ -56,6 +56,11 @@
       "gurmukhi": "ਅਏਲ੍ ਅਂਸ਼ਾਇ ਪੜਿਬ"
     },
     {
+      "description": "Tests R RR",
+      "titus": "vr̥kṣyaṃ",
+      "dev": "वृक्ष्यं"
+    },
+    {
       "description": "Tests glyphs with nuTka - ऱ ऴ set",
       "dev": "ऱ ऴ",
       "malayalam": "റ ഴ",

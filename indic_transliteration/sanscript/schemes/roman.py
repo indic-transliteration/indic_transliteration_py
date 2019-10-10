@@ -36,6 +36,29 @@ class RomanScheme(Scheme):
         from indic_transliteration import sanscript
         return sanscript.transliterate(data=sanscript.transliterate(_from=self.name, _to=sanscript.DEVANAGARI, data=data), _from=sanscript.DEVANAGARI, _to=self.name)
 
+    @classmethod
+    def simplify_accent_notation(cls, text):
+        # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
+        text = text.replace("á", "á")
+        text = text.replace("é", "é")
+        text = text.replace("í", "í")
+        text = text.replace("ó", "ó")
+        text = text.replace("ú", "ú")
+
+        text = text.replace("à", "à")
+        text = text.replace("è", "è")
+        text = text.replace("ì", "ì")
+        text = text.replace("ò", "ò")
+        text = text.replace("ù", "ù")
+        return text
+
+    @classmethod
+    def to_shatapatha_svara(cls, text):
+        # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
+        text = text.replace("́", "᳘")
+        text = text.replace("̀", "᳘")
+        return text
+
 
 class ItransScheme(RomanScheme):
     def __init__(self):
@@ -207,21 +230,6 @@ class TitusScheme(RomanScheme):
                        """)
         }, name=TITUS, synonym_map={})
 
-    @classmethod
-    def simplify_accent_notation(cls, text):
-        # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
-        text = text.replace("á", "á")
-        text = text.replace("é", "é")
-        text = text.replace("í", "í")
-        text = text.replace("ó", "ó")
-        text = text.replace("ú", "ú")
-
-        text = text.replace("à", "à")
-        text = text.replace("è", "è")
-        text = text.replace("ì", "ì")
-        text = text.replace("ò", "ò")
-        text = text.replace("ù", "ù")
-        return text
 
 class VelthiusScheme(RomanScheme):
     def __init__(self):

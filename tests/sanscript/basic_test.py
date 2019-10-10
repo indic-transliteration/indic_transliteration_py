@@ -15,9 +15,8 @@ import logging
 import pytest
 
 from indic_transliteration import sanscript
-
 # Remove all handlers associated with the root logger object.
-from indic_transliteration.sanscript.schemes import roman, brahmic
+from indic_transliteration.sanscript.schemes import roman
 
 for handler in logging.root.handlers[:]:
   logging.root.removeHandler(handler)
@@ -56,6 +55,16 @@ DATA = {
     'putra': 'પુત્ર',
     'naraIti': 'નર ઇતિ',
     'sentence': 'ધર્મક્ષેત્રે કુરુક્ષેત્રે સમવેતા યુયુત્સવઃ ।'
+  },
+  sanscript.TITUS: {
+    'vowels': 'a ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au',
+    'marks': 'ka kʰā gi gʰī ṅu cū cʰr̥ jr̥̄ jʰl̥ ñl̥̄ ṭe ṭʰai ḍo ḍʰau ṇaṃ taḥ tʰ',
+    'consonants': """ka kʰa ga gʰa ṅa ca cʰa ja jʰa ña ṭa ṭʰa ḍa ḍʰa ṇa ta tʰa da dʰa na pa pʰa ba bʰa ma
+    ya ra la va śa ṣa sa ha ḷa""",
+    'symbols': 'oṃ . .. 0 1 2 3 4 5 6 7 8 9',
+    'putra': 'putra',
+    'naraIti': 'nara iti',
+    'sentence': 'dʰarmakṣetre kurukṣetre samavetā yuyutsavaḥ .'
   },
   sanscript.HK: {
     'vowels': 'a A i I u U R RR lR lRR e ai o au',

@@ -78,6 +78,7 @@ MALAYALAM = southern.MALAYALAM
 ORIYA = eastern.ORIYA
 TAMIL = southern.TAMIL
 TELUGU = southern.TELUGU
+TITUS = roman.TITUS
 HK = roman.HK
 IAST = roman.IAST
 ITRANS = roman.ITRANS

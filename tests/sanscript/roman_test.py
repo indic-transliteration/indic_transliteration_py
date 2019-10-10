@@ -18,3 +18,4 @@ def test_optitrans_to_lay_indian():
 
 def test_simplify_accent_notation():
     assert sanscript.roman.RomanScheme.simplify_accent_notation("dŕ̥ṃhasva") == "dŕ̥ṃhasva"
+    assert sanscript.roman.RomanScheme.simplify_accent_notation("pitŕ̥̄ṃs") == "pitr̥̄́ṃs"

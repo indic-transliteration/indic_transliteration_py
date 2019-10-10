@@ -207,6 +207,21 @@ class TitusScheme(RomanScheme):
                        """)
         }, name=TITUS, synonym_map={})
 
+    @classmethod
+    def simplify_accent_notation(cls, text):
+        # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
+        text = text.replace("á", "á")
+        text = text.replace("é", "é")
+        text = text.replace("í", "í")
+        text = text.replace("ó", "ó")
+        text = text.replace("ú", "ú")
+
+        text = text.replace("à", "à")
+        text = text.replace("è", "è")
+        text = text.replace("ì", "ì")
+        text = text.replace("ò", "ò")
+        text = text.replace("ù", "ù")
+        return text
 
 class VelthiusScheme(RomanScheme):
     def __init__(self):

@@ -23,7 +23,7 @@ class DevanagariScheme(BrahmicScheme):
                        ॐ ऽ । ॥
                        ० १ २ ३ ४ ५ ६ ७ ८ ९
                        """)
-        }, name=DEVANAGARI)
+        }, name=DEVANAGARI, synonym_map={'फ़': ["फ़"], "ड़": ["ड़"]})
 
     @classmethod
     def fix_lazy_visarga(cls, data_in):
@@ -63,8 +63,8 @@ class GurmukhiScheme(BrahmicScheme):
     def __init__(self):
         super(GurmukhiScheme, self).__init__({
             'vowels': s("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),
-            'marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', '', '',
-                      '', '', 'ੇ', 'ੈ', 'ੋ', 'ੌ'],
+            'marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', 'ृ', 'ॄ',
+                      'ॢ', 'ॣ', 'ੇ', 'ੈ', 'ੋ', 'ੌ'], # Includes some fake mAtrA-s from devanAgarI
             'virama': s('੍'),
             'yogavaahas': s('ਂ ਃ ਁ ᳵ ᳶ ਼'),
             'consonants': s("""

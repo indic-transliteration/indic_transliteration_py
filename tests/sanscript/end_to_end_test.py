@@ -48,11 +48,11 @@ def get_test_cases(test_tuples, ignored_cases=None):
 
 
 test_tuples = test_data["to_devanaagarii"] + test_data["devanaagarii_round_trip"]
-test_cases = get_test_cases(test_tuples=test_tuples, ignored_cases=[])
+test_cases_to_dev = get_test_cases(test_tuples=test_tuples, ignored_cases=[])
 
-@pytest.mark.parametrize("test_case", test_cases)
+@pytest.mark.parametrize("test_case", test_cases_to_dev)
 def test_to_devanagari(test_case):
-    logging.debug(str(test_case))
+    # logging.debug(str(test_case))
     dev_string = test_case["dev_string"]
     script = test_case["script"]
     text = test_case["text"]
@@ -62,26 +62,23 @@ def test_to_devanagari(test_case):
 
 test_tuples = test_data["from_devanaagarii"]\
               + test_data["devanaagarii_round_trip"]
-test_cases = get_test_cases(test_tuples=test_tuples, ignored_cases=[])
+ignored_cases = []
+test_cases_from_dev = get_test_cases(test_tuples=test_tuples, ignored_cases=ignored_cases)
 
-@pytest.mark.parametrize("test_case", test_cases)
+@pytest.mark.parametrize("test_case", test_cases_from_dev)
 def test_from_devanagari(test_case):
-    logging.debug(str(test_case))
     dev_string = test_case["dev_string"]
     script = test_case["script"]
     expected_text = test_case["text"]
-    if regex.search("ड़", dev_string):
-        logging.warning("TODO: Ignoring test: " + dev_string)
-        return 
+    # logging.debug("Converting %s, expecting %s in %s" % (dev_string, expected_text, script))
     if script in SCRIPT_NAME_MAP.keys():
         script = SCRIPT_NAME_MAP[script]
     if script in "dev" or (script not in sanscript.SCHEMES.keys()):
         logging.debug("Skipping over script - " + script)
         return 
     result = sanscript.transliterate(dev_string, sanscript.DEVANAGARI, script)
-    expected_text_dev = sanscript.transliterate(dev_string, script, sanscript.DEVANAGARI)
-    result_dev = sanscript.transliterate(dev_string, script, sanscript.DEVANAGARI)
-    assert expected_text == result or expected_text_dev==result_dev, "Failed to convert to " + script + " from devanAgarI: got " + result + " instead of " + expected_text
+    result_dev = sanscript.transliterate(result, script, sanscript.DEVANAGARI)
+    assert expected_text == result or dev_string==result_dev, "Failed to convert to " + script + " from devanAgarI: got " + result + " instead of " + expected_text
 
 
 def test_optitrans_to_itrans():

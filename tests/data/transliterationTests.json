@@ -48,12 +48,13 @@
     },
     {
       "description": "Tests glyphs with nuTka",
-      "TODO": "Fix gujrataati test",
-      "dev": "अएल् अंशाइ पड़िब",
-      "oriya": "ଅଏଲ୍ ଅଂଶାଇ ପଡ଼ିବ",
-      "gujarati": "અએલ્ અંશાઇ પड़િબ",
-      "assamese": "অএল্ অংশাই পড়িৱ",
-      "gurmukhi": "ਅਏਲ੍ ਅਂਸ਼ਾਇ ਪੜਿਬ"
+      "TODO": "Fix gujrAti test",
+      "dev": "अंशाइ पड़िब फ़कीर ज़रूर",
+      "oriya": "ଅଂଶାଇ ପଡ଼ିବ ଫ଼କୀର ଜ଼ରୂର",
+      "gujarati": "અંશાઇ પડ઼િબ ફ઼કીર જ઼રૂર",
+      "assamese": "অংশাই পড়িৱ",
+      "gurmukhi": "ਅਂਸ਼ਾਇ ਪੜਿਬ ਫ਼ਕੀਰ ਜ਼ਰੂਰ",
+      "itrans": "aMshaai pa.Diba fakiira zaruura"
     },
     {
       "description": "Tests R RR",
@@ -120,8 +121,8 @@
     },
     {
       "description": "A general test for Roman scripts without equivalents for some devanAgarI letters, like optitrans",
-      "dev": "पड़िब छीड़ा ऴ ऱ",
-      "optitrans": "paDRiba ChiiDRaa La ra"
+      "dev": "पड़िब छीड़ा ऴ ऱ",
+      "optitrans": "pa.Diba Chii.Daa .La .Rha"
     },
     {
       "description": "hrasva e and o",

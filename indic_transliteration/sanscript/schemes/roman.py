@@ -82,7 +82,8 @@ class ItransScheme(RomanScheme):
                             y r l v
                             sh Sh s h
                             L kSh j~n
-                            """),
+                            """)
+                          + s("""ऩ ऱ ऴ q K G z .D .Dh f य़"""),
             'symbols': s("""
                        OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
@@ -90,7 +91,7 @@ class ItransScheme(RomanScheme):
         }, synonym_map={
             "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
             "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY", "jJN"],
-            "||": [".."], "|": ["."],
+            "||": [".."], "|": ["."]
         }, name=ITRANS)
 
     def fix_lazy_anusvaara(self, data_in):
@@ -122,7 +123,7 @@ class OptitransScheme(RomanScheme):
                             sh Sh s h
                             L x jn
                             """)
-                          + s("""ऩ .Rh ऴ .k q .g z .D .Dh f य़"""),
+                          + s("""ऩ .Rh .L .k q .g z .D .Dh f य़"""),
             # All those special conversions like nk -> ङ्क् are hard-coded when this scheme definition is consumed to produce a scheme map. Hence, they don't show up here.
             'symbols': s("""
                        OM .a | ||

@@ -16,6 +16,7 @@ DEVANAGARI = 'devanagari'
 KANNADA = 'kannada'
 MALAYALAM = 'malayalam'
 TAMIL = 'tamil'
+GRANTHA = 'grantha'
 TELUGU = 'telugu'
 
 # Roman schemes

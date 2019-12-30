@@ -127,6 +127,7 @@ class TeluguScheme(BrahmicScheme):
 KANNADA = 'kannada'
 MALAYALAM = 'malayalam'
 TAMIL = 'tamil'
+GRANTHA = 'grantha'
 TELUGU = 'telugu'
 SCHEMES = {
     KANNADA: KannadaScheme(),

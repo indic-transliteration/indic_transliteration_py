@@ -77,6 +77,7 @@ KANNADA = southern.KANNADA
 MALAYALAM = southern.MALAYALAM
 ORIYA = eastern.ORIYA
 TAMIL = southern.TAMIL
+GRANTHA = southern.GRANTHA
 TELUGU = southern.TELUGU
 TITUS = roman.TITUS
 HK = roman.HK

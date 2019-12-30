@@ -22,3 +22,10 @@ class BrahmicScheme(Scheme):
             return vyanjanaanta[:-1] + self.vowel_to_mark_map[svaraadi[0]] + svaraadi[1:]
         else:
             raise ValueError(svaraadi + " is not svaraadi.")
+
+    def apply_roman_numerals(self, in_string):
+        brahmic_numerals = self['symbols'][4:]
+        out_string = in_string
+        for numeral in range(0,10):
+            out_string = out_string.replace(brahmic_numerals[numeral], str(numeral))
+        return out_string

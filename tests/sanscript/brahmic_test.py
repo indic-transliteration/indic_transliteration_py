@@ -12,4 +12,7 @@ def test_fix_lazy_visarga():
 def test_do_vyanjana_svara_join():
     devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
     assert devanagari.do_vyanjana_svara_join("ह्र्", "ईः") == "ह्रीः"
-    
+
+def test_apply_roman_numerals():
+    devanagari_str = "हरि बोल १ ३ ५४ ६ ९को"
+    assert sanscript.SCHEMES[sanscript.DEVANAGARI].apply_roman_numerals(devanagari_str) == "हरि बोल 1 3 54 6 9को"

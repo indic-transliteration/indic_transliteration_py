@@ -75,6 +75,30 @@ class TamilScheme(BrahmicScheme):
         }, name=TAMIL)
 
 
+class GranthaScheme(BrahmicScheme):
+    def __init__(self):
+        super(GranthaScheme, self).__init__({
+            'vowels': s("""𑌅 𑌆 𑌇 𑌈 𑌉 𑌊 𑌋 𑍠 𑌌 𑍡 𑌏 𑌐 𑌓 𑌔 𑌏𑌀 𑌓𑌀"""),
+            'marks': s("""𑌾 𑌿 𑍀 𑍁 𑍂 𑍃 𑍄 𑍢 𑍣 𑍇 𑍈 𑍋 𑍗 𑍇𑌀 𑍋𑌀"""),
+            'virama': s('𑍍'),
+            'yogavaahas': s('𑌂 𑌃 𑌁'),
+            'consonants': s("""
+                            𑌕 𑌖 𑌗 𑌘 𑌙
+                            𑌚 𑌛 𑌜 𑌝 𑌞
+                            𑌟 𑌠 𑌡 𑌢 𑌣
+                            𑌤 𑌥 𑌦 𑌧 𑌨
+                            𑌪 𑌫 𑌬 𑌭 𑌮
+                            𑌯 𑌰 𑌲 𑌵
+                            𑌳 𑌕𑍍𑌷 𑌜𑍍𑌞
+                            𑌨𑌼 𑌰𑌼 𑌳𑌼
+                            """) + s("""ன ற ழ"""),
+            'symbols': s("""
+                       𑍐 𑌽 । ॥
+                       ௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯
+                       """)
+        }, name=GRANTHA)
+
+
 class TeluguScheme(BrahmicScheme):
     def __init__(self):
         super(TeluguScheme, self).__init__({
@@ -108,5 +132,6 @@ SCHEMES = {
     KANNADA: KannadaScheme(),
     MALAYALAM: MalayalamScheme(),
     TAMIL: TamilScheme(),
+    GRANTHA: GranthaScheme(),
     TELUGU: TeluguScheme()
 }

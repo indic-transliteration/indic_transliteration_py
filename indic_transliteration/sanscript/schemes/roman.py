@@ -83,7 +83,7 @@ class ItransScheme(RomanScheme):
                             sh Sh s h
                             L kSh j~n
                             """)
-                          + s("""ऩ ऱ ऴ q K G z .D .Dh f य़"""),
+                          + s("""n2 r2 zh q K G z .D .Dh f य़"""),
             'symbols': s("""
                        OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
@@ -170,7 +170,7 @@ class IastScheme(RomanScheme):
                             ś ṣ s h
                             ḻ kṣ jñ
                             """)
-                          + s("""ṉa ṟa ḽa qa k͟ha ġa za   fa ẏa"""),
+                          + s("""n r̂ ḽ q k͟h ġ z f ẏ"""),
             'symbols': s("""
                        oṃ ' | ||
                        0 1 2 3 4 5 6 7 8 9

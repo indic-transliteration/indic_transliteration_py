@@ -53,11 +53,11 @@ class MalayalamScheme(BrahmicScheme):
 class TamilScheme(BrahmicScheme):
     def __init__(self):
         super(TamilScheme, self).__init__({
-            'vowels': s("""அ ஆ இ ஈ உ ஊ ऋ ॠ ऌ ॡ ஏ ஐ ஓ ஔ எ ஒ"""),
-            'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '', '',
-                      '', '', 'ே', 'ை', 'ோ', 'ௌ'] + ['ெ', 'ொ'],
+            'vowels': s("""அ ஆ இ ஈ உ ஊ ரு ரூ லு லூ ஏ ஐ ஓ ஔ எ ஒ"""),
+            'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '்ரு', '்ரூ',
+                      '்லு', '்லூ', 'ே', 'ை', 'ோ', 'ௌ'] + ['ெ', 'ொ'],
             'virama': s('்'),
-            'yogavaahas': s('ஂ ஃ ँ'),
+            'yogavaahas': s('ம் ஃ ँ'),
             'consonants': s("""
                             க க க க ங
                             ச ச ஜ ச ஞ

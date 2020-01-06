@@ -170,7 +170,7 @@ class IastScheme(RomanScheme):
                             ś ṣ s h
                             ḻ kṣ jñ
                             """)
-                          + s("""n r̂ ḽ q k͟h ġ z f ẏ"""),
+                          + s("""ṉ r̂ ḽ q k͟h ġ z f ẏ"""),
             'symbols': s("""
                        oṃ ' | ||
                        0 1 2 3 4 5 6 7 8 9

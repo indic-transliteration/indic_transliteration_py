@@ -1,9 +1,9 @@
 from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s
 
 
-class GunjalaGondiSchema(BrahmicScheme):
+class GunjalaGondiScheme(BrahmicScheme):
     def __init__(self):
-        super(GunjalaGondiSchema, self).__init__({
+        super(GunjalaGondiScheme, self).__init__({
             'vowels': s("""𑵠 𑵡 𑵢 𑵣 𑵤 𑵥 ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ ఎ ఒ"""),
             'marks': s("""𑶊 𑶋 𑶌 𑶍 𑶎 ృ ౄ ౢ ౣ 𑶐 𑶑 𑶓 𑶔 ె  ొ"""),
             'virama': s('𑶗'),
@@ -27,3 +27,6 @@ class GunjalaGondiSchema(BrahmicScheme):
 
 
 GUNJALA_GONDI = 'gunjala_gondi'
+SCHEMES = {
+    GUNJALA_GONDI: GunjalaGondiScheme()
+}

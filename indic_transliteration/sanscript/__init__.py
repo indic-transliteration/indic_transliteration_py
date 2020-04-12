@@ -9,6 +9,7 @@ By default, the module supports the following scripts:
 
 - Bengali
 - Devanagari
+- Gunjala Gondi
 - Gujarati
 - Kannada
 - Malayalam
@@ -60,7 +61,7 @@ from __future__ import unicode_literals
 #: as `ব`.
 from indic_transliteration.sanscript.schemes import Scheme
 from indic_transliteration.sanscript.schemes import roman
-from indic_transliteration.sanscript.schemes.brahmic import northern, southern, eastern
+from indic_transliteration.sanscript.schemes.brahmic import northern, central, southern, eastern
 
 try:
     from functools import lru_cache
@@ -71,6 +72,7 @@ except ImportError:
 # -------------
 BENGALI = eastern.BENGALI
 DEVANAGARI = northern.DEVANAGARI
+GUNJALA_GONDI = central.GUNJALA_GONDI
 GUJARATI = northern.GUJARATI
 GURMUKHI = northern.GURMUKHI
 KANNADA = southern.KANNADA
@@ -95,6 +97,7 @@ SCHEMES.update(roman.SCHEMES)
 
 BRAHMIC_SCHEMES = {}
 BRAHMIC_SCHEMES.update(northern.SCHEMES)
+BRAHMIC_SCHEMES.update(central.SCHEMES)
 BRAHMIC_SCHEMES.update(southern.SCHEMES)
 BRAHMIC_SCHEMES.update(eastern.SCHEMES)
 

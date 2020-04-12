@@ -5,8 +5,11 @@ python:
 dist: trusty
 addons: # get google-chrome-stable
   chrome: stable
+before_install:
+  - # start your web application and listen on `localhost`
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install: # Install ChromeDriver (64bits; replace 64 with 32 for 32bits).
-  - wget -N http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip -P ~/
+  - wget -N https://chromedriver.storage.googleapis.com/73.0.3683.68/chromedriver_linux64.zip -P ~/
   - unzip ~/chromedriver_linux64.zip -d ~/
   - rm ~/chromedriver_linux64.zip
   - sudo mv -f ~/chromedriver /usr/local/share/

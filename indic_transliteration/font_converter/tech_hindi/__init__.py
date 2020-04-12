@@ -13,14 +13,18 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(levelname)s:%(asctime)s:%(module)s:%(lineno)d %(message)s")
 
-opts = options.Options()
-opts.headless = True
-
 
 class DVTTVedicConverter(object):
-    def __init__(self):
-        # We presume that you've installed chrome driver as per https://splinter.readthedocs.io/en/latest/drivers/chrome.html .
+    def set_browser(self, debugger_address=None):
+        opts = options.Options()
+        opts.headless = True
+        opts.add_experimental_option("debuggerAddress", debugger_address)
         self.browser = webdriver.Chrome(options=opts)
+
+    
+    def __init__(self, debugger_address=None):
+        # We presume that you've installed chrome driver as per https://splinter.readthedocs.io/en/latest/drivers/chrome.html .
+        self.set_browser(debugger_address=debugger_address)
         self.browser.get('file://' + os.path.join(os.path.dirname(__file__), "data", 'DV-TTVedicNormal ==_ यूनिकोड परिवर्तित्र.html'))
 
     def convert(self, text):

@@ -22,9 +22,9 @@ class Scheme(dict):
 
     def fix_lazy_anusvaara(self, data_in):
         from indic_transliteration import sanscript
-        data_itrans = sanscript.transliterate(data=data_in, _from=self.name, _to=sanscript.ITRANS)
-        itrans_fixed = sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara(data_in=data_itrans)
-        return sanscript.transliterate(data=itrans_fixed, _from=sanscript.ITRANS, _to=self.name)
+        data_out = sanscript.transliterate(data=data_in, _from=self.name, _to=sanscript.DEVANAGARI)
+        data_out = sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara(data_in=data_out)
+        return sanscript.transliterate(data=data_out, _from=sanscript.ITRANS, _to=self.name)
     
     def from_devanagari(self, data):
         """A convenience method"""

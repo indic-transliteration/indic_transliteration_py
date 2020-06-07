@@ -33,6 +33,18 @@ class DevanagariScheme(BrahmicScheme):
         data_out = regex.sub(r'ः( *)([प-म])', r'ᳶ\1\2',   data_out)
         return data_out
 
+    def fix_lazy_anusvaara(self, data_in):
+        # Overriding because we don't want to turn जगइ to जगै
+        data_out = data_in
+        import regex
+        data_out = regex.sub(r'ं( *)([क-ङ])', r'ङ्\1\2',   data_out)
+        data_out = regex.sub(r'ं( *)([च-ञ])', r'ञ्\1\2',   data_out)
+        data_out = regex.sub(r'ं( *)([त-न])', r'न्\1\2',   data_out)
+        data_out = regex.sub(r'ं( *)([ट-ण])', r'ण्\1\2',   data_out)
+        data_out = regex.sub(r'ं( *)([प-म])', r'म्\1\2',   data_out)
+        data_out = regex.sub(r'ं( *)([यलव])', r'\2ँ\1\2',   data_out)
+        return data_out
+
 
 class GujaratiScheme(BrahmicScheme):
     def __init__(self):

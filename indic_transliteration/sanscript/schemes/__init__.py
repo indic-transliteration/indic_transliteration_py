@@ -24,7 +24,7 @@ class Scheme(dict):
         from indic_transliteration import sanscript
         data_out = sanscript.transliterate(data=data_in, _from=self.name, _to=sanscript.DEVANAGARI)
         data_out = sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara(data_in=data_out)
-        return sanscript.transliterate(data=data_out, _from=sanscript.ITRANS, _to=self.name)
+        return sanscript.transliterate(data=data_out, _from=sanscript.DEVANAGARI, _to=self.name)
     
     def from_devanagari(self, data):
         """A convenience method"""

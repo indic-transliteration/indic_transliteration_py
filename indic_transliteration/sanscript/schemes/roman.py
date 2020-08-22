@@ -94,7 +94,9 @@ class ItransScheme(RomanScheme):
             "||": [".."], "|": ["."]
         }, name=ITRANS)
 
-    def fix_lazy_anusvaara(self, data_in):
+    def fix_lazy_anusvaara(self, data_in, ignore_padaanta=False):
+        if ignore_padaanta:
+            return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in)
         data_out = data_in
         import regex
         data_out = regex.sub(r'M( *)([kgx])', r'~N\1\2',   data_out)

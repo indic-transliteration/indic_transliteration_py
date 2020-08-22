@@ -42,7 +42,7 @@ class DevanagariScheme(BrahmicScheme):
         data_out = regex.sub(r'ं( *)([त-न])', r'न्\1\2',   data_out)
         data_out = regex.sub(r'ं( *)([ट-ण])', r'ण्\1\2',   data_out)
         data_out = regex.sub(r'ं( *)([प-म])', r'म्\1\2',   data_out)
-        data_out = regex.sub(r'ं( *)([यलव])', r'\2ँ\1\2',   data_out)
+        data_out = regex.sub(r'ं( *)([यलव])', r'\2्ँ\1\2',   data_out)
         return data_out
 
 

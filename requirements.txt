@@ -1,2 +1,2 @@
 backports.functools_lru_cache
-selenium
+selenium==3.141.0

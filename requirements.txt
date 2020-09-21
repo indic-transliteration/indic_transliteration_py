@@ -1,2 +1,2 @@
-backports.functools_lru_cache
+backports.functools_lru_cache==1.6.1
 selenium

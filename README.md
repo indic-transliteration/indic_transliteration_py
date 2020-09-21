@@ -2,6 +2,8 @@ Indic transliteration tools
 =======================
 [![Build Status](https://travis-ci.org/sanskrit-coders/indic_transliteration.svg?branch=master)](https://travis-ci.org/sanskrit-coders/indic_transliteration)
 [![Documentation Status](https://readthedocs.org/projects/indic-transliteration/badge/?version=latest)](http://indic-transliteration.readthedocs.io/en/latest/?badge=latest)
+[![Actions Status](https://github.com/sanskrit-coders/indic_transliteration/workflows/Python%20package/badge.svg)](https://github.com/sanskrit-coders/indic_transliteration/actions)
+[![PyPI version](https://badge.fury.io/py/indic_transliteration.svg)](https://badge.fury.io/py/indic_transliteration)
 
 
 # For users

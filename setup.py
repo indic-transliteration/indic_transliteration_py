@@ -22,6 +22,14 @@ try:
 except (IOError, ImportError):
   long_description = ''
 
+with open('requirements.txt', 'r') as f:
+  install_reqs = [
+    s for s in [
+      line.split('#', 1)[0].strip(' \t\n') for line in f
+    ] if s != ''
+  ]
+
+
 setup(
   name='indic_transliteration',
 
@@ -86,7 +94,7 @@ setup(
   # your project is installed. For an analysis of "install_requires" vs pip's
   # requirements files see:
   # https://packaging.python.org/en/latest/requirements.html
-  install_requires=['regex', 'backports.functools_lru_cache', 'selenium'],
+  install_requires=install_reqs,
 
   # List additional groups of dependencies here (e.g. development
   # dependencies). You can install these using the following syntax,

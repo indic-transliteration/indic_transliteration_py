@@ -1,2 +1,3 @@
 backports.functools_lru_cache
 selenium==3.141.0
+regex

@@ -1,14 +1,14 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme
 
 
 class KannadaScheme(BrahmicScheme):
     def __init__(self):
         super(KannadaScheme, self).__init__({
-            'vowels': s("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ ಎ ಒ"""),
-            'marks': s("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ ೆ ೊ"""),
-            'virama': s('್'),
-            'yogavaahas': s('ಂ ಃ ಁ ೱ ೲ ಼'),
-            'consonants': s("""
+            'vowels': str.split("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ ಎ ಒ"""),
+            'marks': str.split("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ ೆ ೊ"""),
+            'virama': str.split('್'),
+            'yogavaahas': str.split('ಂ ಃ ಁ ೱ ೲ ಼'),
+            'consonants': str.split("""
                             ಕ ಖ ಗ ಘ ಙ
                             ಚ ಛ ಜ ಝ ಞ
                             ಟ ಠ ಡ ಢ ಣ
@@ -18,8 +18,8 @@ class KannadaScheme(BrahmicScheme):
                             ಶ ಷ ಸ ಹ
                             ಳ ಕ್ಷ ಜ್ಞ
                             """)
-                          + s("""ನ಼ ಱ ೞ ಕ಼ ಖ಼ ಗ಼ ಜ಼ ಡ಼ ಢ಼ ಫ಼ ಯ಼"""),
-            'symbols': s("""
+                          + str.split("""ನ಼ ಱ ೞ ಕ಼ ಖ಼ ಗ಼ ಜ಼ ಡ಼ ಢ಼ ಫ಼ ಯ಼"""),
+            'symbols': str.split("""
                        ಓಂ ಽ । ॥
                        ೦ ೧ ೨ ೩ ೪ ೫ ೬ ೭ ೮ ೯
                        """)
@@ -29,11 +29,11 @@ class KannadaScheme(BrahmicScheme):
 class MalayalamScheme(BrahmicScheme):
     def __init__(self):
         super(MalayalamScheme, self).__init__({
-            'vowels': s("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഒ"""),
-            'marks': s("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ െ ൊ"""),
-            'virama': s('്'),
-            'yogavaahas': s('ം ഃ ഁ'),
-            'consonants': s("""
+            'vowels': str.split("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഒ"""),
+            'marks': str.split("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ െ ൊ"""),
+            'virama': str.split('്'),
+            'yogavaahas': str.split('ം ഃ ഁ'),
+            'consonants': str.split("""
                             ക ഖ ഗ ഘ ങ
                             ച ഛ ജ ഝ ഞ
                             ട ഠ ഡ ഢ ണ
@@ -42,8 +42,8 @@ class MalayalamScheme(BrahmicScheme):
                             യ ര ല വ
                             ശ ഷ സ ഹ
                             ള ക്ഷ ജ്ഞ
-                            """) + s("""ഩ റ ഴ"""),
-            'symbols': s("""
+                            """) + str.split("""ഩ റ ഴ"""),
+            'symbols': str.split("""
                        ഓം ഽ । ॥
                        ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯
                        """)
@@ -53,12 +53,12 @@ class MalayalamScheme(BrahmicScheme):
 class TamilScheme(BrahmicScheme):
     def __init__(self):
         super(TamilScheme, self).__init__({
-            'vowels': s("""அ ஆ இ ஈ உ ஊ ரு ரூ லு லூ ஏ ஐ ஓ ஔ எ ஒ"""),
+            'vowels': str.split("""அ ஆ இ ஈ உ ஊ ரு ரூ லு லூ ஏ ஐ ஓ ஔ எ ஒ"""),
             'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '்ரு', '்ரூ',
                       '்லு', '்லூ', 'ே', 'ை', 'ோ', 'ௌ'] + ['ெ', 'ொ'],
-            'virama': s('்'),
-            'yogavaahas': s('ம் ஃ ँ'),
-            'consonants': s("""
+            'virama': str.split('்'),
+            'yogavaahas': str.split('ம் ஃ ँ'),
+            'consonants': str.split("""
                             க க க க ங
                             ச ச ஜ ச ஞ
                             ட ட ட ட ண
@@ -67,8 +67,8 @@ class TamilScheme(BrahmicScheme):
                             ய ர ல வ
                             ஶ ஷ ஸ ஹ
                             ள க்ஷ ஜ்ஞ
-                            """) + s("""ன ற ழ"""),
-            'symbols': s("""
+                            """) + str.split("""ன ற ழ"""),
+            'symbols': str.split("""
                        ௐ ऽ । ॥
                        ௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯
                        """)
@@ -78,11 +78,11 @@ class TamilScheme(BrahmicScheme):
 class GranthaScheme(BrahmicScheme):
     def __init__(self):
         super(GranthaScheme, self).__init__({
-            'vowels': s("""𑌅 𑌆 𑌇 𑌈 𑌉 𑌊 𑌋 𑍠 𑌌 𑍡 𑌏 𑌐 𑌓 𑌔 𑌏𑌀 𑌓𑌀"""),
-            'marks': s("""𑌾 𑌿 𑍀 𑍁 𑍂 𑍃 𑍄 𑍢 𑍣 𑍇 𑍈 𑍋 𑍗 𑍇𑌀 𑍋𑌀"""),
-            'virama': s('𑍍'),
-            'yogavaahas': s('𑌂 𑌃 𑌁'),
-            'consonants': s("""
+            'vowels': str.split("""𑌅 𑌆 𑌇 𑌈 𑌉 𑌊 𑌋 𑍠 𑌌 𑍡 𑌏 𑌐 𑌓 𑌔 𑌏𑌀 𑌓𑌀"""),
+            'marks': str.split("""𑌾 𑌿 𑍀 𑍁 𑍂 𑍃 𑍄 𑍢 𑍣 𑍇 𑍈 𑍋 𑍗 𑍇𑌀 𑍋𑌀"""),
+            'virama': str.split('𑍍'),
+            'yogavaahas': str.split('𑌂 𑌃 𑌁'),
+            'consonants': str.split("""
                             𑌕 𑌖 𑌗 𑌘 𑌙
                             𑌚 𑌛 𑌜 𑌝 𑌞
                             𑌟 𑌠 𑌡 𑌢 𑌣
@@ -91,8 +91,8 @@ class GranthaScheme(BrahmicScheme):
                             𑌯 𑌰 𑌲 𑌵
                             𑌳 𑌕𑍍𑌷 𑌜𑍍𑌞
                             𑌨𑌼 𑌰𑌼 𑌳𑌼
-                            """) + s("""ன ற ழ"""),
-            'symbols': s("""
+                            """) + str.split("""ன ற ழ"""),
+            'symbols': str.split("""
                        𑍐 𑌽 । ॥
                        ௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯
                        """)
@@ -102,11 +102,11 @@ class GranthaScheme(BrahmicScheme):
 class TeluguScheme(BrahmicScheme):
     def __init__(self):
         super(TeluguScheme, self).__init__({
-            'vowels': s("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ ఎ ఒ"""),
-            'marks': s("""ా ి ీ ు ూ ృ ౄ ౢ ౣ ే ై ో ౌ ె  ొ"""),
-            'virama': s('్'),
-            'yogavaahas': s('ం ః ఁ'),
-            'consonants': s("""
+            'vowels': str.split("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ ఎ ఒ"""),
+            'marks': str.split("""ా ి ీ ు ూ ృ ౄ ౢ ౣ ే ై ో ౌ ె  ొ"""),
+            'virama': str.split('్'),
+            'yogavaahas': str.split('ం ః ఁ'),
+            'consonants': str.split("""
                             క ఖ గ ఘ ఙ
                             చ ఛ జ ఝ ఞ
                             ట ఠ డ ఢ ణ
@@ -116,8 +116,8 @@ class TeluguScheme(BrahmicScheme):
                             శ ష స హ
                             ళ క్ష జ్ఞ
                             """)
-                          + s("""ऩ ఱ ఴ क़ ఖ ग़ ज़ ड़ ఢ ఫ य़"""),
-            'symbols': s("""
+                          + str.split("""ऩ ఱ ఴ क़ ఖ ग़ ज़ ड़ ఢ ఫ य़"""),
+            'symbols': str.split("""
                        ఓం ఽ । ॥
                        ౦ ౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯
                        """)

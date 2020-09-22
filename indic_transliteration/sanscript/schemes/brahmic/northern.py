@@ -1,14 +1,14 @@
-from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme, s
+from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme
 
 
 class DevanagariScheme(BrahmicScheme):
     def __init__(self):
         super(DevanagariScheme, self).__init__({
-            'vowels': s("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ"""),
-            'marks': s("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ"""),
-            'virama': s('्'),
-            'yogavaahas': s('ं ः ँ ᳵ ᳶ ़'),
-            'consonants': s("""
+            'vowels': str.split("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ"""),
+            'marks': str.split("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ"""),
+            'virama': str.split('्'),
+            'yogavaahas': str.split('ं ः ँ ᳵ ᳶ ़'),
+            'consonants': str.split("""
                             क ख ग घ ङ
                             च छ ज झ ञ
                             ट ठ ड ढ ण
@@ -18,8 +18,8 @@ class DevanagariScheme(BrahmicScheme):
                             श ष स ह
                             ळ क्ष ज्ञ
                             """)
-                          + s("""ऩ ऱ ऴ क़ ख़ ग़ ज़ ड़ ढ़ फ़ य़"""),
-            'symbols': s("""
+                          + str.split("""ऩ ऱ ऴ क़ ख़ ग़ ज़ ड़ ढ़ फ़ य़"""),
+            'symbols': str.split("""
                        ॐ ऽ । ॥
                        ० १ २ ३ ४ ५ ६ ७ ८ ९
                        """)
@@ -51,11 +51,11 @@ class DevanagariScheme(BrahmicScheme):
 class GujaratiScheme(BrahmicScheme):
     def __init__(self):
         super(GujaratiScheme, self).__init__({
-            'vowels': s("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
-            'marks': s("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),
-            'virama': s('્'),
-            'yogavaahas': s('ં ઃ ઁ ᳵ ᳶ ઼'),
-            'consonants': s("""
+            'vowels': str.split("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
+            'marks': str.split("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),
+            'virama': str.split('્'),
+            'yogavaahas': str.split('ં ઃ ઁ ᳵ ᳶ ઼'),
+            'consonants': str.split("""
                             ક ખ ગ ઘ ઙ
                             ચ છ જ ઝ ઞ
                             ટ ઠ ડ ઢ ણ
@@ -65,8 +65,8 @@ class GujaratiScheme(BrahmicScheme):
                             શ ષ સ હ
                             ળ ક્ષ જ્ઞ
                             """)
-                          + s("""ન઼ ર઼ ળ઼ ક઼ ખ઼ ગ઼ જ઼ ડ઼ ઢ઼ ફ઼ ય઼"""),
-            'symbols': s("""
+                          + str.split("""ન઼ ર઼ ળ઼ ક઼ ખ઼ ગ઼ જ઼ ડ઼ ઢ઼ ફ઼ ય઼"""),
+            'symbols': str.split("""
                        ૐ ઽ । ॥
                        ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯
                        """)
@@ -76,12 +76,12 @@ class GujaratiScheme(BrahmicScheme):
 class GurmukhiScheme(BrahmicScheme):
     def __init__(self):
         super(GurmukhiScheme, self).__init__({
-            'vowels': s("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),
+            'vowels': str.split("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),
             'marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', 'ृ', 'ॄ',
                       'ॢ', 'ॣ', 'ੇ', 'ੈ', 'ੋ', 'ੌ'], # Includes some fake mAtrA-s from devanAgarI
-            'virama': s('੍'),
-            'yogavaahas': s('ਂ ਃ ਁ ᳵ ᳶ ਼'),
-            'consonants': s("""
+            'virama': str.split('੍'),
+            'yogavaahas': str.split('ਂ ਃ ਁ ᳵ ᳶ ਼'),
+            'consonants': str.split("""
                             ਕ ਖ ਗ ਘ ਙ
                             ਚ ਛ ਜ ਝ ਞ
                             ਟ ਠ ਡ ਢ ਣ
@@ -91,8 +91,8 @@ class GurmukhiScheme(BrahmicScheme):
                             ਸ਼ ਸ਼਼ ਸ ਹ
                             ਲ਼ ਕ੍ਸ਼ ਜ੍ਞ
                             """)
-                          + s("""ਨ਼ ਰ਼ ਲ਼਼ ਕ਼ ਖ਼ ਗ਼ ਜ਼ ੜ ਢ਼ ਫ਼ ਯ਼"""),
-            'symbols': s("""
+                          + str.split("""ਨ਼ ਰ਼ ਲ਼਼ ਕ਼ ਖ਼ ਗ਼ ਜ਼ ੜ ਢ਼ ਫ਼ ਯ਼"""),
+            'symbols': str.split("""
                        ੴ ऽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)

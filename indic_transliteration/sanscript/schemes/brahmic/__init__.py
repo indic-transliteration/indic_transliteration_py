@@ -1,14 +1,7 @@
 # Brahmi schemes
 # -------------
-import sys
 
 from indic_transliteration.sanscript import Scheme
-
-
-s = str.split
-if sys.version_info < (3, 0):
-    # noinspection PyUnresolvedReferences
-    s = unicode.split
 
 
 class BrahmicScheme(Scheme):

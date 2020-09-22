@@ -101,17 +101,17 @@ class GurmukhiScheme(BrahmicScheme):
     @classmethod
     def replace_tippi(cls, text):
         import regex
-        text = regex.sub("ੱ([ਕਖ])", r"ਕ੍\\g<1>", text, flags=regex.UNICODE)
-        text = regex.sub(r"ੱ([ਗਘ])", "ਗ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਚਛ])", "ਚ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਜਝ])", "ਜ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਟਠ])", "ਟ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਡਢ])", "ਡ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਤਥ])", "ਤ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਦਧ])", "ਦ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਪਫ])", "ਪ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਬਭ])", "ਬ੍\\g<1>", text)
-        text = regex.sub("ੱ([ਯਰਲਵਸ਼ਸਹਙਞਣਨਮਜ਼ੜਫ਼])", "\\g<1>੍\\g<1>", text)
+        text = regex.sub("ੱ([ਕਖ])", r"ਕ੍\g<1>", text, flags=regex.UNICODE)
+        text = regex.sub(r"ੱ([ਗਘ])", "ਗ੍\g<1>", text)
+        text = regex.sub("ੱ([ਚਛ])", "ਚ੍\g<1>", text)
+        text = regex.sub("ੱ([ਜਝ])", "ਜ੍\g<1>", text)
+        text = regex.sub("ੱ([ਟਠ])", "ਟ੍\g<1>", text)
+        text = regex.sub("ੱ([ਡਢ])", "ਡ੍\g<1>", text)
+        text = regex.sub("ੱ([ਤਥ])", "ਤ੍\g<1>", text)
+        text = regex.sub("ੱ([ਦਧ])", "ਦ੍\g<1>", text)
+        text = regex.sub("ੱ([ਪਫ])", "ਪ੍\g<1>", text)
+        text = regex.sub("ੱ([ਬਭ])", "ਬ੍\g<1>", text)
+        text = regex.sub("ੱ([ਯਰਲਵਸ਼ਸਹਙਞਣਨਮਜ਼ੜਫ਼])", "\g<1>੍\g<1>", text)
         return text
 
 

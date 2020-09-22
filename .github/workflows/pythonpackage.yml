@@ -26,12 +26,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Setup headless chrome
       run: |
-        wget -N https://chromedriver.storage.googleapis.com/2.46/chromedriver_linux64.zip -P ~/
-        unzip ~/chromedriver_linux64.zip -d ~/
-        rm ~/chromedriver_linux64.zip
-        sudo mv -f ~/chromedriver /usr/local/share/
-        sudo chmod +x /usr/local/share/chromedriver
-        sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+        sudo apt-get update
+        sudo apt-get upgrade google-chrome-stable -y
         # start your web application and listen on `localhost`
         google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     - name: Lint with flake8

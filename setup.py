@@ -36,7 +36,7 @@ setup(
   # Versions should comply with PEP440.  For a discussion on single-sourcing
   # the version across setup.py and the project code, see
   # https://packaging.python.org/en/latest/single_source_version.html
-  version='2.0.2',
+  version='2.0.4',
 
 
   description='Transliteration tools to convert text in one indic script encoding to another',
@@ -104,6 +104,8 @@ setup(
       # 'dev': ['check-manifest'],
       'test': ['pytest'],
   },
+
+  include_package_data = True,
 
   # If there are data files included in your packages that need to be
   # installed, specify them here.  If using Python 2.6 or less, then these

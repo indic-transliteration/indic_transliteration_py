@@ -4,4 +4,7 @@
 import json
 import os
 
-language_code_to_script = json.load(os.path.join(os.path.dirname(__file__), "language_code_to_script.json"))
+language_code_to_script = {}
+
+with open(os.path.join(os.path.dirname(__file__), "language_code_to_script.json")) as f:
+    language_code_to_script = json.load(f)

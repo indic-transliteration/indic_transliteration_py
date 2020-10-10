@@ -108,8 +108,8 @@ class Regex:
   ITRANS_OR_VELTHUIS_ONLY = re.compile(u'aa|ii|uu|~n')
 
   #: Match on ITRANS-only
-  ITRANS_ONLY = re.compile(u'ee|oo|\^[iI]|RR[iI]|L[iI]|'
-                           u'~N|N\^|Ch|chh|JN|sh|Sh|\\.a')
+  ITRANS_ONLY = re.compile(u'ee|oo|\\^[iI]|RR[iI]|L[iI]|'
+                           u'~N|N\\^|Ch|chh|JN|sh|Sh|\\.a')
 
   #: Match on Kolkata-specific Roman characters
   KOLKATA_ONLY = re.compile(u'[ēō]')

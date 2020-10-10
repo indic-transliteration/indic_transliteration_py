@@ -18,7 +18,8 @@ class DVTTVedicConverter(object):
     def set_browser(self, debugger_address=None):
         opts = options.Options()
         opts.headless = True
-        opts.add_experimental_option("debuggerAddress", debugger_address)
+        if debugger_address is not None:
+            opts.add_experimental_option("debuggerAddress", debugger_address)
         self.browser = webdriver.Chrome(options=opts)
 
     

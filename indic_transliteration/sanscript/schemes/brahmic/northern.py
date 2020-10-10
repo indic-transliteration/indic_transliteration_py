@@ -33,18 +33,23 @@ class DevanagariScheme(BrahmicScheme):
         data_out = regex.sub(r'ः( *)([प-म])', r'ᳶ\1\2',   data_out)
         return data_out
 
-    def fix_lazy_anusvaara(self, data_in, ignore_padaanta=False):
+    def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):
         # Overriding because we don't want to turn जगइ to जगै
         if ignore_padaanta:
-            return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in)
+            return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in, omit_sam=omit_sam, omit_yrl=omit_yrl)
         data_out = data_in
         import regex
-        data_out = regex.sub(r'ं( *)([क-ङ])', r'ङ्\1\2',   data_out)
-        data_out = regex.sub(r'ं( *)([च-ञ])', r'ञ्\1\2',   data_out)
-        data_out = regex.sub(r'ं( *)([त-न])', r'न्\1\2',   data_out)
-        data_out = regex.sub(r'ं( *)([ट-ण])', r'ण्\1\2',   data_out)
-        data_out = regex.sub(r'ं( *)([प-म])', r'म्\1\2',   data_out)
-        data_out = regex.sub(r'ं( *)([यलव])', r'\2्ँ\1\2',   data_out)
+        if omit_sam:
+            prefix = "(?<!स)"
+        else:
+            prefix = ""
+        data_out = regex.sub('%sं( *)([क-ङ])' % (prefix), r'ङ्\1\2',   data_out)
+        data_out = regex.sub('%sं( *)([च-ञ])' % (prefix), r'ञ्\1\2',   data_out)
+        data_out = regex.sub('%sं( *)([त-न])' % (prefix), r'न्\1\2',   data_out)
+        data_out = regex.sub('%sं( *)([ट-ण])' % (prefix), r'ण्\1\2',   data_out)
+        data_out = regex.sub('%sं( *)([प-म])' % (prefix), r'म्\1\2',   data_out)
+        if not omit_yrl:
+            data_out = regex.sub('%sं( *)([यलव])' % (prefix), r'\2्ँ\1\2',   data_out)
         return data_out
 
 
@@ -102,16 +107,16 @@ class GurmukhiScheme(BrahmicScheme):
     def replace_tippi(cls, text):
         import regex
         text = regex.sub("ੱ([ਕਖ])", r"ਕ੍\g<1>", text, flags=regex.UNICODE)
-        text = regex.sub(r"ੱ([ਗਘ])", "ਗ੍\g<1>", text)
-        text = regex.sub("ੱ([ਚਛ])", "ਚ੍\g<1>", text)
-        text = regex.sub("ੱ([ਜਝ])", "ਜ੍\g<1>", text)
-        text = regex.sub("ੱ([ਟਠ])", "ਟ੍\g<1>", text)
-        text = regex.sub("ੱ([ਡਢ])", "ਡ੍\g<1>", text)
-        text = regex.sub("ੱ([ਤਥ])", "ਤ੍\g<1>", text)
-        text = regex.sub("ੱ([ਦਧ])", "ਦ੍\g<1>", text)
-        text = regex.sub("ੱ([ਪਫ])", "ਪ੍\g<1>", text)
-        text = regex.sub("ੱ([ਬਭ])", "ਬ੍\g<1>", text)
-        text = regex.sub("ੱ([ਯਰਲਵਸ਼ਸਹਙਞਣਨਮਜ਼ੜਫ਼])", "\g<1>੍\g<1>", text)
+        text = regex.sub(r"ੱ([ਗਘ])", r"ਗ੍\g<1>", text)
+        text = regex.sub("ੱ([ਚਛ])", r"ਚ੍\g<1>", text)
+        text = regex.sub("ੱ([ਜਝ])", r"ਜ੍\g<1>", text)
+        text = regex.sub("ੱ([ਟਠ])", r"ਟ੍\g<1>", text)
+        text = regex.sub("ੱ([ਡਢ])", r"ਡ੍\g<1>", text)
+        text = regex.sub("ੱ([ਤਥ])", r"ਤ੍\g<1>", text)
+        text = regex.sub("ੱ([ਦਧ])", r"ਦ੍\g<1>", text)
+        text = regex.sub("ੱ([ਪਫ])", r"ਪ੍\g<1>", text)
+        text = regex.sub("ੱ([ਬਭ])", r"ਬ੍\g<1>", text)
+        text = regex.sub("ੱ([ਯਰਲਵਸ਼ਸਹਙਞਣਨਮਜ਼ੜਫ਼])", r"\g<1>੍\g<1>", text)
         return text
 
 

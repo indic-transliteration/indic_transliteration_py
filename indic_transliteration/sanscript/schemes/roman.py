@@ -87,17 +87,22 @@ class ItransScheme(RomanScheme):
             "||": [".."], "|": ["."]
         }, name=ITRANS)
 
-    def fix_lazy_anusvaara(self, data_in, ignore_padaanta=False):
+    def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):
         if ignore_padaanta:
-            return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in)
+            return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in, omit_sam=omit_sam, omit_yrl=omit_yrl)
         data_out = data_in
         import regex
-        data_out = regex.sub(r'M( *)([kgx])', r'~N\1\2',   data_out)
-        data_out = regex.sub(r'M( *)([cCj])', r'~n\1\2',   data_out)
-        data_out = regex.sub(r'M( *)([tdn])', r'n\1\2',   data_out)
-        data_out = regex.sub(r'M( *)([TDN])', r'N\1\2',   data_out)
-        data_out = regex.sub(r'M( *)([pb])', r'm\1\2',   data_out)
-        data_out = regex.sub(r'M( *)([yvl])', r'\2.N\1\2',   data_out)
+        if omit_sam:
+            prefix = "(?<!sa)"
+        else:
+            prefix = ""
+        data_out = regex.sub('%sM( *)([kgx])' % (prefix), r'~N\1\2',   data_out)
+        data_out = regex.sub('%sM( *)([cCj])' % (prefix), r'~n\1\2', data_out)
+        data_out = regex.sub('%sM( *)([tdn])' % (prefix), r'n\1\2', data_out)
+        data_out = regex.sub('%sM( *)([TDN])' % (prefix), r'N\1\2', data_out)
+        data_out = regex.sub('%sM( *)([pb])' % (prefix), r'm\1\2', data_out)
+        if not omit_yrl:
+            data_out = regex.sub('%sM( *)([yvl])' % (prefix), r'\2.N\1\2', data_out)
         return data_out
 
 

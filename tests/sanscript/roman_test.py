@@ -9,12 +9,17 @@ def test_fix_lazy_anusvaara_itrans():
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("sAMba") == "sAmba"
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMvara") == "sav.Nvara"
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMyukta") == "say.Nyukta"
+    assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMyukta", omit_yrl=True) == "saMyukta"
+    assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMyukta", omit_sam=True) == "saMyukta"
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMlagna") == "sal.Nlagna"
+    assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("saMlagna", omit_sam=True) == "saMlagna"
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("taM jitvA") == "ta~n jitvA"
 
 
 def test_fix_lazy_anusvaara_slp():
     assert sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara("aham") == "aham"
+    assert sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara("saMga") == "saNga"
+    assert sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara("saMga", omit_sam=True) == "saMga"
 
 
 def test_optitrans_to_lay_indian():

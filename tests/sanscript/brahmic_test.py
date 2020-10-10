@@ -3,10 +3,13 @@ from indic_transliteration import sanscript
 
 
 def test_fix_lazy_anusvaara_devanagari():
+    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("संविकटमेव", omit_sam=True) == "संविकटमेव"
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("तं जित्वा") == "तञ् जित्वा"
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("जगइ") == "जगइ"
-    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("षष्ठं विकटमेव") == "षष्ठव्ँ विकटमेव"
-    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("षष्ठं विकंटमेव", ignore_padaanta=True) == "षष्ठं विकण्टमेव"
+    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("षष्टं विकटमेव") == "षष्टव्ँ विकटमेव"
+    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("षष्टं विकटमेव", omit_yrl=True) == "षष्टं विकटमेव"
+    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("षष्ठं विकंटमेव",
+                                                                      ignore_padaanta=True) == "षष्ठं विकण्टमेव"
 
 def test_fix_lazy_visarga():
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_visarga("अन्तः पश्य") == "अन्तᳶ पश्य"

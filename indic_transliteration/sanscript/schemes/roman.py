@@ -58,6 +58,13 @@ class RomanScheme(Scheme):
         text = regex.sub("᳘([ंःँ])", "\\1᳘", text)
         return text
 
+    def get_double_lettered(self, text):
+        text = self.get_standard_form(data=text)
+        text = text.replace("A", "aa")
+        text = text.replace("I", "ii")
+        text = text.replace("U", "uu")
+        return text
+
 
 class ItransScheme(RomanScheme):
     def __init__(self):

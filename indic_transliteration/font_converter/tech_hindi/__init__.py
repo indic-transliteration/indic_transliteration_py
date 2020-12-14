@@ -1,9 +1,12 @@
 import logging
 import os.path
 
+import regex
 from selenium import webdriver
 from selenium.webdriver.chrome import options
 from selenium.webdriver.remote.remote_connection import LOGGER
+
+from indic_transliteration.font_converter import Converter
 
 LOGGER.setLevel(logging.WARNING)
 from urllib3.connectionpool import log as urllibLogger
@@ -14,7 +17,7 @@ logging.basicConfig(
     format="%(levelname)s:%(asctime)s:%(module)s:%(lineno)d %(message)s")
 
 
-class DVTTVedicConverter(object):
+class DVTTVedicConverter(Converter):
     def set_browser(self, debugger_address=None):
         opts = options.Options()
         opts.headless = True
@@ -31,8 +34,12 @@ class DVTTVedicConverter(object):
     def convert(self, text):
         input_box = self.browser.find_element_by_id("legacy_text")
         convert_button = self.browser.find_element_by_name("converter")
+        text = regex.sub("ÉS", "॒", text)
+        text = regex.sub("ÉM", "॑", text)
         input_box.send_keys(text)
         convert_button.click()
         output_box = self.browser.find_element_by_id("unicode_text")
-        return output_box.get_attribute("value")
+        out_text = output_box.get_attribute("value")
+        return out_text
+
 

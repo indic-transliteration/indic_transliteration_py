@@ -1,7 +1,5 @@
 import logging
 
-import regex
-
 
 def is_ascii(word):
     # we've a mix of english and devanagari characters, decide which word to

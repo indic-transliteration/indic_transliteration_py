@@ -79,6 +79,125 @@ In [3]: print(transliterate(data, xsanscript.DEVANAGARI, xsanscript.KANNADA))
     output = converter.convert(text_in)
 ```
 
+## CLI
+
+Installing the package with `pip` also installs a console script, `sanscript` which can used to transliterate files, standard input or input strings from the command-line.
+
+### Demo
+
+<p align="center">
+  <img src="cli-demo.gif" width="90%" style="display: block; margin: 0 auto;">
+</p>
+
+### Usage
+
+**Note**: Refer `sanscript --help` for the latest information.
+
+```console
+$ sanscript [OPTIONS] [INPUT_STRING]
+```
+
+**Arguments**:
+
+- `[INPUT_STRING]`:  
+  Input string to transliterate from the given '--from' scheme to the given '--to' scheme.  
+  **Note:** This input will be ignored if '--input-file' option is specified.
+
+**Options**:
+
+- `-f, --from TEXT`: [required]  
+  Name of the scheme FROM which the input is to be transliterated.  
+  **Note**: Use `--help` to see the list of valid scheme names.
+
+- `-t, --to TEXT`: [required]  
+  Name of the scheme TO which the input is to be transliterated.  
+  **Note**: Use `--help` to see the list of valid scheme names.
+
+- `-i, --input-file FILENAME`:  
+  Input file path to transliterate.  
+  **Note**: When this option is used, input from the `INPUT_STRING` argument will be ignored.
+
+- `-o, --output-file FILENAME`:  
+  Output file path to write transliterated output.  
+  **Note**: If it is not specified or its argument is '-', the output is written to Standard Output.
+
+**Enabling auto-completion**:
+
+- `--install-completion`: Install completion for the current shell.
+- `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
+
+**Help**:
+
+- `--help`: Show usage information and other details.
+
+### Examples
+
+#### Input options
+
+- Read input from command's argument.
+
+  **Example**:
+
+  ```console
+  $ sanscript --from hk --to iast "rAmAyaNa"
+  ```
+
+  **Output**: `rāmāyaṇa`
+
+- Read from input file. File path is passed to `--input-file` / `-i` option.
+
+  **Example**:
+
+  ```console
+  $ sanscript --from hk --to iast -i ramayana.txt
+  ```
+
+  **Output**: `rāmāyaṇa`
+
+- Read from Standard Input `-`.
+
+  **Example**: (Using pipe)
+
+  ```console
+  $ cat ramayana.txt | sanscript --from hk --to iast -i -
+  ```
+
+  OR: (Using input redirection)
+
+  ```console
+  $ sanscript --from hk --to iast -i - < ramayana.txt
+  ```
+
+  **Output**: `rāmāyaṇa`
+
+#### Output options
+
+- To Standard Output
+
+  Example:
+
+  ```console
+  $ sanscript --from hk --to iast "rAmAyaNa"
+  ```
+
+  OR:
+
+  ```console
+  $ sanscript --from hk --to iast "rAmAyaNa" -o -
+  ```
+
+  Output: `rāmāyaṇa`
+
+- To file passed to '--ouput-file / -o' option
+
+  Example:
+
+  ```console
+  $ sanscript --from hk --to iast "rAmAyaNa" -o output.txt
+  ```
+
+  Output: `Output written to: /home/user/output.txt`
+
 # For contributors
 
 ## Contact

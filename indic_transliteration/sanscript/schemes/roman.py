@@ -6,6 +6,7 @@ from indic_transliteration.sanscript import Scheme
 # -------------
 HK = 'hk'
 IAST = 'iast'
+ISO = 'ISO'
 ITRANS = 'itrans'
 TITUS = 'titus'
 

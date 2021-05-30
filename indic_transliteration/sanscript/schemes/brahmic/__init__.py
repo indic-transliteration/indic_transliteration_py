@@ -1,5 +1,6 @@
 # Brahmi schemes
 # -------------
+import regex
 
 from indic_transliteration.sanscript import Scheme
 
@@ -22,3 +23,6 @@ class BrahmicScheme(Scheme):
         for numeral in range(0,10):
             out_string = out_string.replace(brahmic_numerals[numeral], str(numeral))
         return out_string
+    
+    def remove_svaras(self, in_string):
+        return regex.sub(r"[॑-॔᳐-᳨᳸᳹꣠-꣱]", "", in_string)

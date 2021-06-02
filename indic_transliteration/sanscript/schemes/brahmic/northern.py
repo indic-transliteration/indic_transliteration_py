@@ -48,6 +48,7 @@ class DevanagariScheme(BrahmicScheme):
         data_out = regex.sub('%sं( *)([त-न])' % (prefix), r'न्\1\2',   data_out)
         data_out = regex.sub('%sं( *)([ट-ण])' % (prefix), r'ण्\1\2',   data_out)
         data_out = regex.sub('%sं( *)([प-म])' % (prefix), r'म्\1\2',   data_out)
+        data_out = regex.sub('ं$', r'म्',   data_out)
         if not omit_yrl:
             data_out = regex.sub('%sं( *)([यलव])' % (prefix), r'\2्ँ\1\2',   data_out)
         return data_out

@@ -25,7 +25,9 @@ class BrahmicScheme(Scheme):
         return out_string
     
     def remove_svaras(self, in_string):
-        return regex.sub(r"[॑-॔᳐-᳨᳸᳹꣠-꣱]", "", in_string)
+      out_string = regex.sub(r"[॑-॔᳐-᳨᳸᳹꣠-꣱]", "", in_string)
+      out_string = out_string.replace("ꣳ", "ं")
+      return out_string
 
     def remove_punctuation(self, in_string):
         return regex.sub(r"[.।॥]", "", in_string)

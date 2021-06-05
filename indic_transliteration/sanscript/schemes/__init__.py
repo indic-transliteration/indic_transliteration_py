@@ -24,8 +24,9 @@ class Scheme(dict):
         lines = data_in.split("\n")
         lines_out = []
         for line in lines:
-            words = line.split(" ")
-            words = [self.fix_lazy_anusvaara(word, omit_sam, omit_yrl) for word in words]
+            words = line.split()
+            ## We don't want ग्रामं गच्छ to turn into ग्रामङ् गच्छ or ग्रामम् गच्छ 
+            words = [self.fix_lazy_anusvaara(word[:-1], omit_sam, omit_yrl) + word[-1] for word in words]
             lines_out.append(" ".join(words))
         return "\n".join(lines_out)
 

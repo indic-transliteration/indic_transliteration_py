@@ -32,3 +32,7 @@ def test_simplify_accent_notation():
 
 def test_to_double_lettered():
     assert sanscript.SCHEMES[sanscript.OPTITRANS].get_double_lettered("taM jitvA pUraya") == "taM jitvaa puuraya"
+
+def test_mark_off_non_indic_in_line():
+    text = '05 The Śaivas’ Inclusivist View of Their Own and the Vaidikas’ Religion'
+    assert sanscript.SCHEMES[sanscript.IAST].mark_off_non_indic_in_line(text) == "<05> <The> Śaivas’ <Inclusivist> <View> <of> <Their> <Own> <and> <the> <Vaidikas’> <Religion>"

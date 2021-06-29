@@ -66,6 +66,17 @@ class RomanScheme(Scheme):
         text = text.replace("U", "uu")
         return text
 
+    def mark_off_non_indic_in_line(self, text):
+        words = text.split()
+        from indic_transliteration import detect
+        out_words = []
+        for word in words:
+            if detect.detect(word).lower() != self.name.lower():
+                out_words.append("<%s>" % word)
+            else:
+                out_words.append(word)
+        return " ".join(out_words)
+
 
 class ItransScheme(RomanScheme):
     def __init__(self):

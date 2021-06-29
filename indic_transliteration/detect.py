@@ -102,7 +102,7 @@ Scheme = type('Enum', (), {name: name for name, code in SCHEMES})
 
 class Regex:
   #: Match on special Roman characters
-  IAST_OR_KOLKATA_ONLY = re.compile(u'[āīūṛṝḷḹēōṃḥṅñṭḍṇśṣḻ]')
+  IAST_OR_KOLKATA_ONLY = re.compile(u'[āīūṛṝḷḹēōṃḥṅñṭḍṇśṣḻĀĪŪṚṜḶḸĒŌṂḤṄÑṬḌṆŚṢḺ]')
 
   #: Match on chars shared by ITRANS and Velthuis
   ITRANS_OR_VELTHUIS_ONLY = re.compile(u'aa|ii|uu|~n')

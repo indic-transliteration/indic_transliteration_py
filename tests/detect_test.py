@@ -94,6 +94,7 @@ add(BASIC, Scheme.IAST, [
     'pāṇḍava',
     'śṛṇoti',
     'jñāna',
+    'Śaivas'
 ])
 add(BASIC, Scheme.ITRANS, [
     'raaga',

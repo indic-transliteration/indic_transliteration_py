@@ -1,4 +1,4 @@
 backports.functools_lru_cache==1.6.4
 selenium==3.141.0
-regex==2020.10.11
+regex==2021.7.1
 typer==0.3.2

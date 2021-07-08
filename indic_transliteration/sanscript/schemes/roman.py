@@ -10,7 +10,7 @@ ISO = 'ISO'
 ITRANS = 'itrans'
 TITUS = 'titus'
 
-"""Optitransv1 is described in https://sanskrit-coders.github.io/site/pages/input/optitrans.html#optitrans-v1 . OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु)."""
+"""Optitransv1 is described in https://sanskrit-coders.github.io/input/optitrans/#optitrans-v1 . OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु)."""
 OPTITRANS = 'optitrans'
 KOLKATA = 'kolkata'
 SLP1 = 'slp1'
@@ -128,8 +128,8 @@ class ItransScheme(RomanScheme):
 class OptitransScheme(RomanScheme):
     def __init__(self):
         super(OptitransScheme, self).__init__({
-            'vowels': str.split("""a A i I u U R RR LLi LLI e ai o au E O"""),
-            'marks': str.split("""A i I u U R RR LLi LLI e ai o au E O"""),
+            'vowels': str.split("""a A i I u U R RR LLi LLI e ai o au E O ea oa"""),
+            'marks': str.split("""A i I u U R RR LLi LLI e ai o au E O ea oa"""),
             'virama': [''],
             'yogavaahas': str.split('M H .N kH pH'),
             'consonants': str.split("""

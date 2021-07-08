@@ -4,8 +4,8 @@ from indic_transliteration.sanscript.schemes.brahmic import BrahmicScheme
 class DevanagariScheme(BrahmicScheme):
     def __init__(self):
         super(DevanagariScheme, self).__init__({
-            'vowels': str.split("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ"""),
-            'marks': str.split("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ"""),
+            'vowels': str.split("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ ऍ ऑ"""),
+            'marks': str.split("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ ॅ ॉ"""),
             'virama': str.split('्'),
             'yogavaahas': str.split('ं ः ँ ᳵ ᳶ ़'),
             'consonants': str.split("""

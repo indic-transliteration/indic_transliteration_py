@@ -3,7 +3,6 @@ import logging
 import os
 
 import pytest
-import regex
 
 from indic_transliteration import sanscript
 
@@ -52,7 +51,7 @@ test_cases_to_dev = get_test_cases(test_tuples=test_tuples, ignored_cases=[])
 
 @pytest.mark.parametrize("test_case", test_cases_to_dev)
 def test_to_devanagari(test_case):
-    # logging.debug(str(test_case))
+    logging.debug(str(test_case))
     dev_string = test_case["dev_string"]
     script = test_case["script"]
     text = test_case["text"]

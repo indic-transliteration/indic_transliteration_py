@@ -119,6 +119,7 @@ class SchemeMap(object):
     self.vowels = {}
     self.consonants = {}
     self.non_marks_viraama = {}
+    self.accents = {}
     self.from_scheme = from_scheme
     self.to_scheme = to_scheme
     self.max_key_length_from_scheme = max(len(x) for g in from_scheme
@@ -143,6 +144,18 @@ class SchemeMap(object):
           self.consonants.update(conjunct_map)
         elif group.endswith('vowels'):
           self.vowels.update(conjunct_map)
+        elif group == 'accents':
+          self.accents = conjunct_map
+
+    for base_accented_vowel, synonyms in from_scheme.accented_vowel_synonyms.items():
+      for accented_vowel in synonyms:
+        base_vowel = base_accented_vowel[:-1]
+        source_accent = base_accented_vowel[-1]
+        # Roman a does not map to any brAhmic vowel mark. Hence "" below.
+        target_accent = self.accents.get(source_accent, source_accent)
+        self.marks[accented_vowel] = self.marks.get(base_vowel, "") + target_accent
+        self.vowels[accented_vowel] = self.vowels[base_vowel] + target_accent
+            
 
     if from_scheme.name == OPTITRANS:
       if len(to_scheme['virama']) == 0:
@@ -207,6 +220,7 @@ def _get_scheme_map(input_encoding, output_encoding):
     :param output_encoding: Input encoding. Must be defined in `SCHEMES`.
     """
     return SchemeMap(SCHEMES[input_encoding], SCHEMES[output_encoding])
+
 
 def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   """Transliterate `data` with the given parameters::

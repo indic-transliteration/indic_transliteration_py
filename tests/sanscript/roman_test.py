@@ -26,9 +26,9 @@ def test_optitrans_to_lay_indian():
     assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("taM jitvA") == "tam jitva"
     assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("kRShNa") == "krishna"
 
-def test_simplify_accent_notation():
-    assert sanscript.roman.RomanScheme.simplify_accent_notation("dŕ̥ṃhasva") == "dŕ̥ṃhasva"
-    assert sanscript.roman.RomanScheme.simplify_accent_notation("pitŕ̥̄ṃs") == "pitr̥̄́ṃs"
+def test_get_standard_form():
+    assert sanscript.SCHEMES[sanscript.IAST].get_standard_form("dŕ̥ṃhasva") == "dṛ́ṃhasva"
+    assert sanscript.SCHEMES[sanscript.IAST].get_standard_form("pitŕ̥̄ṃs") == "pitṝ́ṃs"
 
 def test_to_double_lettered():
     assert sanscript.SCHEMES[sanscript.OPTITRANS].get_double_lettered("taM jitvA pUraya") == "taM jitvaa puuraya"

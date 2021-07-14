@@ -1,3 +1,5 @@
+import regex
+
 from indic_transliteration.sanscript.schemes.brahmic import northern
 
 
@@ -17,6 +19,10 @@ def _brahmic(data, scheme_map, **kw):
   non_marks_viraama = scheme_map.non_marks_viraama
   to_roman = scheme_map.to_scheme.is_roman
   max_key_length_from_scheme = scheme_map.max_key_length_from_scheme
+
+  if to_roman and len(scheme_map.accents) > 0:
+    pattern = "([%s])([%s])" % ("".join(scheme_map.from_scheme['yogavaahas']), "".join(scheme_map.accents.keys()))
+    data = regex.sub(pattern, "\\2\\1", data)
 
   buf = []
   i = 0

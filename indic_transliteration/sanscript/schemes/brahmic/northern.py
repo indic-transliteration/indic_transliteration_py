@@ -8,6 +8,7 @@ class DevanagariScheme(BrahmicScheme):
             'marks': str.split("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ ॅ ॉ"""),
             'virama': str.split('्'),
             'yogavaahas': str.split('ं ः ँ ᳵ ᳶ ़'),
+            'accents': str.split('॒ ॑ ᳡ ꣡'),
             'consonants': str.split("""
                             क ख ग घ ङ
                             च छ ज झ ञ

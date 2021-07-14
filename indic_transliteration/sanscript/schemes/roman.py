@@ -33,25 +33,6 @@ class RomanScheme(Scheme):
         return sanscript.transliterate(data=sanscript.transliterate(_from=self.name, _to=sanscript.DEVANAGARI, data=data), _from=sanscript.DEVANAGARI, _to=self.name)
 
     @classmethod
-    def simplify_accent_notation(cls, text):
-        # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
-        text = text.replace("á", "á")
-        text = text.replace("í", "í")
-        text = text.replace("ú", "ú")
-        text = text.replace("ŕ", "ŕ")
-        text = text.replace("é", "é")
-        text = text.replace("ó", "ó")
-
-        text = text.replace("à", "à")
-        text = text.replace("ì", "ì")
-        text = text.replace("ù", "ù")
-        text = text.replace("è", "è")
-        text = text.replace("ò", "ò")
-        
-        text = regex.sub("([̀́])([̥̇¯̄]+)", "\\2\\1", text)
-        return text
-
-    @classmethod
     def to_shatapatha_svara(cls, text):
         # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
         text = text.replace("́", "᳘")
@@ -179,6 +160,7 @@ class IastScheme(RomanScheme):
             'marks': str.split("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au ê ô"""),
             'virama': [''],
             'yogavaahas': str.split('ṃ ḥ m̐'),
+            'accents': str.split('॒ ॑ ̀ ́'),
             'consonants': str.split("""
                             k kh g gh ṅ
                             c ch j jh ñ
@@ -195,14 +177,22 @@ class IastScheme(RomanScheme):
                        0 1 2 3 4 5 6 7 8 9
                        """)
         }, name=IAST)
+        self.accented_vowel_synonyms = {
+            "á": ["á"], "é": ["é"],"í": ["í"],"ó": ["ó"], "ú": ["ú"],
+            "à": ["à"], "è": ["è"], "ì": ["ì"], "ò": ["ò"], "ù": ["ù"],
+        }
         if kolkata_variant:
             self['vowels'] = str.split("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self['marks'] = str.split("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
+            del self.accented_vowel_synonyms["é"]
+            del self.accented_vowel_synonyms["è"]
+            del self.accented_vowel_synonyms["ò"]
+            del self.accented_vowel_synonyms["ó"]
             self.name = KOLKATA
         self.synonym_map = {
             "|": [".", "/"], "||": ["..", "//"], "'": ["`"],
             "m̐": ["ṁ"],
-            "ṛ": ["r̥"], "ṝ": ["ṝ", "r̥̄", "r̥̄"]
+            "ṛ": ["r̥"], "ṝ": ["ṝ", "r̥̄", "r̥̄"],
         }
         
         # A local function.
@@ -214,7 +204,12 @@ class IastScheme(RomanScheme):
                 self.synonym_map[x] = synonyms
         add_capitalized_synonyms(self["vowels"])
         add_capitalized_synonyms(self["consonants"])
+        add_capitalized_synonyms(self.accented_vowel_synonyms.keys())
         add_capitalized_synonyms(["oṃ"])
+
+    def get_standard_form(self, data):
+        data = regex.sub("([̀́])([̥̇¯̄]+)", "\\2\\1", data)
+        return super(IastScheme, self).get_standard_form(data=data)
 
 
 class HkScheme(RomanScheme):

@@ -1,3 +1,6 @@
+import regex
+
+
 def _roman(data, scheme_map, **kw):
   """Transliterate `data` with the given `scheme_map`. This function is used
   when the source scheme is a Roman scheme.
@@ -100,4 +103,8 @@ def _roman(data, scheme_map, **kw):
 
     found = False
 
-  return ''.join(buf)
+  result = ''.join(buf)
+  if not to_roman and len(scheme_map.accents) > 0:
+    pattern = "([%s])([%s])" % ("".join(scheme_map.accents.values()), "".join(scheme_map.to_scheme['yogavaahas']))
+    result = regex.sub(pattern, "\\2\\1", result)
+  return result

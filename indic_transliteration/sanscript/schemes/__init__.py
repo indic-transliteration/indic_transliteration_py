@@ -17,6 +17,7 @@ class Scheme(dict):
         if synonym_map is None:
             synonym_map = {}
         self.synonym_map = synonym_map
+        self.accented_vowel_synonyms = {}
         self.is_roman = is_roman
         self.name = name
 

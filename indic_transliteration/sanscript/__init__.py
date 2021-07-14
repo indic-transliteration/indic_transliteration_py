@@ -155,6 +155,7 @@ class SchemeMap(object):
         target_accent = self.accents.get(source_accent, source_accent)
         self.marks[accented_vowel] = self.marks.get(base_vowel, "") + target_accent
         self.vowels[accented_vowel] = self.vowels[base_vowel] + target_accent
+        self.non_marks_viraama.update(self.vowels)
             
 
     if from_scheme.name == OPTITRANS:

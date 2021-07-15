@@ -160,7 +160,7 @@ class IastScheme(RomanScheme):
             'marks': str.split("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au ê ô"""),
             'virama': [''],
             'yogavaahas': str.split('ṃ ḥ m̐'),
-            'accents': str.split('॒ ॑ ̀ ́'),
+            'accents': str.split('॒ ॑ ̀ ́ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ ꣪ ꣫ ꣬ ꣭ ꣮ ꣯ ꣰ ꣱'),
             'consonants': str.split("""
                             k kh g gh ṅ
                             c ch j jh ñ
@@ -193,6 +193,7 @@ class IastScheme(RomanScheme):
             "|": [".", "/"], "||": ["..", "//"], "'": ["`"],
             "m̐": ["ṁ"],
             "ṛ": ["r̥"], "ṝ": ["ṝ", "r̥̄", "r̥̄"],
+            "́": ["¹"]
         }
         
         # A local function.
@@ -208,7 +209,8 @@ class IastScheme(RomanScheme):
         add_capitalized_synonyms(["oṃ"])
 
     def get_standard_form(self, data):
-        data = regex.sub("([̀́])([̥̇¯̄]+)", "\\2\\1", data)
+        pattern = "([%s])([̥̇¯̄]+)" % ("".join(self["accents"]))
+        data = regex.sub(pattern, "\\2\\1", data)
         return super(IastScheme, self).get_standard_form(data=data)
 
 

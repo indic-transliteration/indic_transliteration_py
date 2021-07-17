@@ -13,7 +13,7 @@ def _brahmic(data, scheme_map, **kw):
   """
   if scheme_map.from_scheme.name == northern.GURMUKHI:
     data = northern.GurmukhiScheme.replace_tippi(text=data) 
-  marks = scheme_map.marks
+  vowel_marks = scheme_map.vowel_marks
   virama = scheme_map.virama
   consonants = scheme_map.consonants
   non_marks_viraama = scheme_map.non_marks_viraama
@@ -43,8 +43,8 @@ def _brahmic(data, scheme_map, **kw):
 
     while token:
       if len(token) == 1:
-        if token in marks:
-          append(marks[token])
+        if token in vowel_marks:
+          append(vowel_marks[token])
           found = True
         elif token in virama:
           append(virama[token])

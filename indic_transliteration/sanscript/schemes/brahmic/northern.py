@@ -5,7 +5,7 @@ class DevanagariScheme(BrahmicScheme):
     def __init__(self):
         super(DevanagariScheme, self).__init__({
             'vowels': str.split("""अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ ऎ ऒ ऍ ऑ"""),
-            'marks': str.split("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ ॅ ॉ"""),
+            'vowel_marks': str.split("""ा ि ी ु ू ृ ॄ ॢ ॣ े ै ो ौ ॆ ॊ ॅ ॉ"""),
             'virama': str.split('्'),
             'yogavaahas': str.split('ं ः ँ ᳵ ᳶ ़'),
             'accents': str.split('॒ ॑ ᳡ ꣡ ꣢ ꣣ ꣤ ꣥ ꣦ ꣧ ꣨ ꣩ ꣪ ꣫ ꣬ ꣭ ꣮ ꣯ ꣰ ꣱'),
@@ -24,7 +24,7 @@ class DevanagariScheme(BrahmicScheme):
                        ॐ ऽ । ॥
                        ० १ २ ३ ४ ५ ६ ७ ८ ९
                        """)
-        }, name=DEVANAGARI, synonym_map={'फ़': ["फ़"], "ड़": ["ड़"]})
+        }, name=DEVANAGARI, alternates={'फ़': ["फ़"], "ड़": ["ड़"]})
 
     @classmethod
     def fix_lazy_visarga(cls, data_in):
@@ -59,7 +59,7 @@ class GujaratiScheme(BrahmicScheme):
     def __init__(self):
         super(GujaratiScheme, self).__init__({
             'vowels': str.split("""અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"""),
-            'marks': str.split("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),
+            'vowel_marks': str.split("""ા િ ી ુ ૂ ૃ ૄ ૢ ૣ ે ૈ ો ૌ"""),
             'virama': str.split('્'),
             'yogavaahas': str.split('ં ઃ ઁ ᳵ ᳶ ઼'),
             'consonants': str.split("""
@@ -84,7 +84,7 @@ class GurmukhiScheme(BrahmicScheme):
     def __init__(self):
         super(GurmukhiScheme, self).__init__({
             'vowels': str.split("""ਅ ਆ ਇ ਈ ਉ ਊ ऋ ॠ ऌ ॡ ਏ ਐ ਓ ਔ"""),
-            'marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', 'ृ', 'ॄ',
+            'vowel_marks': ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', 'ृ', 'ॄ',
                       'ॢ', 'ॣ', 'ੇ', 'ੈ', 'ੋ', 'ੌ'], # Includes some fake mAtrA-s from devanAgarI
             'virama': str.split('੍'),
             'yogavaahas': str.split('ਂ ਃ ਁ ᳵ ᳶ ਼'),
@@ -103,7 +103,7 @@ class GurmukhiScheme(BrahmicScheme):
                        ੴ ऽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
                        """)
-        }, name=GURMUKHI, synonym_map={"ਂ": ["ੰ"]})
+        }, name=GURMUKHI, alternates={"ਂ": ["ੰ"]})
 
     @classmethod
     def replace_tippi(cls, text):

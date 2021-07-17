@@ -113,7 +113,7 @@ class SchemeMap(object):
 
   def __init__(self, from_scheme, to_scheme):
     """Create a mapping from `from_scheme` to `to_scheme`."""
-    self.marks = {}
+    self.vowel_marks = {}
     self.virama = {}
 
     self.vowels = {}
@@ -131,11 +131,11 @@ class SchemeMap(object):
       conjunct_map = {}
       for (k, v) in zip(from_scheme[group], to_scheme[group]):
         conjunct_map[k] = v
-        if k in from_scheme.synonym_map:
-          for k_syn in from_scheme.synonym_map[k]:
+        if k in from_scheme.alternates:
+          for k_syn in from_scheme.alternates[k]:
             conjunct_map[k_syn] = v
-      if group.endswith('marks'):
-        self.marks.update(conjunct_map)
+      if group.endswith('vowel_marks'):
+        self.vowel_marks.update(conjunct_map)
       elif group == 'virama':
         self.virama = conjunct_map
       else:
@@ -153,7 +153,7 @@ class SchemeMap(object):
         source_accent = base_accented_vowel[-1]
         # Roman a does not map to any brAhmic vowel mark. Hence "" below.
         target_accent = self.accents.get(source_accent, source_accent)
-        self.marks[accented_vowel] = self.marks.get(base_vowel, "") + target_accent
+        self.vowel_marks[accented_vowel] = self.vowel_marks.get(base_vowel, "") + target_accent
         self.vowels[accented_vowel] = self.vowels[base_vowel] + target_accent
         self.non_marks_viraama.update(self.vowels)
             
@@ -179,8 +179,8 @@ class SchemeMap(object):
       synonym_conjunct_map = {}
       for key in conjunct_map.keys():
         latter_consonant = key[1:]
-        if latter_consonant in from_scheme.synonym_map:
-          for k_syn in from_scheme.synonym_map[latter_consonant]:
+        if latter_consonant in from_scheme.alternates:
+          for k_syn in from_scheme.alternates[latter_consonant]:
             synonym_conjunct_map["n" + k_syn] = conjunct_map[key]
       self.consonants.update(synonym_conjunct_map)
       self.non_marks_viraama.update(synonym_conjunct_map)
@@ -207,7 +207,7 @@ class SchemeMap(object):
   def __str__(self):
     import pprint
     return pprint.pformat({"vowels": self.vowels,
-                           "marks":  self.marks,
+                           "vowel_marks":  self.vowel_marks,
                            "virama":  self.virama,
                            "consonants": self.consonants})
 

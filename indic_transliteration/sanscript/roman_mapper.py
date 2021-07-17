@@ -10,7 +10,7 @@ def _roman(data, scheme_map, **kw):
                      and characters in the new scheme
   """
   vowels = scheme_map.vowels
-  marks = scheme_map.marks
+  vowel_marks = scheme_map.vowel_marks
   virama = scheme_map.virama
   consonants = scheme_map.consonants
   non_marks_viraama = scheme_map.non_marks_viraama
@@ -66,7 +66,7 @@ def _roman(data, scheme_map, **kw):
       # vowel. But due to the nature of Brahmic scripts, 'a' is implicit
       # and has no vowel mark. If we see 'a', add nothing.
       if had_consonant and token in vowels:
-        mark = marks.get(token, '')
+        mark = vowel_marks.get(token, '')
         if mark:
           append(mark)
         elif to_roman:

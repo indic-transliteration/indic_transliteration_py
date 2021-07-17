@@ -5,7 +5,7 @@ class KannadaScheme(BrahmicScheme):
     def __init__(self):
         super(KannadaScheme, self).__init__({
             'vowels': str.split("""ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ ಎ ಒ"""),
-            'marks': str.split("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ ೆ ೊ"""),
+            'vowel_marks': str.split("""ಾ ಿ ೀ ು ೂ ೃ ೄ ೢ ೣ ೇ ೈ ೋ ೌ ೆ ೊ"""),
             'virama': str.split('್'),
             'yogavaahas': str.split('ಂ ಃ ಁ ೱ ೲ ಼'),
             'consonants': str.split("""
@@ -30,7 +30,7 @@ class MalayalamScheme(BrahmicScheme):
     def __init__(self):
         super(MalayalamScheme, self).__init__({
             'vowels': str.split("""അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ എ ഒ"""),
-            'marks': str.split("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ െ ൊ"""),
+            'vowel_marks': str.split("""ാ ി ീ ു ൂ ൃ ൄ ൢ ൣ േ ൈ ോ ൌ െ ൊ"""),
             'virama': str.split('്'),
             'yogavaahas': str.split('ം ഃ ഁ'),
             'consonants': str.split("""
@@ -54,7 +54,7 @@ class TamilScheme(BrahmicScheme):
     def __init__(self):
         super(TamilScheme, self).__init__({
             'vowels': str.split("""அ ஆ இ ஈ உ ஊ ரு ரூ லு லூ ஏ ஐ ஓ ஔ எ ஒ"""),
-            'marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '்ரு', '்ரூ',
+            'vowel_marks': ['ா', 'ி', 'ீ', 'ு', 'ூ', '்ரு', '்ரூ',
                       '்லு', '்லூ', 'ே', 'ை', 'ோ', 'ௌ'] + ['ெ', 'ொ'],
             'virama': str.split('்'),
             'yogavaahas': str.split('ம் ஃ ँ'),
@@ -79,7 +79,7 @@ class GranthaScheme(BrahmicScheme):
     def __init__(self):
         super(GranthaScheme, self).__init__({
             'vowels': str.split("""𑌅 𑌆 𑌇 𑌈 𑌉 𑌊 𑌋 𑍠 𑌌 𑍡 𑌏 𑌐 𑌓 𑌔 𑌏𑌀 𑌓𑌀"""),
-            'marks': str.split("""𑌾 𑌿 𑍀 𑍁 𑍂 𑍃 𑍄 𑍢 𑍣 𑍇 𑍈 𑍋 𑍗 𑍇𑌀 𑍋𑌀"""),
+            'vowel_marks': str.split("""𑌾 𑌿 𑍀 𑍁 𑍂 𑍃 𑍄 𑍢 𑍣 𑍇 𑍈 𑍋 𑍗 𑍇𑌀 𑍋𑌀"""),
             'virama': str.split('𑍍'),
             'yogavaahas': str.split('𑌂 𑌃 𑌁'),
             'consonants': str.split("""
@@ -103,7 +103,7 @@ class TeluguScheme(BrahmicScheme):
     def __init__(self):
         super(TeluguScheme, self).__init__({
             'vowels': str.split("""అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ ఎ ఒ"""),
-            'marks': str.split("""ా ి ీ ు ూ ృ ౄ ౢ ౣ ే ై ో ౌ ె  ొ"""),
+            'vowel_marks': str.split("""ా ి ీ ు ూ ృ ౄ ౢ ౣ ే ై ో ౌ ె  ొ"""),
             'virama': str.split('్'),
             'yogavaahas': str.split('ం ః ఁ'),
             'consonants': str.split("""

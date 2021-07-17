@@ -5,7 +5,7 @@ class GunjalaGondiScheme(BrahmicScheme):
     def __init__(self):
         super(GunjalaGondiScheme, self).__init__({
             'vowels': str.split("""𑵠 𑵡 𑵢 𑵣 𑵤 𑵥 ఋ ౠ ఌ ౡ 𑵧 𑵨 𑵪 𑵫 ఎ ఒ"""),
-            'marks': str.split("""𑶊 𑶋 𑶌 𑶍 𑶎 ృ ౄ ౢ ౣ 𑶐 𑶑 𑶓 𑶔 ె  ొ"""),
+            'vowel_marks': str.split("""𑶊 𑶋 𑶌 𑶍 𑶎 ృ ౄ ౢ ౣ 𑶐 𑶑 𑶓 𑶔 ె  ొ"""),
             'virama': str.split('𑶗'),
             'yogavaahas': str.split('𑶕 𑶖 ఁ'),
             'consonants': str.split("""

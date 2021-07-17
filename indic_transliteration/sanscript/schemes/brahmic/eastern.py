@@ -5,7 +5,7 @@ class BengaliScheme(BrahmicScheme):
     def __init__(self):
         super(BengaliScheme, self).__init__({
             'vowels': str.split("""অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"""),
-            'marks': str.split("""া ি ী ু ূ ৃ ৄ ৢ ৣ ে ৈ ো ৌ"""),
+            'vowel_marks': str.split("""া ি ী ু ূ ৃ ৄ ৢ ৣ ে ৈ ো ৌ"""),
             'virama': str.split('্'),
             'yogavaahas': str.split('ং ঃ ঁ ᳵ ᳶ ়'),
             'consonants': str.split("""
@@ -30,7 +30,7 @@ class OriyaScheme(BrahmicScheme):
     def __init__(self):
         super(OriyaScheme, self).__init__({
             'vowels': str.split("""ଅ ଆ ଇ ଈ ଉ ଊ ଋ ୠ ଌ ୡ ଏ ଐ ଓ ଔ"""),
-            'marks': ['ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'ୃ', 'ୄ',
+            'vowel_marks': ['ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'ୃ', 'ୄ',
                       '', '', 'େ', 'ୈ', 'ୋ', 'ୌ'],
             'virama': str.split('୍'),
             'yogavaahas': str.split('ଂ ଃ ଁ ᳵ ᳶ ଼'),

@@ -19,15 +19,15 @@ WX = 'wx'
 
 
 class RomanScheme(Scheme):
-    def __init__(self, data=None, synonym_map=None, name=None):
-        super(RomanScheme, self).__init__(data=data, synonym_map=synonym_map, name=name, is_roman=True)
+    def __init__(self, data=None, alternates=None, name=None):
+        super(RomanScheme, self).__init__(data=data, alternates=alternates, name=name, is_roman=True)
     
     def get_standard_form(self, data):
         """Roman schemes define multiple representations of the same devanAgarI character. This method gets a library-standard representation.
         
         data : a text in the given scheme.
         """
-        if self.synonym_map is None:
+        if self.alternates is None:
             return data
         from indic_transliteration import sanscript
         return sanscript.transliterate(data=sanscript.transliterate(_from=self.name, _to=sanscript.DEVANAGARI, data=data), _from=sanscript.DEVANAGARI, _to=self.name)
@@ -63,7 +63,7 @@ class ItransScheme(RomanScheme):
     def __init__(self):
         super(ItransScheme, self).__init__({
             'vowels': str.split("""a A i I u U RRi RRI LLi LLI e ai o au"""),
-            'marks': str.split("""A i I u U RRi RRI LLi LLI e ai o au"""),
+            'vowel_marks': str.split("""A i I u U RRi RRI LLi LLI e ai o au"""),
             'virama': [''],
             'yogavaahas': str.split('M H .N'),
             'consonants': str.split("""
@@ -81,7 +81,7 @@ class ItransScheme(RomanScheme):
                        OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
-        }, synonym_map={
+        }, alternates={
             "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
             "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY", "jJN"],
             "||": [".."], "|": ["."]
@@ -110,7 +110,7 @@ class OptitransScheme(RomanScheme):
     def __init__(self):
         super(OptitransScheme, self).__init__({
             'vowels': str.split("""a A i I u U R RR LLi LLI e ai o au E O ea oa"""),
-            'marks': str.split("""A i I u U R RR LLi LLI e ai o au E O ea oa"""),
+            'vowel_marks': str.split("""A i I u U R RR LLi LLI e ai o au E O ea oa"""),
             'virama': [''],
             'yogavaahas': str.split('M H .N kH pH'),
             'consonants': str.split("""
@@ -129,7 +129,7 @@ class OptitransScheme(RomanScheme):
                        OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
-        }, synonym_map={
+        }, alternates={
             "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "R": ["R^i", "RRi"], "RR": ["R^I", "RRI"], "LLi": ["L^i"], "LLI": ["L^I"],
             "M": [".m", ".n"],
             "kh": ["K"], "gh": ["G"],
@@ -157,7 +157,7 @@ class IastScheme(RomanScheme):
     def __init__(self, kolkata_variant=False):
         super(IastScheme, self).__init__({
             'vowels': str.split("""a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au ê ô"""),
-            'marks': str.split("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au ê ô"""),
+            'vowel_marks': str.split("""ā i ī u ū ṛ ṝ ḷ ḹ e ai o au ê ô"""),
             'virama': [''],
             'yogavaahas': str.split('ṃ ḥ m̐'),
             'accents': str.split('॒ ॑ ̀ ́ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ ꣪ ꣫ ꣬ ꣭ ꣮ ꣯ ꣰ ꣱'),
@@ -183,13 +183,13 @@ class IastScheme(RomanScheme):
         }
         if kolkata_variant:
             self['vowels'] = str.split("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
-            self['marks'] = str.split("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
+            self['vowel_marks'] = str.split("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             del self.accented_vowel_synonyms["é"]
             del self.accented_vowel_synonyms["è"]
             del self.accented_vowel_synonyms["ò"]
             del self.accented_vowel_synonyms["ó"]
             self.name = KOLKATA
-        self.synonym_map = {
+        self.alternates = {
             "|": [".", "/"], "||": ["..", "//"], "'": ["`"],
             "m̐": ["ṁ"],
             "ṛ": ["r̥"], "ṝ": ["ṝ", "r̥̄", "r̥̄"],
@@ -200,9 +200,9 @@ class IastScheme(RomanScheme):
         def add_capitalized_synonyms(some_list):
             for x in some_list:
                 synonyms = [x.capitalize()]
-                if x in self.synonym_map:
-                    synonyms = self.synonym_map[x] + [y.capitalize() for y in self.synonym_map[x]]
-                self.synonym_map[x] = synonyms
+                if x in self.alternates:
+                    synonyms = self.alternates[x] + [y.capitalize() for y in self.alternates[x]]
+                self.alternates[x] = synonyms
         add_capitalized_synonyms(self["vowels"])
         add_capitalized_synonyms(self["consonants"])
         add_capitalized_synonyms(self.accented_vowel_synonyms.keys())
@@ -218,7 +218,7 @@ class HkScheme(RomanScheme):
     def __init__(self):
         super(HkScheme, self).__init__({
             'vowels': str.split("""a A i I u U R RR lR lRR e ai o au"""),
-            'marks': str.split("""A i I u U R RR lR lRR e ai o au"""),
+            'vowel_marks': str.split("""A i I u U R RR lR lRR e ai o au"""),
             'virama': [''],
             'yogavaahas': str.split('M H ~'),
             'consonants': str.split("""
@@ -235,7 +235,7 @@ class HkScheme(RomanScheme):
                        OM ' | ||
                        0 1 2 3 4 5 6 7 8 9
                        """)
-        }, name=HK, synonym_map={"|": ["."], "||": [".."]})
+        }, name=HK, alternates={"|": ["."], "||": [".."]})
 
 
 iast_scheme = IastScheme()
@@ -245,7 +245,7 @@ class TitusScheme(RomanScheme):
     def __init__(self):
         super(TitusScheme, self).__init__({
             'vowels': str.split("""a ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"""),
-            'marks': str.split("""ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"""),
+            'vowel_marks': str.split("""ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"""),
             'virama': [''],
             'yogavaahas': iast_scheme['yogavaahas'],
             'consonants': str.split("""
@@ -262,7 +262,7 @@ class TitusScheme(RomanScheme):
                        oṃ ' . ..
                        0 1 2 3 4 5 6 7 8 9
                        """)
-        }, name=TITUS, synonym_map={
+        }, name=TITUS, alternates={
             "m̐": ["ṁ"], 
             "r̥": ["ṛ"], "r̥̄": ["ṝ", "ṝ", "r̥̄"], "oṃ": ["ŏṃ"],
             ".": ["|", "/"], "..": ["||", "//"]
@@ -273,7 +273,7 @@ class VelthiusScheme(RomanScheme):
     def __init__(self):
         super(VelthiusScheme, self).__init__({
             'vowels': str.split("""a aa i ii u uu .r .rr .l .ll e ai o au"""),
-            'marks': str.split("""aa i ii u uu .r .rr .l .ll e ai o au"""),
+            'vowel_marks': str.split("""aa i ii u uu .r .rr .l .ll e ai o au"""),
             'virama': [''],
             'yogavaahas': str.split('.m .h /'),
             'consonants': str.split("""
@@ -297,7 +297,7 @@ class Slp1Scheme(RomanScheme):
     def __init__(self):
         super(Slp1Scheme, self).__init__({
             'vowels': str.split("""a A i I u U f F x X e E o O"""),
-            'marks': str.split("""A i I u U f F x X e E o O"""),
+            'vowel_marks': str.split("""A i I u U f F x X e E o O"""),
             'virama': [''],
             'yogavaahas': str.split('M H ~'),
             'consonants': str.split("""
@@ -321,7 +321,7 @@ class WxScheme(RomanScheme):
     def __init__(self):
         super(WxScheme, self).__init__({
             'vowels': str.split("""a A i I u U q Q L ḹ e E o O"""),
-            'marks': str.split("""A i I u U q Q L ḹ e E o O"""),
+            'vowel_marks': str.split("""A i I u U q Q L ḹ e E o O"""),
             'virama': [''],
             'yogavaahas': str.split('M H ~'),
             'consonants': str.split("""
@@ -340,7 +340,7 @@ class WxScheme(RomanScheme):
                        """)
         }, name=WX, 
             # Reference for the below:
-            synonym_map={"'": ["Z"], "~": ["z"]})
+            alternates={"'": ["Z"], "~": ["z"]})
         
 
 SCHEMES = {

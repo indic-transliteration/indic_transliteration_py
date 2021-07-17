@@ -125,6 +125,8 @@ class SchemeMap(object):
         continue
       conjunct_map = {}
       for (k, v) in zip(from_scheme[group], to_scheme[group]):
+        if (v == "") and (group not in ["virama", "zwj", "skip"]):
+          v = k
         conjunct_map[k] = v
         if k in from_scheme.get("alternates", {}):
           for k_syn in from_scheme["alternates"][k]:
@@ -151,53 +153,7 @@ class SchemeMap(object):
         self.vowel_marks[accented_vowel] = self.vowel_marks.get(base_vowel, "") + target_accent
         self.vowels[accented_vowel] = self.vowels[base_vowel] + target_accent
         self.non_marks_viraama.update(self.vowels)
-            
-  
-    if from_scheme.name == OPTITRANS:
-      if len(to_scheme['virama']) == 0:
-        to_scheme_virama = ""
-      else:
-        to_scheme_virama = to_scheme['virama'][0]
-      conjunct_map = {
-        "nk": self.consonants["~N"] + to_scheme_virama + self.consonants["k"],
-        "nkh": self.consonants["~N"] + to_scheme_virama + self.consonants["kh"],
-        "nx": self.consonants["~N"] + to_scheme_virama + self.consonants["x"],
-        "ng": self.consonants["~N"] + to_scheme_virama +self.consonants["g"],
-        "ngh": self.consonants["~N"] + to_scheme_virama +self.consonants["gh"],
-        "nch": self.consonants["~n"] + to_scheme_virama +self.consonants["ch"],
-        "nCh": self.consonants["~n"] + to_scheme_virama +self.consonants["Ch"],
-        "nj": self.consonants["~n"] + to_scheme_virama +self.consonants["j"],
-        "njh": self.consonants["~n"] + to_scheme_virama +self.consonants["jh"],
-      }
-      self.consonants.update(conjunct_map)
-      self.non_marks_viraama.update(conjunct_map)
-      synonym_conjunct_map = {}
-      for key in conjunct_map.keys():
-        latter_consonant = key[1:]
-        if latter_consonant in from_scheme["alternates"]:
-          for k_syn in from_scheme["alternates"][latter_consonant]:
-            synonym_conjunct_map["n" + k_syn] = conjunct_map[key]
-      self.consonants.update(synonym_conjunct_map)
-      self.non_marks_viraama.update(synonym_conjunct_map)
 
-    if to_scheme.name == OPTITRANS:
-      inv_map = {v: k for k, v in self.consonants.items()}
-      if len(from_scheme['virama']) == 0:
-          from_scheme_virama = ''
-      else:
-          from_scheme_virama = from_scheme['virama'][0]
-      conjunct_map = {
-        inv_map["~N"] + from_scheme_virama + inv_map["k"]: "nk",
-        inv_map["~N"] + from_scheme_virama + inv_map["kh"]: "nkh",
-        inv_map["~N"] + from_scheme_virama + inv_map["g"]: "ng",
-        inv_map["~N"] + from_scheme_virama + inv_map["gh"]: "ngh",
-        inv_map["~n"] + from_scheme_virama + inv_map["ch"]: "nch",
-        inv_map["~n"] + from_scheme_virama + inv_map["Ch"]: "nCh",
-        inv_map["~n"] + from_scheme_virama + inv_map["j"]: "nj",
-        inv_map["~n"] + from_scheme_virama + inv_map["jh"]: "njh",
-      }
-      self.consonants.update(conjunct_map)
-      self.non_marks_viraama.update(conjunct_map)
 
   def __str__(self):
     import pprint
@@ -248,7 +204,13 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   from indic_transliteration.sanscript.brahmic_mapper import _brahmic
   from indic_transliteration.sanscript.roman_mapper import _roman
   func = _roman if scheme_map.from_scheme.is_roman else _brahmic
-  return func(data, scheme_map, **options)
+  result = func(data, scheme_map, **options)
+
+  if _to == OPTITRANS:
+    import regex
+    result = regex.sub("~N([kKgGx])", "n\\1", result)
+    result = regex.sub("~n([cCjJ])", "n\\1", result)
+  return result
 
 
 def get_standard_form(data, scheme_name):

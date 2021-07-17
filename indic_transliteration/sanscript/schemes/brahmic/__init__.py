@@ -69,7 +69,7 @@ class DevanagariScheme(BrahmicScheme):
 class GurmukhiScheme(BrahmicScheme):
 
     @classmethod
-    def replace_tippi(cls, text):
+    def replace_addak(cls, text):
         import regex
         text = regex.sub("ੱ([ਕਖ])", r"ਕ੍\g<1>", text, flags=regex.UNICODE)
         text = regex.sub(r"ੱ([ਗਘ])", r"ਗ੍\g<1>", text)

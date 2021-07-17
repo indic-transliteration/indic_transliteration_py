@@ -9,6 +9,12 @@ def _roman(data, scheme_map, **kw):
   :param scheme_map: a dict that maps between characters in the old scheme
                      and characters in the new scheme
   """
+  if scheme_map.from_scheme.name == "optitrans":
+    data = regex.sub("n([kKgGx])", "~N\\1", data)
+    data = regex.sub("n([cCjJ])", "~n\\1", data)
+    data = regex.sub("n([TD])", "N\\1", data)
+
+
   vowels = scheme_map.vowels
   vowel_marks = scheme_map.vowel_marks
   virama = scheme_map.virama

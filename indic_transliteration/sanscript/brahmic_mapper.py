@@ -12,7 +12,7 @@ def _brahmic(data, scheme_map, **kw):
                      and characters in the new scheme
   """
   if scheme_map.from_scheme.name == brahmic.GURMUKHI:
-    data = brahmic.GurmukhiScheme.replace_tippi(text=data) 
+    data = brahmic.GurmukhiScheme.replace_addak(text=data) 
   vowel_marks = scheme_map.vowel_marks
   virama = scheme_map.virama
   consonants = scheme_map.consonants

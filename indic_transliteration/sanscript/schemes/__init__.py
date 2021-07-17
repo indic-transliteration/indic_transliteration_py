@@ -1,4 +1,5 @@
 import json
+import os.path
 
 
 class Scheme(dict):
@@ -14,14 +15,11 @@ class Scheme(dict):
                      otherwise.
     """
 
-    def __init__(self, data=None, alternates=None, is_roman=True, name=None):
+    def __init__(self, data=None, is_roman=True, name=None):
         super(Scheme, self).__init__(data or {})
-        if alternates is None:
-            alternates = {}
-        self.alternates = alternates
-        self.accented_vowel_synonyms = {}
         self.is_roman = is_roman
         self.name = name
+
 
     def fix_lazy_anusvaara_except_padaantas(self, data_in, omit_sam, omit_yrl):
         lines = data_in.split("\n")
@@ -49,5 +47,10 @@ class Scheme(dict):
 
 def load_scheme(file_path):
   import codecs
+  is_roman = "roman" in file_path
+  name = os.path.basename(file_path)
+  def scheme_maker(data):
+    return Scheme(data=data, name=name, is_roman=is_roman) 
   with codecs.open(file_path, "r", 'utf-8') as file_out:
-    json.load(file_path)
+    scheme = json.load(file_out, object_hook=scheme_maker)
+    return scheme

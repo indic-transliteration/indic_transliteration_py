@@ -19,15 +19,15 @@ WX = 'wx'
 
 
 class RomanScheme(Scheme):
-    def __init__(self, data=None, alternates=None, name=None):
-        super(RomanScheme, self).__init__(data=data, alternates=alternates, name=name, is_roman=True)
+    def __init__(self, data=None, name=None):
+        super(RomanScheme, self).__init__(data=data, name=name, is_roman=True)
     
     def get_standard_form(self, data):
         """Roman schemes define multiple representations of the same devanAgarI character. This method gets a library-standard representation.
         
         data : a text in the given scheme.
         """
-        if self.alternates is None:
+        if self["alternates"] is None:
             return data
         from indic_transliteration import sanscript
         return sanscript.transliterate(data=sanscript.transliterate(_from=self.name, _to=sanscript.DEVANAGARI, data=data), _from=sanscript.DEVANAGARI, _to=self.name)
@@ -80,12 +80,12 @@ class ItransScheme(RomanScheme):
             'symbols': str.split("""
                        OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
-                       """)
-        }, alternates={
+                       """), "alternates" :{
             "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "RRi": ["R^i"], "RRI": ["R^I"], "LLi": ["L^i"], "LLI": ["L^I"],
             "M": [".m", ".n"], "v": ["w"], "kSh": ["x", "kS"], "j~n": ["GY", "jJN"],
             "||": [".."], "|": ["."]
-        }, name=ITRANS)
+
+        }}, name=ITRANS)
 
     def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):
         if ignore_padaanta:
@@ -128,8 +128,8 @@ class OptitransScheme(RomanScheme):
             'symbols': str.split("""
                        OM .a | ||
                        0 1 2 3 4 5 6 7 8 9
-                       """)
-        }, alternates={
+                       """), 
+            "alternates":{
             "A": ["aa"], "I": ["ii"], "U": ["uu"], "e": ["E"], "o": ["O"], "R": ["R^i", "RRi"], "RR": ["R^I", "RRI"], "LLi": ["L^i"], "LLI": ["L^I"],
             "M": [".m", ".n"],
             "kh": ["K"], "gh": ["G"],
@@ -137,6 +137,7 @@ class OptitransScheme(RomanScheme):
             "ph": ["P"], "bh": ["B"], "Sh": ["S"],
             "v": ["w"], "x": ["kSh", "kS", "ksh"], "jn": ["GY", "jJN", "JN"],
             "|": ["."], "||": [".."]
+        }
         }, name=OPTITRANS)
 
     def to_lay_indian(self, text, jn_replacement="GY", t_replacement="t"):
@@ -175,21 +176,21 @@ class IastScheme(RomanScheme):
             'symbols': str.split("""
                        oṃ ' | ||
                        0 1 2 3 4 5 6 7 8 9
-                       """)
-        }, name=IAST)
-        self.accented_vowel_synonyms = {
+                       """), 
+            "accented_vowel_alternates" : {
             "á": ["á"], "é": ["é"],"í": ["í"],"ó": ["ó"], "ú": ["ú"],
             "à": ["à"], "è": ["è"], "ì": ["ì"], "ò": ["ò"], "ù": ["ù"],
         }
+        }, name=IAST)
         if kolkata_variant:
             self['vowels'] = str.split("""a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
             self['vowel_marks'] = str.split("""ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au ê ô""")
-            del self.accented_vowel_synonyms["é"]
-            del self.accented_vowel_synonyms["è"]
-            del self.accented_vowel_synonyms["ò"]
-            del self.accented_vowel_synonyms["ó"]
+            del self["accented_vowel_alternates"]["é"]
+            del self["accented_vowel_alternates"]["è"]
+            del self["accented_vowel_alternates"]["ò"]
+            del self["accented_vowel_alternates"]["ó"]
             self.name = KOLKATA
-        self.alternates = {
+        self["alternates"] = {
             "|": [".", "/"], "||": ["..", "//"], "'": ["`"],
             "m̐": ["ṁ"],
             "ṛ": ["r̥"], "ṝ": ["ṝ", "r̥̄", "r̥̄"],
@@ -200,12 +201,14 @@ class IastScheme(RomanScheme):
         def add_capitalized_synonyms(some_list):
             for x in some_list:
                 synonyms = [x.capitalize()]
-                if x in self.alternates:
-                    synonyms = self.alternates[x] + [y.capitalize() for y in self.alternates[x]]
-                self.alternates[x] = synonyms
+                if x in self["alternates"]:
+                    synonyms = self["alternates"][x] + [y.capitalize() for y in self["alternates"][x]]
+                self["alternates"][x] = synonyms
         add_capitalized_synonyms(self["vowels"])
         add_capitalized_synonyms(self["consonants"])
-        add_capitalized_synonyms(self.accented_vowel_synonyms.keys())
+        if "extra_consonants" in self:
+            add_capitalized_synonyms(self["extra_consonants"])
+        add_capitalized_synonyms(self["accented_vowel_alternates"].keys())
         add_capitalized_synonyms(["oṃ"])
 
     def get_standard_form(self, data):
@@ -234,8 +237,9 @@ class HkScheme(RomanScheme):
             'symbols': str.split("""
                        OM ' | ||
                        0 1 2 3 4 5 6 7 8 9
-                       """)
-        }, name=HK, alternates={"|": ["."], "||": [".."]})
+                       """), 
+            "alternates": {"|": ["."], "||": [".."]}
+        }, name=HK)
 
 
 iast_scheme = IastScheme()
@@ -261,12 +265,12 @@ class TitusScheme(RomanScheme):
             'symbols': str.split("""
                        oṃ ' . ..
                        0 1 2 3 4 5 6 7 8 9
-                       """)
-        }, name=TITUS, alternates={
-            "m̐": ["ṁ"], 
+                       """), "alternates":{
+            "m̐": ["ṁ"],
             "r̥": ["ṛ"], "r̥̄": ["ṝ", "ṝ", "r̥̄"], "oṃ": ["ŏṃ"],
             ".": ["|", "/"], "..": ["||", "//"]
-        })
+        }
+        }, name=TITUS)
 
 
 class VelthiusScheme(RomanScheme):
@@ -337,10 +341,8 @@ class WxScheme(RomanScheme):
             'symbols': str.split("""
                        oM ' . ..
                        0 1 2 3 4 5 6 7 8 9
-                       """)
-        }, name=WX, 
-            # Reference for the below:
-            alternates={"'": ["Z"], "~": ["z"]})
+                       """),  "alternates":{"'": ["Z"], "~": ["z"]}
+        }, name=WX)
         
 
 SCHEMES = {

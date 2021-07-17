@@ -6,8 +6,8 @@ from indic_transliteration.sanscript import Scheme
 
 
 class BrahmicScheme(Scheme):
-    def __init__(self, data=None, alternates=None, name=None):
-        super(BrahmicScheme, self).__init__(data=data, alternates=alternates, name=name, is_roman=False)
+    def __init__(self, data=None, name=None):
+        super(BrahmicScheme, self).__init__(data=data, name=name, is_roman=False)
         self.vowel_to_mark_map = dict(zip(self["vowels"], [""] + self["vowel_marks"]))
 
     def do_vyanjana_svara_join(self, vyanjanaanta, svaraadi):

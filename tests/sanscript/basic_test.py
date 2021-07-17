@@ -234,7 +234,8 @@ def test_correspondence(name, scheme ):
   for group in scheme:
     logging.debug(name)
     logging.debug(group)
-    assert group in groups
+    if group not in ["accented_vowel_alternates", "extra_consonants"]:
+      assert group in groups
 
 
 @pytest.mark.parametrize("from_scheme", roman.ALL_SCHEME_IDS)

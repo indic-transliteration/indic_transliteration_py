@@ -23,8 +23,9 @@ class DevanagariScheme(BrahmicScheme):
             'symbols': str.split("""
                        ॐ ऽ । ॥
                        ० १ २ ३ ४ ५ ६ ७ ८ ९
-                       """)
-        }, name=DEVANAGARI, alternates={'फ़': ["फ़"], "ड़": ["ड़"]})
+                       """),
+            "alternates": {'फ़': ["फ़"], "ड़": ["ड़"]}
+        }, name=DEVANAGARI)
 
     @classmethod
     def fix_lazy_visarga(cls, data_in):
@@ -102,8 +103,9 @@ class GurmukhiScheme(BrahmicScheme):
             'symbols': str.split("""
                        ੴ ऽ । ॥
                        ੦ ੧ ੨ ੩ ੪ ੫ ੬ ੭ ੮ ੯
-                       """)
-        }, name=GURMUKHI, alternates={"ਂ": ["ੰ"]})
+                       """),
+            "alternates": {"ਂ": ["ੰ"]}
+        }, name=GURMUKHI)
 
     @classmethod
     def replace_tippi(cls, text):

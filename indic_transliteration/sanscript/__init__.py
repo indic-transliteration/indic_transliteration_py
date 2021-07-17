@@ -126,13 +126,15 @@ class SchemeMap(object):
                                           for x in from_scheme[g])
 
     for group in from_scheme.keys():
+      if group in ["alternates", "accented_vowel_alternates"]:
+        continue
       if group not in to_scheme.keys():
         continue
       conjunct_map = {}
       for (k, v) in zip(from_scheme[group], to_scheme[group]):
         conjunct_map[k] = v
-        if k in from_scheme.alternates:
-          for k_syn in from_scheme.alternates[k]:
+        if k in from_scheme.get("alternates", {}):
+          for k_syn in from_scheme["alternates"][k]:
             conjunct_map[k_syn] = v
       if group.endswith('vowel_marks'):
         self.vowel_marks.update(conjunct_map)
@@ -147,7 +149,7 @@ class SchemeMap(object):
         elif group == 'accents':
           self.accents = conjunct_map
 
-    for base_accented_vowel, synonyms in from_scheme.accented_vowel_synonyms.items():
+    for base_accented_vowel, synonyms in from_scheme.get("accented_vowel_alternates", {}).items():
       for accented_vowel in synonyms:
         base_vowel = base_accented_vowel[:-1]
         source_accent = base_accented_vowel[-1]
@@ -157,7 +159,7 @@ class SchemeMap(object):
         self.vowels[accented_vowel] = self.vowels[base_vowel] + target_accent
         self.non_marks_viraama.update(self.vowels)
             
-
+  
     if from_scheme.name == OPTITRANS:
       if len(to_scheme['virama']) == 0:
         to_scheme_virama = ""
@@ -179,8 +181,8 @@ class SchemeMap(object):
       synonym_conjunct_map = {}
       for key in conjunct_map.keys():
         latter_consonant = key[1:]
-        if latter_consonant in from_scheme.alternates:
-          for k_syn in from_scheme.alternates[latter_consonant]:
+        if latter_consonant in from_scheme["alternates"]:
+          for k_syn in from_scheme["alternates"][latter_consonant]:
             synonym_conjunct_map["n" + k_syn] = conjunct_map[key]
       self.consonants.update(synonym_conjunct_map)
       self.non_marks_viraama.update(synonym_conjunct_map)

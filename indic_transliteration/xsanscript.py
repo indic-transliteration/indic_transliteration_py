@@ -75,13 +75,13 @@ def _setup():
         'vowel_marks': str.split("""A i I u U R RR LLi LLI E ai O au""") + str.split("""e o"""),
         'consonants': sanscript.SCHEMES[ITRANS]['consonants'] + str.split("""n2 r2 zh""")
     })
-    pop_all(SCHEMES[ITRANS].alternates, str.split("""e o"""))
+    pop_all(SCHEMES[ITRANS]["alternates"], str.split("""e o"""))
     SCHEMES[OPTITRANS].update({
         'vowels': str.split("""a A i I u U R RR LLi LLI E ai O au""") + str.split("""e o"""),
         'vowel_marks': str.split("""A i I u U R RR LLi LLI E ai O au""") + str.split("""e o"""),
         'consonants': sanscript.SCHEMES[OPTITRANS]['consonants'] + str.split("""n2 r2 zh""")
     })
-    pop_all(SCHEMES[OPTITRANS].alternates, str.split("""e o"""))
+    pop_all(SCHEMES[OPTITRANS]["alternates"], str.split("""e o"""))
 
 
 _setup()

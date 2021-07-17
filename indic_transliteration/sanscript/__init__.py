@@ -24,7 +24,7 @@ and the following romanizations:
 - IAST = 'iast'
 - ITRANS = 'itrans'
 - OPTITRANS = 'optitrans'
-- KOLKATA = 'kolkata'
+- KOLKATA_v2 = 'kolkata_v2'
 - SLP1 = 'slp1'
 - VELTHUIS = 'velthuis'
 - WX = 'wx'
@@ -61,7 +61,7 @@ from __future__ import unicode_literals
 #: as `ব`.
 from indic_transliteration.sanscript.schemes import Scheme
 from indic_transliteration.sanscript.schemes import roman
-from indic_transliteration.sanscript.schemes.brahmic import northern, central, southern, eastern
+from indic_transliteration.sanscript.schemes import brahmic
 
 try:
     from functools import lru_cache
@@ -70,23 +70,23 @@ except ImportError:
 
 # These variables are replicated here for backward compatibility.
 # -------------
-BENGALI = eastern.BENGALI
-DEVANAGARI = northern.DEVANAGARI
-GUNJALA_GONDI = central.GUNJALA_GONDI
-GUJARATI = northern.GUJARATI
-GURMUKHI = northern.GURMUKHI
-KANNADA = southern.KANNADA
-MALAYALAM = southern.MALAYALAM
-ORIYA = eastern.ORIYA
-TAMIL = southern.TAMIL
-GRANTHA = southern.GRANTHA
-TELUGU = southern.TELUGU
+BENGALI = brahmic.BENGALI
+DEVANAGARI = brahmic.DEVANAGARI
+GUNJALA_GONDI = brahmic.GUNJALA_GONDI
+GUJARATI = brahmic.GUJARATI
+GURMUKHI = brahmic.GURMUKHI
+KANNADA = brahmic.KANNADA
+MALAYALAM = brahmic.MALAYALAM
+ORIYA = brahmic.ORIYA
+TAMIL = brahmic.TAMIL
+GRANTHA = brahmic.GRANTHA
+TELUGU = brahmic.TELUGU
 TITUS = roman.TITUS
 HK = roman.HK
 IAST = roman.IAST
 ITRANS = roman.ITRANS
 OPTITRANS = roman.OPTITRANS
-KOLKATA = roman.KOLKATA
+KOLKATA_v2 = roman.KOLKATA_v2
 SLP1 = roman.SLP1
 VELTHUIS = roman.VELTHUIS
 WX = roman.WX
@@ -94,14 +94,7 @@ WX = roman.WX
 ## NOTE: See the Scheme constructor documentation for a few general notes while defining schemes.
 SCHEMES = {}
 SCHEMES.update(roman.SCHEMES)
-
-BRAHMIC_SCHEMES = {}
-BRAHMIC_SCHEMES.update(northern.SCHEMES)
-BRAHMIC_SCHEMES.update(central.SCHEMES)
-BRAHMIC_SCHEMES.update(southern.SCHEMES)
-BRAHMIC_SCHEMES.update(eastern.SCHEMES)
-
-SCHEMES.update(BRAHMIC_SCHEMES)
+SCHEMES.update(brahmic.SCHEMES)
 
 class SchemeMap(object):
   """Maps one :class:`Scheme` to another. This class grabs the metadata and

@@ -34,6 +34,8 @@ def get_test_cases(test_tuples, ignored_cases=None):
     ignored_cases = ignored_cases or []
     test_cases = []
     for test_tuple in test_tuples:
+        if "python/indic_transliteration" in test_tuple.get("nonSupportingPrograms", []):
+            continue
         for script in test_tuple.keys():
             if script in SCRIPT_NAME_MAP.keys():
                 script = SCRIPT_NAME_MAP[script]

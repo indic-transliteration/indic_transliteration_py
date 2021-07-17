@@ -45,12 +45,14 @@ class Scheme(dict):
         return sanscript.transliterate(data=data, _from=sanscript.DEVANAGARI, _to=self.name)
 
 
-def load_scheme(file_path):
+def load_scheme(file_path, cls, **kwargs):
   import codecs
   is_roman = "roman" in file_path
-  name = os.path.basename(file_path)
+  name = os.path.basename(file_path).replace(".json", "")
   def scheme_maker(data):
-    return Scheme(data=data, name=name, is_roman=is_roman) 
+    if "vowels" not in data:
+        return data
+    return cls(data=data, name=name, is_roman=is_roman, **kwargs) 
   with codecs.open(file_path, "r", 'utf-8') as file_out:
     scheme = json.load(file_out, object_hook=scheme_maker)
     return scheme

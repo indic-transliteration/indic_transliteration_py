@@ -1,6 +1,6 @@
 import regex
 
-from indic_transliteration.sanscript.schemes.brahmic import northern
+from indic_transliteration.sanscript.schemes import brahmic
 
 
 def _brahmic(data, scheme_map, **kw):
@@ -11,8 +11,8 @@ def _brahmic(data, scheme_map, **kw):
   :param scheme_map: a dict that maps between characters in the old scheme
                      and characters in the new scheme
   """
-  if scheme_map.from_scheme.name == northern.GURMUKHI:
-    data = northern.GurmukhiScheme.replace_tippi(text=data) 
+  if scheme_map.from_scheme.name == brahmic.GURMUKHI:
+    data = brahmic.GurmukhiScheme.replace_tippi(text=data) 
   vowel_marks = scheme_map.vowel_marks
   virama = scheme_map.virama
   consonants = scheme_map.consonants

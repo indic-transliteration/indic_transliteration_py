@@ -1,0 +1,3 @@
+[submodule "common_maps"]
+	path = indic_transliteration/sanscript/schemes/data
+	url = https://github.com/indic-transliteration/common_maps.git

@@ -8,7 +8,7 @@ from indic_transliteration.sanscript.schemes import load_scheme
 HK = 'hk'
 HK_DRAVIDIAN = 'hk_dravidian'
 IAST = 'iast'
-ISO = 'ISO'
+ISO = 'iso'
 ITRANS = 'itrans'
 ITRANS_DRAVIDIAN = 'itrans_dravidian'
 TITUS = 'titus'

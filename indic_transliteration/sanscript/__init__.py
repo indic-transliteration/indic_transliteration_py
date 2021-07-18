@@ -84,6 +84,7 @@ TELUGU = brahmic.TELUGU
 TITUS = roman.TITUS
 HK = roman.HK
 IAST = roman.IAST
+ISO = roman.ISO
 ITRANS = roman.ITRANS
 OPTITRANS = roman.OPTITRANS
 KOLKATA_v2 = roman.KOLKATA_v2

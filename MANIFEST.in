@@ -3,4 +3,4 @@ include LICENSE.txt
 include indic_transliteration/language_code_to_script.json
 
 # Include the data files
-# recursive-include data indic_transliteration/*
+recursive-include indic_transliteration/sanscript/schemes/data *

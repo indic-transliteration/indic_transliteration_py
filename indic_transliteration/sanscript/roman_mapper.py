@@ -9,7 +9,7 @@ def _roman(data, scheme_map, **kw):
   :param scheme_map: a dict that maps between characters in the old scheme
                      and characters in the new scheme
   """
-  if scheme_map.from_scheme.name == "optitrans":
+  if scheme_map.from_scheme.name.startswith("optitrans"):
     data = regex.sub("n([kKgGx])", "~N\\1", data)
     data = regex.sub("n([cCjJ])", "~n\\1", data)
     data = regex.sub("n([TD])", "N\\1", data)

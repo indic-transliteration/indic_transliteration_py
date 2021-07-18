@@ -1,4 +1,5 @@
-from indic_transliteration.sanscript import roman, BRAHMIC_SCHEMES
+from indic_transliteration.sanscript import roman
+from indic_transliteration.sanscript.schemes import brahmic
 
 ROMAN_SCHEMES = roman.SCHEMES
 
@@ -7,7 +8,7 @@ A CLI for indic script transliteration based on "indic-transliteration" python l
 
 Supported scripts/schemes:
 
-- Brahmic scripts: {", ".join(list(BRAHMIC_SCHEMES.keys()))}
+- Brahmic scripts: {", ".join(list(brahmic.SCHEMES.keys()))}
 
 - Romanizations: {", ".join(list(ROMAN_SCHEMES.keys()))}
 
@@ -49,7 +50,7 @@ Output can be:
     
     Output:   Output written to: /home/user/output.txt
 
-For more info: https://github.com/sanskrit-coders/indic_transliteration
+For more info: https://github.com/indic-transliteration/indic_transliteration_py
 """
 
 from_scheme = """

@@ -12,7 +12,7 @@ def is_ascii(word):
 
 class Converter(object):
 
-  # TODO : Handle svaras. https://github.com/sanskrit-coders/indic_transliteration/issues/38
+  # TODO : Handle svaras. https://github.com/sanskrit-coders/indic_transliteration_py/issues/38
   def _replace_line(self, line):
     if line.strip() == "":
         return line

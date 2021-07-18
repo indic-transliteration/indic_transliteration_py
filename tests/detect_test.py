@@ -125,7 +125,7 @@ add(BASIC, Scheme.ITRANS, [
     'gachChati',
     'gachchhati',
 ])
-add(BASIC, Scheme.Kolkata_v2, [
+add(BASIC, Scheme.Kolkata, [
     'tējas',
     'sōma',
 ])
@@ -206,7 +206,7 @@ def test_decoded(data):
     detection = detect(text)
     assert detection == scheme, u'%s == %s (%s)' % (detection, scheme, text)
 
-# Below is failing for Py 3 - HK/ SLP1 confusion - https://travis-ci.org/sanskrit-coders/indic_transliteration/jobs/306990133
+# Below is failing for Py 3 - HK/ SLP1 confusion - https://travis-ci.org/indic-transliteration/indic_transliteration_py/jobs/306990133
 # @pytest.mark.skipif(sys.version_info > (3,0), reason="Below is failing for Py 3 - HK/ SLP1 confusion.")
 @pytest.mark.parametrize('data', BASIC)
 def test_noisy(data):

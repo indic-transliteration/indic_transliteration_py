@@ -6,13 +6,16 @@ from indic_transliteration.sanscript.schemes import load_scheme
 # Roman schemes
 # -------------
 HK = 'hk'
+HK_DRAVIDIAN = 'hk_dravidian'
 IAST = 'iast'
 ISO = 'ISO'
 ITRANS = 'itrans'
+ITRANS_DRAVIDIAN = 'itrans_dravidian'
 TITUS = 'titus'
 
 """Optitransv1 is described in https://sanskrit-coders.github.io/input/optitrans/#optitrans-v1 . OPTITRANS, while staying close to ITRANS it provides a more intuitive transliteration compared to ITRANS (shankara manju - शङ्कर मञ्जु)."""
 OPTITRANS = 'optitrans'
+OPTITRANS_DRAVIDIAN = 'optitrans_dravidian'
 KOLKATA_v2 = 'kolkata_v2'
 SLP1 = 'slp1'
 VELTHUIS = 'velthuis'
@@ -111,7 +114,8 @@ class CapitalizableScheme(RomanScheme):
         add_capitalized_synonyms(self["consonants"])
         if "extra_consonants" in self:
             add_capitalized_synonyms(self["extra_consonants"])
-        add_capitalized_synonyms(self["accented_vowel_alternates"].keys())
+        if "accented_vowel_alternates" in self:
+            add_capitalized_synonyms(self["accented_vowel_alternates"].keys())
         add_capitalized_synonyms(["oṃ"])
 
     def get_standard_form(self, data):
@@ -120,19 +124,20 @@ class CapitalizableScheme(RomanScheme):
         return super(CapitalizableScheme, self).get_standard_form(data=data)
 
 
-data_path = os.path.join(os.path.dirname(__file__), "data/roman")
+SCHEMES = {}
+data_path = os.path.join(os.path.dirname(__file__), "data", "roman")
+for f in os.listdir(data_path):
+    cls = RomanScheme
+    name = f.replace(".json", "")
+    if name.startswith("optitrans"):
+        cls = OptitransScheme
+    elif name.startswith("itrans"):
+        cls = ItransScheme
+    elif name in ["iast", "iso", "kolkata_v2", "titus"]:
+        cls = CapitalizableScheme
+    scheme = load_scheme(file_path=os.path.join(data_path, f), cls=cls)
+    SCHEMES[scheme.name] = scheme
 
-SCHEMES = {
-    HK: load_scheme(file_path=os.path.join(data_path, "hk.json"), cls=RomanScheme),
-    VELTHUIS: load_scheme(file_path=os.path.join(data_path, "velthuis.json"), cls=RomanScheme),
-    OPTITRANS: load_scheme(file_path=os.path.join(data_path, "optitrans.json"), cls=OptitransScheme),
-    ITRANS: load_scheme(file_path=os.path.join(data_path, "itrans.json"), cls=ItransScheme),
-    IAST: load_scheme(file_path=os.path.join(data_path, "iast.json"), cls=CapitalizableScheme),
-    KOLKATA_v2: load_scheme(file_path=os.path.join(data_path, "kolkata_v2.json"), cls=CapitalizableScheme),
-    SLP1: load_scheme(file_path=os.path.join(data_path, "slp1.json"), cls=RomanScheme),
-    WX: load_scheme(file_path=os.path.join(data_path, "wx.json"), cls=RomanScheme),
-    TITUS: load_scheme(file_path=os.path.join(data_path, "titus.json"), cls=RomanScheme)
-}
 
 ALL_SCHEME_IDS = SCHEMES.keys()
 

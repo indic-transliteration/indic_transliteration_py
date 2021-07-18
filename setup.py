@@ -36,14 +36,14 @@ setup(
   # Versions should comply with PEP440.  For a discussion on single-sourcing
   # the version across setup.py and the project code, see
   # https://packaging.python.org/en/latest/single_source_version.html
-  version='2.1.8',
+  version='2.2.0',
 
 
   description='Transliteration tools to convert text in one indic script encoding to another',
   long_description=long_description,
 
   # The project's main homepage.
-  url='https://github.com/sanskrit-coders/indic_transliteration',
+  url='https://github.com/indic-transliteration/indic_transliteration_py',
 
   # Author details
   author='Sanskrit programmers',

@@ -206,7 +206,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   func = _roman if scheme_map.from_scheme.is_roman else _brahmic
   result = func(data, scheme_map, **options)
 
-  if _to == OPTITRANS:
+  if _to.startswith(OPTITRANS):
     import regex
     result = regex.sub("~N([kKgGx])", "n\\1", result)
     result = regex.sub("~n([cCjJ])", "n\\1", result)

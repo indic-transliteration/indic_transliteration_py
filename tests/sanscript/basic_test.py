@@ -39,6 +39,8 @@ with open(TEST_DATA_PATH) as test_data_file:
 def _compare_all_data_between_schemes(_from, _to):
   """Compare all data for `_from` and `_to`"""
   DATA = test_data["basic_all_to_all"]
+  if _from not in DATA or _to not in DATA:
+    return 
   def compare_group(_from, _to, group):
     """Compare data for `_from` and `_to` in the test group `group`."""
     source = DATA[_from][group]

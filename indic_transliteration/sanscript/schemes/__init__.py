@@ -1,3 +1,4 @@
+import itertools
 import json
 import os.path
 
@@ -25,13 +26,24 @@ class Scheme(dict):
         lines = data_in.split("\n")
         lines_out = []
         for line in lines:
+            initial_space = "".join(itertools.takewhile(str.isspace, line))
+            final_space = "".join(itertools.takewhile(str.isspace, line[::-1]))
             words = line.split()
             ## We don't want ग्रामं गच्छ to turn into ग्रामङ् गच्छ or ग्रामम् गच्छ 
             words = [self.fix_lazy_anusvaara(word[:-1], omit_sam, omit_yrl) + word[-1] for word in words]
-            lines_out.append(" ".join(words))
+            lines_out.append("%s%s%s" % (initial_space, " ".join(words), final_space))
         return "\n".join(lines_out)
 
     def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):
+        """
+        Assumption: space and newlines are the word delimiters.
+        
+        :param data_in: 
+        :param omit_sam: 
+        :param omit_yrl: 
+        :param ignore_padaanta: 
+        :return: 
+        """
         from indic_transliteration import sanscript
         if ignore_padaanta:
             return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in, omit_sam=omit_sam, omit_yrl=omit_yrl)

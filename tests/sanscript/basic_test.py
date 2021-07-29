@@ -71,7 +71,7 @@ def test_correspondence(name, scheme ):
   for group in scheme:
     logging.debug(name)
     logging.debug(group)
-    if group not in ["accented_vowel_alternates", "extra_consonants", "candra", "zwj", "skip"]:
+    if group not in ["accented_vowel_alternates", "extra_consonants", "candra", "zwj", 'zwnj', "skip"] and not group.startswith("_"):
       assert group in groups
 
 

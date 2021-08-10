@@ -107,7 +107,7 @@ SCHEMES = {
 import os.path
 
 from indic_transliteration.sanscript.schemes import load_scheme
-data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data_toml", "brahmic")
+data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "toml", "brahmic")
 for f in os.listdir(data_path):
     cls = BrahmicScheme
     if f.startswith("devanagari"):

@@ -4,7 +4,7 @@ import os.path
 import toml
 import os
 
-dev_vowel_to_mark_map = toml.load(os.path.join(os.path.dirname(__file__), "data_toml/_devanagari_vowel_to_marks.toml"))
+dev_vowel_to_mark_map = toml.load(os.path.join(os.path.dirname(__file__), "toml/_devanagari_vowel_to_marks.toml"))
 
 
 class Scheme(dict):

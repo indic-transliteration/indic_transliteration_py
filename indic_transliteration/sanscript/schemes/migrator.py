@@ -35,4 +35,4 @@ def migrate(source_dir, dest_dir):
 
 
 if __name__ == '__main__':
-  migrate(source_dir=os.path.join(os.path.dirname(__file__), "data"), dest_dir=os.path.join(os.path.dirname(__file__), "data_toml"))
+  migrate(source_dir=os.path.join(os.path.dirname(__file__), "data"), dest_dir=os.path.join(os.path.dirname(__file__), "toml"))

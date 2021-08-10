@@ -132,7 +132,7 @@ class CapitalizableScheme(RomanScheme):
 
 
 SCHEMES = {}
-data_path = os.path.join(os.path.dirname(__file__), "data_toml", "roman")
+data_path = os.path.join(os.path.dirname(__file__), "toml", "roman")
 for f in os.listdir(data_path):
   cls = RomanScheme
   name = f.replace(".toml", "")

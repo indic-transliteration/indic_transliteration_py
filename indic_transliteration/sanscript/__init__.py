@@ -125,13 +125,16 @@ class SchemeMap(object):
       if group not in to_scheme.keys():
         continue
       conjunct_map = {}
-      for (k, v) in zip(from_scheme[group], to_scheme[group]):
-        if (v == "") and (group not in ["virama", "zwj", "skip"]):
-          v = k
-        conjunct_map[k] = v
-        if k in from_scheme.get("alternates", {}):
-          for k_syn in from_scheme["alternates"][k]:
-            conjunct_map[k_syn] = v
+      for key, value in from_scheme[group].items():
+        if key in to_scheme[group]:
+          from_scheme_symbol = from_scheme[group][key]
+          to_scheme_symbol = to_scheme[group][key]
+          if (to_scheme_symbol == "") and (group not in ["virama", "zwj", "skip"]):
+            to_scheme_symbol = from_scheme_symbol
+          conjunct_map[from_scheme_symbol] = to_scheme_symbol
+          if from_scheme_symbol in from_scheme.get("alternates", {}):
+            for k_syn in from_scheme["alternates"][from_scheme_symbol]:
+              conjunct_map[k_syn] = to_scheme_symbol
       if group.endswith('vowel_marks'):
         self.vowel_marks.update(conjunct_map)
       elif group == 'virama':

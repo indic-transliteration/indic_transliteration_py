@@ -1,6 +1,10 @@
 import itertools
-import json
+import toml
 import os.path
+import toml
+import os
+
+dev_vowel_to_mark_map = toml.load(os.path.join(os.path.dirname(__file__), "data_toml/_devanagari_vowel_to_marks.toml"))
 
 
 class Scheme(dict):
@@ -60,11 +64,12 @@ class Scheme(dict):
 def load_scheme(file_path, cls, **kwargs):
   import codecs
   is_roman = "roman" in file_path
-  name = os.path.basename(file_path).replace(".json", "")
+  name = os.path.basename(file_path).replace(".toml", "")
   def scheme_maker(data):
     if "vowels" not in data:
         return data
     return cls(data=data, name=name, is_roman=is_roman, **kwargs) 
   with codecs.open(file_path, "r", 'utf-8') as file_out:
-    scheme = json.load(file_out, object_hook=scheme_maker)
+    scheme_map = toml.load(file_out)
+    scheme = scheme_maker(data=scheme_map)
     return scheme

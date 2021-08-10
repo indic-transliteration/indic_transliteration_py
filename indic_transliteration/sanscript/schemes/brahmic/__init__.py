@@ -3,13 +3,16 @@
 import regex
 
 from indic_transliteration.sanscript import Scheme
-
+from indic_transliteration.sanscript.schemes import dev_vowel_to_mark_map
 
 class BrahmicScheme(Scheme):
     def __init__(self, data=None, name=None, **kwargs):
         super(BrahmicScheme, self).__init__(data=data, name=name, is_roman=False)
         if "vowel_marks" in self:
-            self.vowel_to_mark_map = dict(zip(self["vowels"], [""] + self["vowel_marks"]))
+            self.vowel_to_mark_map = {}
+            for (vowel, vowel_mark) in dev_vowel_to_mark_map.items():
+                if vowel in self["vowels"] and vowel_mark in self["vowel_marks"]:
+                    self.vowel_to_mark_map[self["vowels"][vowel]] = self["vowel_marks"][vowel_mark]
 
     def do_vyanjana_svara_join(self, vyanjanaanta, svaraadi):
         import regex
@@ -19,10 +22,12 @@ class BrahmicScheme(Scheme):
             raise ValueError(svaraadi + " is not svaraadi.")
 
     def apply_roman_numerals(self, in_string):
-        brahmic_numerals = self['symbols'][0:10]
         out_string = in_string
-        for numeral in range(0,10):
-            out_string = out_string.replace(brahmic_numerals[numeral], str(numeral))
+        dev_numerals = "० १ २ ३ ४ ५ ६ ७ ८ ९".split()
+        for k, v in self['symbols'].items():
+            if k >= "०" and k <= "९":
+                numeral = dev_numerals.index(k)
+                out_string = out_string.replace(self['symbols'][k], str(numeral))
         return out_string
     
     def remove_svaras(self, in_string):
@@ -102,7 +107,7 @@ SCHEMES = {
 import os.path
 
 from indic_transliteration.sanscript.schemes import load_scheme
-data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "brahmic")
+data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data_toml", "brahmic")
 for f in os.listdir(data_path):
     cls = BrahmicScheme
     if f.startswith("devanagari"):

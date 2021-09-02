@@ -21,13 +21,15 @@ class BrahmicScheme(Scheme):
         else:
             raise ValueError(svaraadi + " is not svaraadi.")
 
+    def get_numerals(self):
+        dev_numerals = "० १ २ ३ ४ ५ ६ ७ ८ ९".split()
+        return [self["symbols"][x] for x in dev_numerals]
+
     def apply_roman_numerals(self, in_string):
         out_string = in_string
-        dev_numerals = "० १ २ ३ ४ ५ ६ ७ ८ ९".split()
-        for k, v in self['symbols'].items():
-            if k >= "०" and k <= "९":
-                numeral = dev_numerals.index(k)
-                out_string = out_string.replace(self['symbols'][k], str(numeral))
+        native_numerals = self.get_numerals()
+        for numeral, k in enumerate( native_numerals):
+            out_string = out_string.replace(self['symbols'][k], str(numeral))
         return out_string
     
     def remove_svaras(self, in_string):
@@ -39,8 +41,13 @@ class BrahmicScheme(Scheme):
         return regex.sub(r"[.।॥:-]", "", in_string)
 
     def remove_numerals(self, in_string):
-        return regex.sub(r"[०-९\d]", "", in_string)
+        native_numerals = self.get_numerals()
+        return regex.sub(r"[%s\d]" % "".join(native_numerals), "", in_string)
 
+    def dot_for_numeric_ids(self, in_string):
+        native_numerals = self.get_numerals()
+        native_numerals_pattern = "[%s\d]" % "".join(native_numerals)
+        return regex.sub(r"(%s)।(?=%s)" % (native_numerals_pattern, native_numerals_pattern), "\\1.", in_string)
 
 
 class DevanagariScheme(BrahmicScheme):

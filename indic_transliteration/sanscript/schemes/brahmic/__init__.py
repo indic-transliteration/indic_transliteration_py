@@ -28,8 +28,8 @@ class BrahmicScheme(Scheme):
     def apply_roman_numerals(self, in_string):
         out_string = in_string
         native_numerals = self.get_numerals()
-        for numeral, k in enumerate( native_numerals):
-            out_string = out_string.replace(self['symbols'][k], str(numeral))
+        for numeral, native_numeral in enumerate( native_numerals):
+            out_string = out_string.replace(str(native_numeral), str(numeral))
         return out_string
     
     def remove_svaras(self, in_string):

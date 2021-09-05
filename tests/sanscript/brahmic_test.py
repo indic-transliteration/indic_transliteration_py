@@ -22,6 +22,8 @@ def test_do_vyanjana_svara_join():
 def test_apply_roman_numerals():
     devanagari_str = "हरि बोल १ ३ ५४ ६ ९को"
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].apply_roman_numerals(devanagari_str) == "हरि बोल 1 3 54 6 9को"
+    tamil_str = 'உந்து~மதக்களிற்றன்'
+    assert sanscript.SCHEMES[sanscript.TAMIL].apply_roman_numerals(tamil_str) == tamil_str
 
 
 def test_dot_for_numeric_ids():

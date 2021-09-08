@@ -70,21 +70,21 @@ import re
 import sys
 
 SCHEMES = [
-  ('Bengali', 0x0980),
-  ('Devanagari', 0x0900),
-  ('Gujarati', 0x0a80),
-  ('Gurmukhi', 0x0a00),
-  ('Kannada', 0x0c80),
-  ('Malayalam', 0x0d00),
-  ('Oriya', 0x0b00),
-  ('Tamil', 0x0b80),
-  ('Telugu', 0x0c00),
-  ('HK', None),
-  ('IAST', None),
-  ('ITRANS', None),
-  ('Kolkata', None),
-  ('SLP1', None),
-  ('Velthuis', None),
+  ('bengali', 0x0980),
+  ('devanagari', 0x0900),
+  ('gujarati', 0x0a80),
+  ('gurmukhi', 0x0a00),
+  ('kannada', 0x0c80),
+  ('malayalam', 0x0d00),
+  ('oriya', 0x0b00),
+  ('tamil', 0x0b80),
+  ('telugu', 0x0c00),
+  ('hk', None),
+  ('iast', None),
+  ('itrans', None),
+  ('kolkata', None),
+  ('slp1', None),
+  ('velthuis', None),
 ]
 
 #: Start of the Devanagari block.

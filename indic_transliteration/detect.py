@@ -148,20 +148,20 @@ def detect(text):
   # Romanizations
   if Regex.IAST_OR_KOLKATA_ONLY.search(text):
     if Regex.KOLKATA_ONLY.search(text):
-      return Scheme.Kolkata
+      return Scheme.kolkata
     else:
-      return Scheme.IAST
+      return Scheme.iast
 
   if Regex.ITRANS_ONLY.search(text):
-    return Scheme.ITRANS
+    return Scheme.itrans
 
   if Regex.SLP1_ONLY.search(text):
-    return Scheme.SLP1
+    return Scheme.slp1
 
   if Regex.VELTHUIS_ONLY.search(text):
-    return Scheme.Velthuis
+    return Scheme.velthuis
 
   if Regex.ITRANS_OR_VELTHUIS_ONLY.search(text):
-    return Scheme.ITRANS
+    return Scheme.itrans
 
-  return Scheme.HK
+  return Scheme.hk

@@ -19,16 +19,16 @@ def add(testcases, scheme, items):
 
 
 BASIC = []
-add(BASIC, Scheme.Bengali, ['অ', '৺'])
-add(BASIC, Scheme.Devanagari, ['ऄ', 'ॿ'])
-add(BASIC, Scheme.Gujarati, ['અ', '૱'])
-add(BASIC, Scheme.Gurmukhi, ['ਅ', 'ੴ'])
-add(BASIC, Scheme.Kannada, ['ಅ', '೯'])
-add(BASIC, Scheme.Malayalam, ['അ', 'ൿ'])
-add(BASIC, Scheme.Oriya, ['ଅ', 'ୱ'])
-add(BASIC, Scheme.Tamil, ['அ', '௺'])
-add(BASIC, Scheme.Telugu, ['అ', '౿'])
-add(BASIC, Scheme.HK, [
+add(BASIC, Scheme.bengali, ['অ', '৺'])
+add(BASIC, Scheme.devanagari, ['ऄ', 'ॿ'])
+add(BASIC, Scheme.gujarati, ['અ', '૱'])
+add(BASIC, Scheme.gurmukhi, ['ਅ', 'ੴ'])
+add(BASIC, Scheme.kannada, ['ಅ', '೯'])
+add(BASIC, Scheme.malayalam, ['അ', 'ൿ'])
+add(BASIC, Scheme.oriya, ['ଅ', 'ୱ'])
+add(BASIC, Scheme.tamil, ['அ', '௺'])
+add(BASIC, Scheme.telugu, ['అ', '౿'])
+add(BASIC, Scheme.hk, [
     '',
     'rAga',
     'nadI',
@@ -69,7 +69,7 @@ add(BASIC, Scheme.HK, [
     'azvatthAman',
     'yuddha',
 ])
-add(BASIC, Scheme.IAST, [
+add(BASIC, Scheme.iast, [
     'rāga',
     'nadī',
     'vadhū',
@@ -96,7 +96,7 @@ add(BASIC, Scheme.IAST, [
     'jñāna',
     'Śaivas'
 ])
-add(BASIC, Scheme.ITRANS, [
+add(BASIC, Scheme.itrans, [
     'raaga',
     'nadii',
     'nadee',
@@ -125,11 +125,11 @@ add(BASIC, Scheme.ITRANS, [
     'gachChati',
     'gachchhati',
 ])
-add(BASIC, Scheme.Kolkata, [
+add(BASIC, Scheme.kolkata, [
     'tējas',
     'sōma',
 ])
-add(BASIC, Scheme.SLP1, [
+add(BASIC, Scheme.slp1, [
     'kfta',
     'pitFn',
     'kxpta',
@@ -173,7 +173,7 @@ add(BASIC, Scheme.SLP1, [
     'aSvatTAman',
     'yudDa',
 ])
-add(BASIC, Scheme.Velthuis, [
+add(BASIC, Scheme.velthuis, [
     'k.rta',
     'pit.rrn',
     'k.lipta',

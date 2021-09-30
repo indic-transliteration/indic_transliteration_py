@@ -199,9 +199,9 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   if scheme_map is None:
     scheme_map = _get_scheme_map(_from, _to)
   options = {
-    'togglers': {'##'},
-    'suspend_on': set('<'),
-    'suspend_off': set('>')
+    'togglers': {},
+    'suspend_on': set(),
+    'suspend_off': set()
   }
   options.update(kw)
 

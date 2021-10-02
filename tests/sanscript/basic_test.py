@@ -120,7 +120,7 @@ def test_vowel_to_mark_map(scheme_id):
 ## Toggle tests
 def _toggle_test_helper(_from, _to):
   def func(data, output):
-    assert output == sanscript.transliterate(data, _from, _to), "_from: %s, _to: %s, _input: %s" % (_from, _to, data)
+    assert output == sanscript.transliterate(data, _from, _to,  togglers= {'##'}, suspend_on= set('<'), suspend_off = set('>')), "_from: %s, _to: %s, _input: %s" % (_from, _to, data)
 
   return func
 

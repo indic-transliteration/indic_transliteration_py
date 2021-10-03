@@ -196,14 +196,23 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
                      `_from` and `_to`. If unspecified, create a
                      :class:`SchemeMap` from `_from` to `_to`.
   """
-  if scheme_map is None:
-    scheme_map = _get_scheme_map(_from, _to)
   options = {
     'togglers': {},
     'suspend_on': set(),
     'suspend_off': set()
   }
   options.update(kw)
+
+  if scheme_map is None:
+    if _from is None:
+      from indic_transliteration import detect
+      _from = detect.detect(data)
+    if options.get('maybe_use_dravidian_variant', None):
+      if _from in ["kannada", "tamil", "telugu", "malayalam"]:
+        dravidian_scheme = _to + "_dravidian"
+        if dravidian_scheme in SCHEMES.keys():
+          _to = dravidian_scheme
+    scheme_map = _get_scheme_map(_from, _to)
 
   from indic_transliteration.sanscript.brahmic_mapper import _brahmic
   from indic_transliteration.sanscript.roman_mapper import _roman

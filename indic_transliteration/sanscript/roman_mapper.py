@@ -26,6 +26,7 @@ def _roman(data, scheme_map, **kw):
   togglers = kw.pop('togglers', set())
   suspend_on = kw.pop('suspend_on', set())
   suspend_off = kw.pop('suspend_off', set())
+  kw.pop('maybe_use_dravidian_variant', None)
   if kw:
     raise TypeError('Unexpected keyword argument %s' % list(kw.keys())[0])
 

@@ -212,6 +212,8 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
         dravidian_scheme = _to + "_dravidian"
         if dravidian_scheme in SCHEMES.keys():
           _to = dravidian_scheme
+      elif _from in ["optitrans", "itrans", "hk"]:
+        _from = _from + "_dravidian"
     scheme_map = _get_scheme_map(_from, _to)
 
   from indic_transliteration.sanscript.brahmic_mapper import _brahmic

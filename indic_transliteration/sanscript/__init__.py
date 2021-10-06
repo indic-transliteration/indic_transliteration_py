@@ -183,6 +183,8 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
 
       output = transliterate('idam adbhutam', HK, DEVANAGARI)
 
+  Common options: togglers= {'##'}, suspend_on= set('<'), suspend_off = set('>')
+
   Each time the function is called, a new :class:`SchemeMap` is created
   to map the input scheme to the output scheme. This operation is fast
   enough for most use cases. But for higher performance, you can pass a

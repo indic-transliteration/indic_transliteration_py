@@ -36,3 +36,5 @@ def test_to_double_lettered():
 def test_mark_off_non_indic_in_line():
     text = '05 The Śaivas’ Inclusivist View of Their Own and the Vaidikas’ Religion'
     assert sanscript.SCHEMES[sanscript.IAST].mark_off_non_indic_in_line(text) == "<05> <The> Śaivas’ <Inclusivist> <View> <of> <Their> <Own> <and> <the> <Vaidikas’> <Religion>"
+    
+    assert sanscript.SCHEMES[sanscript.IAST].mark_off_non_indic_in_line("02 Sources of Dharma") == "<02> <Sources> <of> <Dharma>"

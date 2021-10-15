@@ -23,6 +23,7 @@ SLP1 = 'slp1'
 VELTHUIS = 'velthuis'
 WX = 'wx'
 
+CAPITALIZABLE_SCHEME_IDS = ["iast", "iso", "kolkata_v2", "titus"]
 
 
 class RomanScheme(Scheme):
@@ -140,7 +141,7 @@ for f in os.listdir(data_path):
     cls = OptitransScheme
   elif name.startswith("itrans"):
     cls = ItransScheme
-  elif name in ["iast", "iso", "kolkata_v2", "titus"]:
+  elif name in CAPITALIZABLE_SCHEME_IDS:
     cls = CapitalizableScheme
   scheme = load_scheme(file_path=os.path.join(data_path, f), cls=cls)
   SCHEMES[scheme.name] = scheme

@@ -63,7 +63,7 @@ Romanizations:
 -  Velthuis (``'Velthuis'``)
 
 """
-
+import logging
 import re
 
 #: Scheme data. This is split into separate classes, but here it's DRY.
@@ -165,3 +165,8 @@ def detect(text):
     return Scheme.itrans
 
   return Scheme.hk
+
+
+if __name__ == '__main__':
+  script = detect("yagnopavitham-a-short-description-with-dharan-vidhi-and-yagyopavita-nasha-prayachhita")
+  print(script)

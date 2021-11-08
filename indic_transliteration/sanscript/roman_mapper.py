@@ -1,4 +1,5 @@
 import regex
+from indic_transliteration.sanscript.schemes import roman
 
 
 def _roman(data, scheme_map, **kw):
@@ -114,4 +115,8 @@ def _roman(data, scheme_map, **kw):
   if not to_roman and len(scheme_map.accents) > 0:
     pattern = "([%s])([%s])" % ("".join(scheme_map.accents.values()), "".join(scheme_map.to_scheme['yogavaahas']))
     result = regex.sub(pattern, "\\2\\1", result)
+  
+  if scheme_map.from_scheme.name in roman.CAPITALIZABLE_SCHEME_IDS:
+    result = scheme_map.to_scheme.fix_om(result)
+
   return result

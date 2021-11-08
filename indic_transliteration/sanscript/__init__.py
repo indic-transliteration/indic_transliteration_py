@@ -126,6 +126,9 @@ class SchemeMap(object):
         continue
       conjunct_map = {}
       for key, value in from_scheme[group].items():
+        if from_scheme.name in roman.CAPITALIZABLE_SCHEME_IDS:
+          if key in ["ॐ"]:
+            continue
         if key in to_scheme[group]:
           from_scheme_symbol = from_scheme[group][key]
           to_scheme_symbol = to_scheme[group][key]

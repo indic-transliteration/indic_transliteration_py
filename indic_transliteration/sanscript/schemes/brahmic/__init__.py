@@ -5,6 +5,7 @@ import regex
 from indic_transliteration.sanscript import Scheme
 from indic_transliteration.sanscript.schemes import dev_vowel_to_mark_map
 
+
 class BrahmicScheme(Scheme):
     def __init__(self, data=None, name=None, **kwargs):
         super(BrahmicScheme, self).__init__(data=data, name=name, is_roman=False)

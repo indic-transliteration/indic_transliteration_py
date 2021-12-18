@@ -3,6 +3,7 @@ from indic_transliteration import sanscript
 
 
 def test_fix_lazy_anusvaara_devanagari():
+    assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("किंच", ignore_padaanta=True, omit_yrl=True) == "किञ्च"
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("संविकटमेव", omit_sam=True) == "संविकटमेव"
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("तं जित्वा") == "तञ् जित्वा"
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("जगइ") == "जगइ"

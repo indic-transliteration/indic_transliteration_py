@@ -37,8 +37,13 @@ class Scheme(dict):
       final_space = "".join(itertools.takewhile(str.isspace, line[::-1]))
       words = line.split()
       ## We don't want ग्रामं गच्छ to turn into ग्रामङ् गच्छ or ग्रामम् गच्छ 
-      words = [self.fix_lazy_anusvaara(word[:-1], omit_sam, omit_yrl) + word[-1] for word in words]
-      lines_out.append("%s%s%s" % (initial_space, " ".join(words), final_space))
+      fixed_words = []
+      for word in words:
+        if word[-1] == "ं": 
+          fixed_words.append(self.fix_lazy_anusvaara(word[:-1], omit_sam, omit_yrl) + word[-1])
+        else:
+          fixed_words.append(self.fix_lazy_anusvaara(word))
+      lines_out.append("%s%s%s" % (initial_space, " ".join(fixed_words), final_space))
     return "\n".join(lines_out)
 
   def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):

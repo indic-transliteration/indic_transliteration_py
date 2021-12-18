@@ -42,7 +42,7 @@ class Scheme(dict):
         if word[-1] == "ं": 
           fixed_words.append(self.fix_lazy_anusvaara(word[:-1], omit_sam, omit_yrl) + word[-1])
         else:
-          fixed_words.append(self.fix_lazy_anusvaara(word), omit_sam, omit_yrl)
+          fixed_words.append(self.fix_lazy_anusvaara(word, omit_sam, omit_yrl))
       lines_out.append("%s%s%s" % (initial_space, " ".join(fixed_words), final_space))
     return "\n".join(lines_out)
 

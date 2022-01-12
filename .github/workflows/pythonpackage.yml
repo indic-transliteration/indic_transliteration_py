@@ -57,6 +57,7 @@ jobs:
         pip install pytest
         pytest
     - name: Upload package
+      if: ${{ github.event_name != 'pull_request'}}
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__

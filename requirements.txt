@@ -1,5 +1,5 @@
-backports.functools_lru_cache==1.6.4
-selenium==3.141.0
-regex==2020.10.11
-typer==0.3.2
+backports.functools_lru_cache
+selenium
+regex
+typer
 toml

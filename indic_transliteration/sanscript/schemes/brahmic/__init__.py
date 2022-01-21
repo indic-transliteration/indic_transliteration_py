@@ -81,6 +81,20 @@ class DevanagariScheme(BrahmicScheme):
             data_out = regex.sub('%sं( *)([यलव])' % (prefix), r'\2्ँ\1\2',   data_out)
         return data_out
 
+    def force_lazy_anusvaara(self, data_in):
+        # Overriding because we don't want to turn जगइ to जगै
+        data_out = data_in
+        import regex
+        prefix = ""
+        data_out = regex.sub('ङ्( *)([क-ङ])', r'ं\1\2',   data_out)
+        data_out = regex.sub('ञ्( *)([च-ञ])', r'ं\1\2',   data_out)
+        data_out = regex.sub('न्( *)([त-न])', r'ं\1\2',   data_out)
+        data_out = regex.sub('ण्( *)([ट-ण])', r'ं\1\2',   data_out)
+        data_out = regex.sub('म्( *)([प-म])', r'ं\1\2',   data_out)
+        data_out = regex.sub('ं$', r'म्',   data_out)
+        data_out = regex.sub('[यलव]्ँ( *)([यलव])', r'ं\1\2',   data_out)
+        return data_out
+
 
 class GurmukhiScheme(BrahmicScheme):
 

@@ -64,6 +64,12 @@ class Scheme(dict):
                                                                           omit_yrl=omit_yrl)
     return sanscript.transliterate(data=data_out, _from=sanscript.DEVANAGARI, _to=self.name)
 
+  def force_lazy_anusvaara(self, data_in):
+    from indic_transliteration import sanscript
+    data_out = sanscript.transliterate(data=data_in, _from=self.name, _to=sanscript.DEVANAGARI)
+    data_out = sanscript.SCHEMES[sanscript.DEVANAGARI].force_lazy_anusvaara(data_in=data_out)
+    return sanscript.transliterate(data=data_out, _from=sanscript.DEVANAGARI, _to=self.name)
+
   def from_devanagari(self, data):
     """A convenience method"""
     from indic_transliteration import sanscript

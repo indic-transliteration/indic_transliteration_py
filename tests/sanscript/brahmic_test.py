@@ -2,6 +2,11 @@ from indic_transliteration import sanscript
 
 
 
+def test_force_lazy_anusvaara_devanagari():
+    assert sanscript.SCHEMES[sanscript.KANNADA].force_lazy_anusvaara("ತನ್ತು") == "ತಂತು"
+    assert sanscript.SCHEMES[sanscript.KANNADA].force_lazy_anusvaara("ಅಂಕ") == "ಅಂಕ"
+
+
 def test_fix_lazy_anusvaara_devanagari():
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("किंच", ignore_padaanta=True, omit_yrl=True) == "किञ्च"
     assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara("संविकटमेव", omit_sam=True) == "संविकटमेव"

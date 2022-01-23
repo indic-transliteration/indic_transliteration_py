@@ -105,6 +105,26 @@ class OptitransScheme(RomanScheme):
     text = text.lower()
     return text
 
+  def approximate_from_iso_urdu(self, text, add_terminal_a=True):
+    # Order matters below
+    replacements = {"'": "", "‘": "", "ʼ": "-",
+                    "oo": "uu", "ee": "ii",
+                    "ā": "aa", "ī": "ii", "ū": "uu", "w": "v", 
+                    "ẕ": "z", "ż": "z", "ẓ": "z", "ž": "z", "̌":"",
+                    "chh": "ćh", "ch": "c", "ć": "c", 
+                    "ḳ": "q",
+                    "s̱ẖ": "sh", "s̱": "t", "̱": "", "̠": "", 
+                    "r̤i": "r̥", "̤": "", 
+                    }
+    for key, value in replacements.items():
+      text = text.replace(key, value)
+    text = regex.sub(r"ṅ(?=[^kgq]|$)", ".N", text)
+    if add_terminal_a:
+      text = regex.sub(r"([kghncjzftdTDpbmyrlvsq])(?=\s|$|-)", r"\1a", text)
+    from indic_transliteration import sanscript
+    text = sanscript.transliterate(text, sanscript.ISO, sanscript.OPTITRANS)
+    return text
+
 
 class CapitalizableScheme(RomanScheme):
   def __init__(self, data=None, is_roman=True, name=None):

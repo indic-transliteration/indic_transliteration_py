@@ -107,8 +107,8 @@ class OptitransScheme(RomanScheme):
 
   def approximate_from_iso_urdu(self, text, add_terminal_a=True):
     # Order matters below
-    replacements = {"'": "", "‘": "", "ʼ": "-",
-                    "oo": "uu", "ee": "ii",
+    replacements = {"‘": "", "ʼ": "-",
+                    "oo": "uu", "ee": "ii", "ë": "e",
                     "ā": "aa", "ī": "ii", "ū": "uu", "w": "v", 
                     "ẕ": "z", "ż": "z", "ẓ": "z", "ž": "z", "̌":"",
                     "chh": "ćh", "ch": "c", "ć": "c", 
@@ -118,6 +118,11 @@ class OptitransScheme(RomanScheme):
                     }
     for key, value in replacements.items():
       text = text.replace(key, value)
+    text = regex.sub(r"([aeiou])'", "$1", text)
+    text = regex.sub(r"'(aeiou)", "$1", text)
+    text = regex.sub(r"'(?=\s|$|-)", "", text)
+    ## For remaining cases, sometimes ' should just go आस्रत|ās'rat, sometimes it represents a weak a -  आसकत|ās'kat. So we just remove it - though it makes the prior careful replacements moot. Maybe we can do something smarter in the future?
+    text = text.replace("'", "")
     text = regex.sub(r"ṅ(?=[^kgq]|$)", ".N", text)
     if add_terminal_a:
       text = regex.sub(r"([kghncjzftdTDpbmyrlvsq])(?=\s|$|-)", r"\1a", text)

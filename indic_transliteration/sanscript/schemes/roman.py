@@ -108,18 +108,19 @@ class OptitransScheme(RomanScheme):
   def approximate_from_iso_urdu(self, text, add_terminal_a=True):
     # Order matters below
     replacements = {"‘": "", "ʼ": "-",
-                    "oo": "uu", "ee": "ii", "ë": "e",
+                    "oo": "uu", "ee": "ii", "ë": "E", "ě": "E", "e": "ē", "o": "ō",
                     "ā": "aa", "ī": "ii", "ū": "uu", "w": "v", 
                     "ẕ": "z", "ż": "z", "ẓ": "z", "ž": "z", "̌":"",
                     "chh": "ćh", "ch": "c", "ć": "c", 
-                    "ḳ": "q",
+                    "ḳ": "q", "ṣ": "s",
                     "s̱ẖ": "sh", "s̱": "t", "̱": "", "̠": "", 
                     "r̤i": "r̥", "̤": "", 
                     }
     for key, value in replacements.items():
       text = text.replace(key, value)
-    text = regex.sub(r"([aeiou])'", r"\1", text)
-    text = regex.sub(r"'(aeiou)", r"\1", text)
+    vowels_pattern = r'[aāeēiīoōuū]'
+    text = regex.sub(r"(%s)'" % vowels_pattern, r"\1", text)
+    text = regex.sub(r"'(%s)" % vowels_pattern, r"\1", text)
     text = regex.sub(r"'(?=\s|$|-)", "", text)
     ## For remaining cases, sometimes ' should just go आस्रत|ās'rat, sometimes it represents a weak a -  आसकत|ās'kat. So we just remove it - though it makes the prior careful replacements moot. Maybe we can do something smarter in the future?
     text = text.replace("'", "")

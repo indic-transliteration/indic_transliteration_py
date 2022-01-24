@@ -53,4 +53,8 @@ def test_optitrans_from_urdu():
   assert optitrans_scheme.approximate_from_iso_urdu("nis̱ẖās'tah") == "nishaastaha"
   assert optitrans_scheme.approximate_from_iso_urdu("laḵẖlaḵẖa") == "la.khla.kha"
   assert optitrans_scheme.approximate_from_iso_urdu("ifā'qā") == "ifaaqaa"
+  assert optitrans_scheme.approximate_from_iso_urdu("nāṣěḥ") == "naasEH"
+  assert optitrans_scheme.approximate_from_iso_urdu("ba-jāë") == "ba-jaaE"
+  assert optitrans_scheme.approximate_from_iso_urdu("pes̱ẖ") == "pesha"
+  assert optitrans_scheme.approximate_from_iso_urdu("joban") == "jobana"
   assert optitrans_scheme.approximate_from_iso_urdu("maẕhab", add_terminal_a=False) == "mazhab"

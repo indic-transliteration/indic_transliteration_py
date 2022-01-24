@@ -118,8 +118,8 @@ class OptitransScheme(RomanScheme):
                     }
     for key, value in replacements.items():
       text = text.replace(key, value)
-    text = regex.sub(r"([aeiou])'", "$1", text)
-    text = regex.sub(r"'(aeiou)", "$1", text)
+    text = regex.sub(r"([aeiou])'", r"\1", text)
+    text = regex.sub(r"'(aeiou)", r"\1", text)
     text = regex.sub(r"'(?=\s|$|-)", "", text)
     ## For remaining cases, sometimes ' should just go आस्रत|ās'rat, sometimes it represents a weak a -  आसकत|ās'kat. So we just remove it - though it makes the prior careful replacements moot. Maybe we can do something smarter in the future?
     text = text.replace("'", "")

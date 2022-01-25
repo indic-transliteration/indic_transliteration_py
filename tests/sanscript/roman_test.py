@@ -47,14 +47,20 @@ def test_mark_off_non_indic_in_line():
 
 def test_optitrans_from_urdu():
   optitrans_scheme = sanscript.SCHEMES[sanscript.OPTITRANS]
-  assert optitrans_scheme.approximate_from_iso_urdu("lućpanaʼī") == "luchpana-ii"
-  assert optitrans_scheme.approximate_from_iso_urdu("marg̠-zār") == "marga-zaara"
-  assert optitrans_scheme.approximate_from_iso_urdu("mūtā'ba‘at") == "muutaabaata"
-  assert optitrans_scheme.approximate_from_iso_urdu("nis̱ẖās'tah") == "nishaastaha"
-  assert optitrans_scheme.approximate_from_iso_urdu("laḵẖlaḵẖa") == "la.khla.kha"
-  assert optitrans_scheme.approximate_from_iso_urdu("ifā'qā") == "ifaaqaa"
-  assert optitrans_scheme.approximate_from_iso_urdu("nāṣěḥ") == "naasEH"
-  assert optitrans_scheme.approximate_from_iso_urdu("ba-jāë") == "ba-jaaE"
-  assert optitrans_scheme.approximate_from_iso_urdu("pes̱ẖ") == "pesha"
-  assert optitrans_scheme.approximate_from_iso_urdu("joban") == "jobana"
+  test_pairs = {"lućpanaʼī": "luchpana{}ii",
+                "marg̠-zār": "marga-zaara",
+                "mūtā'ba‘at": "muutaabaata",
+                "nis̱ẖās'tah": "nishaastaha",
+                "laḵẖlaḵẖa": "la.khla.kha",
+                "ifā'qā": "ifaaqaa",
+                "nāṣěḥ": "naasEha",
+                "ba-jāë": "ba-jaaE",
+                "pes̱ẖ": "pesha",
+                "joban": "jobana",
+                "mad'ḥ": "mad{}ha",
+                "pooṅc̱ẖh": "puu.NCha",
+                "āzmā'’is̱ẖ": "aazmaa{}isha"
+                }
+  for source, dest in test_pairs.items():
+    assert optitrans_scheme.approximate_from_iso_urdu(source) == dest, (source, dest)
   assert optitrans_scheme.approximate_from_iso_urdu("maẕhab", add_terminal_a=False) == "mazhab"

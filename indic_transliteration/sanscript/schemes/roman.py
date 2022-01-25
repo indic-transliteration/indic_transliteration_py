@@ -106,15 +106,16 @@ class OptitransScheme(RomanScheme):
     return text
 
   def approximate_from_iso_urdu(self, text, add_terminal_a=True):
+    # Arabic pattern = [؀-ۿ]
     # Order matters below
-    replacements = {"‘": "", "ʼ": "-",
+    replacements = {"‘": "", "ʼ": "{}", "’": "{}",
                     "oo": "uu", "ee": "ii", "ë": "E", "ě": "E", "e": "ē", "o": "ō",
                     "ā": "aa", "ī": "ii", "ū": "uu", "w": "v", 
                     "ẕ": "z", "ż": "z", "ẓ": "z", "ž": "z", "̌":"",
-                    "chh": "ćh", "ch": "c", "ć": "c", 
+                    "c̱ẖ": "ć", "chh": "ćh", "ch": "c", "ć": "c", 
                     "ḳ": "q", "ṣ": "s",
-                    "s̱ẖ": "sh", "s̱": "t", "̱": "", "̠": "", 
-                    "r̤i": "r̥", "̤": "", 
+                    "s̱ẖ": "sh", "s̱": "t", "ẖ": "h", "ḥ": "h", "̱": "", "̠": "", 
+                    "r̤i": "r̥", "̤": ""
                     }
     for key, value in replacements.items():
       text = text.replace(key, value)
@@ -122,9 +123,10 @@ class OptitransScheme(RomanScheme):
     text = regex.sub(r"(%s)'" % vowels_pattern, r"\1", text)
     text = regex.sub(r"'(%s)" % vowels_pattern, r"\1", text)
     text = regex.sub(r"'(?=\s|$|-)", "", text)
+    text = regex.sub(r"'h", "{}h", text)
     ## For remaining cases, sometimes ' should just go आस्रत|ās'rat, sometimes it represents a weak a -  आसकत|ās'kat. So we just remove it - though it makes the prior careful replacements moot. Maybe we can do something smarter in the future?
     text = text.replace("'", "")
-    text = regex.sub(r"ṅ(?=[^kgq]|$)", ".N", text)
+    text = regex.sub(r"ṅ(?=[^kgq]|$)", "m̐", text)
     if add_terminal_a:
       text = regex.sub(r"([kghncjzftdTDpbmyrlvsq])(?=\s|$|-)", r"\1a", text)
     from indic_transliteration import sanscript

@@ -5,11 +5,14 @@ Placed here till https://github.com/jambonrose/roman-numerals/pull/64 is accepte
 """
 
 from re import (
-  VERBOSE, compile as re_compile, fullmatch, match, sub as substitute,)
+  VERBOSE, compile as re_compile, sub as substitute, )
 
 # Operation Modes
-STANDARD = 1
-LOWERCASE = 2
+import roman
+
+MODE_STANDARD = 1
+MODE_LOWERCASE = 2
+MODE_ASCII = 3
 
 ROMAN_NUMERAL_TABLE = [
   (1000, 'Ⅿ'),
@@ -34,6 +37,7 @@ SHORTENINGS = [
   ('ⅤⅠⅠⅠ', 'Ⅷ'),
   ('ⅤⅠⅠ', 'Ⅶ'),
   ('ⅤⅠ', 'Ⅵ'),
+  ('ⅠⅤ', "Ⅳ"),
   ('ⅠⅠⅠ', 'Ⅲ'),
   ('ⅠⅠ', 'Ⅱ'),
 ]
@@ -41,18 +45,15 @@ STANDARD_TRANS = 'ⅯⅮⅭⅬⅫⅪⅩⅨⅧⅦⅥⅤⅣⅢⅡⅠ'
 LOWERCASE_TRANS = 'ⅿⅾⅽⅼⅻⅺⅹⅸⅷⅶⅵⅴⅳⅲⅱⅰ'
 
 
-def convert_to_numeral(decimal_integer: int, mode: int = STANDARD) -> str:
+def convert_to_numeral(decimal_integer: int, mode: int = MODE_ASCII) -> str:
   """Convert a decimal integer to a Roman numeral"""
   if (not isinstance(decimal_integer, int)
       or isinstance(decimal_integer, bool)):
     raise TypeError("decimal_integer must be of type int")
   if (not isinstance(mode, int)
-      or isinstance(mode, bool)
-      or mode not in [LOWERCASE, STANDARD]):
+      or isinstance(mode, bool)):
     raise ValueError(
-      "mode must be "
-      "roman_numerals.STANDARD "
-      "or roman_numerals.LOWERCASE "
+      "mode not recognized"
     )
   return_list = []
   remainder = decimal_integer
@@ -61,9 +62,12 @@ def convert_to_numeral(decimal_integer: int, mode: int = STANDARD) -> str:
     return_list.append(numeral * repetitions)
   numeral_string = ''.join(return_list)
 
-  numeral_string = use_shortenings(numeral_string)
+  if mode == MODE_ASCII:
+    numeral_string = roman_to_ascii(numeral_string=numeral_string)
+  else:
+    numeral_string = use_shortenings(numeral_string)
 
-  if mode == LOWERCASE:
+  if mode == MODE_LOWERCASE:
     trans_to_lowercase = str.maketrans(STANDARD_TRANS, LOWERCASE_TRANS)
     numeral_string = numeral_string.translate(trans_to_lowercase)
   return numeral_string
@@ -95,7 +99,7 @@ def convert_to_integer(roman_numeral: str) -> int:
   if not isinstance(roman_numeral, str):
     raise TypeError("decimal_integer must be of type int")
   if roman_numeral == '':
-    raise ValueError("roman_numeral cannot be an empty string")
+    raise roman.InvalidRomanNumeralError("roman_numeral cannot be an empty string")
 
   # ensure all characters are in the standard/uppercase set
   trans_to_uppercase = str.maketrans(LOWERCASE_TRANS, STANDARD_TRANS)
@@ -103,22 +107,10 @@ def convert_to_integer(roman_numeral: str) -> int:
   partial_numeral = roman_numeral.translate(trans_to_uppercase)
 
   partial_numeral = remove_shortenings(partial_numeral)
+  partial_numeral = roman_to_ascii(numeral_string=partial_numeral)
+  value = roman.fromRoman(partial_numeral)
 
-  if not fullmatch(NUMERAL_PATTERN, partial_numeral):
-    raise ValueError(
-      "the string %s is not a valid numeral" % roman_numeral
-    )
-
-  # convert uppercase roman numerals to integer
-  return_value = 0
-  for integer, numeral in ROMAN_NUMERAL_TABLE:
-    pattern_match = match(r'^(%s)+' % numeral, partial_numeral)
-    if pattern_match:
-      chars_matched = len(pattern_match.group())
-      numerals_matched = chars_matched // len(numeral)
-      return_value += numerals_matched * integer
-      partial_numeral = partial_numeral[chars_matched:]
-  return return_value
+  return value
 
 
 def remove_shortenings(partial_numeral):
@@ -136,8 +128,7 @@ roman_to_ascii_map = {"Ⅰ": "I", "Ⅴ": "V", "Ⅹ": "X", "Ⅼ": "L", "Ⅽ": "C"
 
 
 def roman_to_ascii(numeral_string):
-  numeral_string = remove_shortenings(value=numeral_string)
-  numeral_string.replace('Ⅳ', 'ⅠⅤ')
+  numeral_string = remove_shortenings(numeral_string)
   for rom, asc in roman_to_ascii_map.items():
     numeral_string = numeral_string.replace(rom, asc)
   return numeral_string

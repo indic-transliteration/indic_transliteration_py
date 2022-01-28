@@ -5,6 +5,7 @@ Test conversion from integer to Roman numeral
 from typing import Any
 
 import pytest
+from roman import InvalidRomanNumeralError
 
 from indic_transliteration.roman_numerals import convert_to_integer
 
@@ -58,5 +59,5 @@ def test_invalid_numerals(invalid_numerals: Any) -> None:
   """
   Ensure that passing in invalid Roman numerals raises ValueErrors
   """
-  with pytest.raises(ValueError):
+  with pytest.raises(InvalidRomanNumeralError):
     convert_to_integer(invalid_numerals)

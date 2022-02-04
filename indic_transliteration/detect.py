@@ -82,7 +82,7 @@ SCHEMES = [
   ('hk', None),
   ('iast', None),
   ('itrans', None),
-  ('kolkata', None),
+  ('kolkata_v2', None),
   ('slp1', None),
   ('velthuis', None),
 ]
@@ -148,7 +148,7 @@ def detect(text):
   # Romanizations
   if Regex.IAST_OR_KOLKATA_ONLY.search(text):
     if Regex.KOLKATA_ONLY.search(text):
-      return Scheme.kolkata
+      return Scheme.kolkata_v2
     else:
       return Scheme.iast
 

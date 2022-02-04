@@ -125,7 +125,7 @@ add(BASIC, Scheme.itrans, [
     'gachChati',
     'gachchhati',
 ])
-add(BASIC, Scheme.kolkata, [
+add(BASIC, Scheme.kolkata_v2, [
     'tējas',
     'sōma',
 ])

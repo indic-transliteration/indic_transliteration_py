@@ -64,6 +64,15 @@ class Scheme(dict):
                                                                           omit_yrl=omit_yrl)
     return sanscript.transliterate(data=data_out, _from=sanscript.DEVANAGARI, _to=self.name)
 
+  def replace_terminal_anusvaara(self, data_in):
+    from indic_transliteration import sanscript
+    data_out = sanscript.transliterate(data=data_in, _from=self.name, _to=sanscript.DEVANAGARI)
+    if data_out.endswith("ं"):
+      data_out = data_out[:-1] + "म्"
+      return sanscript.transliterate(data=data_out, _from=sanscript.DEVANAGARI, _to=self.name)
+    else:
+      return data_in
+
   def force_lazy_anusvaara(self, data_in):
     from indic_transliteration import sanscript
     data_out = sanscript.transliterate(data=data_in, _from=self.name, _to=sanscript.DEVANAGARI)

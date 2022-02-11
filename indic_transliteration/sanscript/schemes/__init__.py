@@ -40,9 +40,9 @@ class Scheme(dict):
       fixed_words = []
       for word in words:
         if word[-1] == "ं": 
-          fixed_words.append(self.fix_lazy_anusvaara(word[:-1], omit_sam, omit_yrl) + word[-1])
+          fixed_words.append(self.fix_lazy_anusvaara(word[:-1], omit_sam=omit_sam, omit_yrl=omit_yrl, ignore_padaanta=False) + word[-1])
         else:
-          fixed_words.append(self.fix_lazy_anusvaara(word, omit_sam, omit_yrl))
+          fixed_words.append(self.fix_lazy_anusvaara(word, omit_sam=omit_sam, omit_yrl=omit_yrl, ignore_padaanta=False))
       lines_out.append("%s%s%s" % (initial_space, " ".join(fixed_words), final_space))
     return "\n".join(lines_out)
 

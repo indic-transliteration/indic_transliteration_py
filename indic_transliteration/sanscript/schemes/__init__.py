@@ -46,7 +46,7 @@ class Scheme(dict):
       lines_out.append("%s%s%s" % (initial_space, " ".join(fixed_words), final_space))
     return "\n".join(lines_out)
 
-  def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):
+  def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=True):
     """
     Assumption: space and newlines are the word delimiters.
     

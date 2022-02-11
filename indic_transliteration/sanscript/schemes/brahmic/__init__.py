@@ -61,7 +61,7 @@ class DevanagariScheme(BrahmicScheme):
         data_out = regex.sub(r'ः( *)([प-म])', r'ᳶ\1\2',   data_out)
         return data_out
 
-    def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):
+    def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=True):
         # Overriding because we don't want to turn जगइ to जगै
         if ignore_padaanta:
             return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in, omit_sam=omit_sam, omit_yrl=omit_yrl)

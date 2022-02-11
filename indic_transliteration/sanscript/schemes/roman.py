@@ -71,7 +71,7 @@ class RomanScheme(Scheme):
 
 
 class ItransScheme(RomanScheme):
-  def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=False):
+  def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=True):
     if ignore_padaanta:
       return self.fix_lazy_anusvaara_except_padaantas(data_in=data_in, omit_sam=omit_sam, omit_yrl=omit_yrl)
     data_out = data_in

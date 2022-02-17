@@ -34,6 +34,7 @@ class Scheme(dict):
     if "shortcuts" in self:
       for key, shortcut in self["shortcuts"].items():
         if key in shortcut:
+          # An actually long "Shortcut" may already exist in the data
           data_in = data_in.replace(shortcut, key)
         data_in = data_in.replace(key, shortcut)
     return data_in
@@ -42,6 +43,7 @@ class Scheme(dict):
     if "shortcuts" in self:
       for key, shortcut in self["shortcuts"].items():
         if shortcut in key:
+          # An actually long "key" may already exist in the data
           data_in = data_in.replace(key, shortcut)
         data_in = data_in.replace(shortcut, key)
     return data_in

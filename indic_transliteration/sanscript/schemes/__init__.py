@@ -15,7 +15,8 @@ class Scheme(dict):
   :class:`Scheme` is just a subclass of :class:`dict`.
 
   :param data: a :class:`dict` of initial values. Note that the particular characters present here are also assumed to be the _preferred_ transliterations when transliterating to this scheme. 
-  :param alternates: A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS. This alternates is not used in transliterating to this scheme.
+  
+  Among other things, data contains 'alternates': A map from keys appearing in `data` to lists of symbols with equal meaning. For example: M -> ['.n', .'m'] in ITRANS. This alternates is not used in transliterating to this scheme.
   :param is_roman: `True` if the scheme is a romanization and `False`
                    otherwise.
   """
@@ -28,6 +29,18 @@ class Scheme(dict):
   def fix_om(self, data_in):
     replacement_pattern = "(?<=(^|\s|\p{Punct}))%s(%s|%s)(?=(\s|$|\p{Punct}))" % (self["vowels"]["ओ"], self["yogavaahas"]["ं"], self["consonants"]["म"] + self["virama"]["्"])
     return regex.sub(replacement_pattern, self["symbols"]["ॐ"], data_in)
+
+  def apply_shortcuts(self, data_in):
+    if "shortcuts" in self:
+      for key, shortcut in self["shortcuts"].items():
+        data_in = data_in.replace(key, shortcut)
+    return data_in
+
+  def unapply_shortcuts(self, data_in):
+    if "shortcuts" in self:
+      for key, shortcut in self["shortcuts"].items():
+        data_in = data_in.replace(shortcut, key)
+    return data_in
 
   def fix_lazy_anusvaara_except_padaantas(self, data_in, omit_sam, omit_yrl):
     lines = data_in.split("\n")

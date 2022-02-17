@@ -224,12 +224,9 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
   from indic_transliteration.sanscript.brahmic_mapper import _brahmic
   from indic_transliteration.sanscript.roman_mapper import _roman
   func = _roman if scheme_map.from_scheme.is_roman else _brahmic
+  data = scheme_map.from_scheme.unapply_shortcuts(data_in=data)
   result = func(data, scheme_map, **options)
-
-  if scheme_map.to_scheme.name.startswith(OPTITRANS):
-    import regex
-    result = regex.sub("~N([kKgGx])", "n\\1", result)
-    result = regex.sub("~n([cCjJ])", "n\\1", result)
+  result = scheme_map.to_scheme.apply_shortcuts(data_in=result)
   return result
 
 

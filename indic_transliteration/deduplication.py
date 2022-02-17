@@ -49,11 +49,11 @@ def get_approx_deduplicating_key(text, encoding_scheme=sanscript.DEVANAGARI):
     """
     if encoding_scheme == sanscript.DEVANAGARI:
         key = text
-        key = regex.sub("\\P{IsDevanagari}", "", key)
+        key = regex.sub(r"\P{IsDevanagari}", "", key)
         # Remove spaces
-        key = regex.sub("\\s", "", key)
+        key = regex.sub(r"\s", "", key)
         # Remove punctuations
-        key = regex.sub("\\p{P}", "", key)
+        key = regex.sub(r"\p{P}", "", key)
         # Remove digits, abbreviation sign, svara-s, avagraha
         key = regex.sub("[०-९।॥॰ऽ]|[॑-॔]", "", key)
         # Collapse semi-vowel-anunAsika-s संलग्नम् सल्ँलग्नम् into m
@@ -79,4 +79,4 @@ def get_approx_deduplicating_key(text, encoding_scheme=sanscript.DEVANAGARI):
         return key
     else:
         logging.warning("got script {} for '{}'".format(encoding_scheme, text))
-        return regex.sub("\\s", "", text)
+        return regex.sub(r"\s", "", text)

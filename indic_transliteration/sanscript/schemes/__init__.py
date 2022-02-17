@@ -33,12 +33,16 @@ class Scheme(dict):
   def apply_shortcuts(self, data_in):
     if "shortcuts" in self:
       for key, shortcut in self["shortcuts"].items():
+        if key in shortcut:
+          data_in = data_in.replace(shortcut, key)
         data_in = data_in.replace(key, shortcut)
     return data_in
 
   def unapply_shortcuts(self, data_in):
     if "shortcuts" in self:
       for key, shortcut in self["shortcuts"].items():
+        if shortcut in key:
+          data_in = data_in.replace(key, shortcut)
         data_in = data_in.replace(shortcut, key)
     return data_in
 

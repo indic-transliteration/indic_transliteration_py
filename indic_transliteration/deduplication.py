@@ -12,7 +12,7 @@ from indic_transliteration import sanscript
 
 def get_approx_deduplicating_key(text, encoding_scheme=sanscript.DEVANAGARI):
     """
-    Given some devanAgarI sanskrit text, this function produces a "key" so
+    Given some (devanAgarI?) sanskrit text, this function produces a "key" so
     that
   
     1] The key should be the same for different observed orthographical
@@ -76,6 +76,7 @@ def get_approx_deduplicating_key(text, encoding_scheme=sanscript.DEVANAGARI):
         key = regex.sub("ड्ढ्", "ढ्", key)
         key = regex.sub("प्फ्", "फ्", key)
         key = regex.sub("ब्भ्", "भ्", key)
+        key = sanscript.transliterate(key, _from=encoding_scheme, _to=sanscript.OPTITRANS)
         return key
     else:
         logging.warning("got script {} for '{}'".format(encoding_scheme, text))

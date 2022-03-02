@@ -167,6 +167,13 @@ def detect(text):
   return Scheme.hk
 
 
+def likely_dravidian(script):
+  from indic_transliteration import sanscript
+  if script in [sanscript.DEVANAGARI, sanscript.GUJARATI, sanscript.BENGALI, sanscript.PUNJABI, sanscript.BENGALI, sanscript.ORIYA]:
+    return False
+  return True
+
+
 if __name__ == '__main__':
   script = detect("yagnopavitham-a-short-description-with-dharan-vidhi-and-yagyopavita-nasha-prayachhita")
   print(script)

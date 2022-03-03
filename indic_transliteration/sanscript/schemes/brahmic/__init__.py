@@ -51,7 +51,7 @@ class BrahmicScheme(Scheme):
     return regex.sub(r"(%s)।(?=%s)" % (native_numerals_pattern, native_numerals_pattern), "\\1.", in_string)
 
   def get_letters(self):
-    letters = self["vowels"].values + self["consonants"].values + self["vowel_marks"].values + self["yogavaahas"].values + self["virama"].values + self["extra_consonants"].values + [self["symbols"]["ॐ"]] + flatten(self["alternates"].values)
+    letters = self["vowels"].values + self["consonants"].values + self["vowel_marks"].values + self["yogavaahas"].values + self["virama"].values + self["extra_consonants"].values + [self["symbols"]["ॐ"]] + reduce(lambda x, y: x+y, self["alternates"].values)
     return letters
 
 class DevanagariScheme(BrahmicScheme):

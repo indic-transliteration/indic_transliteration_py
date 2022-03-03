@@ -4,6 +4,7 @@ import regex
 
 from indic_transliteration.sanscript import Scheme
 from indic_transliteration.sanscript.schemes import dev_vowel_to_mark_map
+from functools import reduce
 
 
 class BrahmicScheme(Scheme):

@@ -59,7 +59,19 @@ class BrahmicScheme(Scheme):
     letters = self["vowels"].values + self["consonants"].values + self["vowel_marks"].values + self["yogavaahas"].values + self["virama"].values + self["extra_consonants"].values + [self["symbols"]["ॐ"]] + reduce(lambda x, y: x+y, self["alternates"].values)
     return letters
 
+
 class DevanagariScheme(BrahmicScheme):
+  PATTERN_CONSONANT_MODIFIER = "़्"
+  PATTERN_YOGAVAAHA = r"ऀ-ःᳩ-ᳶ"
+  PATTERN_GURU_YOGAVAAHA = r"ंःᳩ-ᳶ"
+  PATTERN_ACCENT = r"॑-॔\uA8E0-꣼\u1CD0-\u1CFF"
+  PATTERN_DEPENDENT_VOWEL = r"\u093A-\u093B\u093E-\u094C \u094E-\u094F\u0955-\u0957\u0962-\u0963\uA8FF"
+  PATTERN_GURU_DEPENDENT_VOWEL = r"ऻ ा ी ू ॄ ॗॣ ॎ े ै ो ौ ॕ".replace(" ", "")
+  PATTERN_GURU_INDEPENDENT_VOWEL = "आईऊॠॡएऐओऔऍऑॴॵॷꣾ"
+  PATTERN_VYANJANA = "क-हक़-य़ॸ-ॿ"
+  PATTERN_VYANJANA_WITHOUT_VOWEL = "[%s]़?्" % (PATTERN_VYANJANA)
+  PATTERN_INDEPENDENT_VOWEL = "ऄ-औॠॡॲ-ॷꣾ"
+  PATTERN_OM = "ॐꣽ"
 
   @classmethod
   def fix_lazy_visarga(cls, data_in):

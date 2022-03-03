@@ -18,7 +18,11 @@ class BrahmicScheme(Scheme):
   def do_vyanjana_svara_join(self, vyanjanaanta, svaraadi):
     import regex
     if regex.match("|".join(self['vowels']) + ".*", svaraadi):
-      return vyanjanaanta[:-1] + self.vowel_to_mark_map.get(svaraadi[0], "") + svaraadi[1:]
+      if len(svaraadi) > 1:
+        remainder = svaraadi[1:]
+      else:
+        remainder = ""
+      return vyanjanaanta[:-1] + self.vowel_to_mark_map.get(svaraadi[0], "") + remainder
     else:
       raise ValueError(svaraadi + " is not svaraadi.")
 

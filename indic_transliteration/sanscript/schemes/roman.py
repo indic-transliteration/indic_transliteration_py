@@ -20,6 +20,7 @@ OPTITRANS = 'optitrans'
 OPTITRANS_DRAVIDIAN = 'optitrans_dravidian'
 KOLKATA_v2 = 'kolkata_v2'
 SLP1 = 'slp1'
+SLP1_ACCENTED = 'slp1_accented'
 VELTHUIS = 'velthuis'
 WX = 'wx'
 

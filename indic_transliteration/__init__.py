@@ -6,7 +6,6 @@ import json
 import logging
 import os
 
-import aksharamukha.transliterate
 
 language_code_to_script = {}
 
@@ -16,6 +15,7 @@ with open(os.path.join(os.path.dirname(__file__), "language_code_to_script.json"
 
 
 def convert_with_aksharamukha(source_path, dest_path, source_script, dest_script, pre_options = [], post_options = []):
+  import aksharamukha.transliterate
   logging.info("\nTransliterating (%s > %s) %s to %s", source_script, dest_script, source_path, dest_path)
   os.makedirs(os.path.dirname(dest_path), exist_ok=True)
   with codecs.open(source_path, "r", "utf-8") as in_file, codecs.open(dest_path, "w", "utf-8") as out_file:

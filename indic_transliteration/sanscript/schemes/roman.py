@@ -142,10 +142,10 @@ class CapitalizableScheme(RomanScheme):
     # A local function.
     def add_capitalized_synonyms(some_list):
       for x in some_list:
-        synonyms = [x.capitalize()]
+        synonyms = [x.capitalize(), x.upper()]
         if x in self["alternates"]:
-          synonyms = self["alternates"][x] + [y.capitalize() for y in self["alternates"][x]]
-        self["alternates"][x] = synonyms
+          synonyms += self["alternates"][x] + [y.capitalize() for y in self["alternates"][x]] + [y.upper() for y in self["alternates"][x]]
+        self["alternates"][x] = list(set(synonyms))
 
     add_capitalized_synonyms(self["vowels"].values())
     add_capitalized_synonyms(self["consonants"].values())

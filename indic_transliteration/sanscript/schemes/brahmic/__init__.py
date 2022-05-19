@@ -12,13 +12,15 @@ class BrahmicScheme(Scheme):
     super(BrahmicScheme, self).__init__(data=data, name=name, is_roman=False)
     if "vowel_marks" in self:
       self.vowel_to_mark_map = {}
+      self.mark_to_vowel_map = {}
       for (vowel, vowel_mark) in dev_vowel_to_mark_map.items():
         if vowel in self["vowels"] and vowel_mark in self["vowel_marks"]:
           self.vowel_to_mark_map[self["vowels"][vowel]] = self["vowel_marks"][vowel_mark]
+          self.mark_to_vowel_map[self["vowel_marks"][vowel_mark]] = self["vowels"][vowel]
 
   def do_vyanjana_svara_join(self, vyanjanaanta, svaraadi):
     import regex
-    if regex.match("|".join(self['vowels']) + ".*", svaraadi):
+    if regex.match("|".join(self['vowels'].values()) + ".*", svaraadi):
       if len(svaraadi) > 1:
         remainder = svaraadi[1:]
       else:
@@ -26,6 +28,33 @@ class BrahmicScheme(Scheme):
       return vyanjanaanta[:-1] + self.vowel_to_mark_map.get(svaraadi[0], "") + remainder
     else:
       raise ValueError(svaraadi + " is not svaraadi.")
+
+  def split_vyanjanas_and_svaras(self, text):
+    out_letters = []
+    for letter in text:
+      if letter in self.mark_to_vowel_map:
+        if len(out_letters) > 0:
+          out_letters[-1] += self["virama"]["्"]
+        out_letters.append(self.mark_to_vowel_map[letter])
+      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or letter in self["virama"].values() or letter in self.get("candra", {}).values():
+        if len(out_letters) > 0:
+          out_letters[-1] += letter
+        else:
+          out_letters.append(letter)
+      else:
+        out_letters.append(letter)
+    return out_letters
+
+  def join_strings(self, strings):
+    out_text = ""
+    for letter in strings:
+      if letter[0] in self["vowels"].values() and out_text.endswith(self["virama"]["्"]):
+        out_text = out_text[:-1] + self.vowel_to_mark_map[letter[0]]
+        if len(letter) > 1:
+          out_text += letter[1:]
+      else:
+        out_text = out_text + letter
+    return out_text
 
   def get_numerals(self):
     dev_numerals = "० १ २ ३ ४ ५ ६ ७ ८ ९".split()

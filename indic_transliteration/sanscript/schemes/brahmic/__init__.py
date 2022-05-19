@@ -30,19 +30,25 @@ class BrahmicScheme(Scheme):
       raise ValueError(svaraadi + " is not svaraadi.")
 
   def split_vyanjanas_and_svaras(self, text):
-    out_letters = []
+    letters = []
     for letter in text:
       if letter in self.mark_to_vowel_map:
-        if len(out_letters) > 0:
-          out_letters[-1] += self["virama"]["्"]
-        out_letters.append(self.mark_to_vowel_map[letter])
+        if len(letters) > 0:
+          letters[-1] += self["virama"]["्"]
+        letters.append(self.mark_to_vowel_map[letter])
       elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or letter in self["virama"].values() or letter in self.get("candra", {}).values():
-        if len(out_letters) > 0:
-          out_letters[-1] += letter
+        if len(letters) > 0:
+          letters[-1] += letter
         else:
-          out_letters.append(letter)
+          letters.append(letter)
       else:
-        out_letters.append(letter)
+        letters.append(letter)
+    out_letters = []
+    for letter in letters:
+      out_letters.append(letter)
+      if letter in self["consonants"].values() or letter in self.get("extra_consonants", {}).values():
+        out_letters[-1] += self["virama"]["्"]
+        out_letters.append(self["vowels"]["अ"])
     return out_letters
 
   def join_strings(self, strings):

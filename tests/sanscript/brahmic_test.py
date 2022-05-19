@@ -34,7 +34,8 @@ def test_split_vyanjanas_and_svaras():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
   assert devanagari.split_vyanjanas_and_svaras("ह्रीः") == ['ह्', 'र्', 'ईः']
   assert sanscript.SCHEMES[sanscript.KANNADA].split_vyanjanas_and_svaras("ಹ್ರೀಃ") == ["ಹ್", "ರ್", "ಈಃ"]
-
+  assert devanagari.split_vyanjanas_and_svaras("ह्र") == ['ह्', 'र्', 'अ']
+  assert devanagari.split_vyanjanas_and_svaras("र") == ['र्', 'अ']
 
 def test_join_letters():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]

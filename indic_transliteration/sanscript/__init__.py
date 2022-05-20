@@ -87,6 +87,7 @@ IAST = roman.IAST
 ISO = roman.ISO
 ITRANS = roman.ITRANS
 OPTITRANS = roman.OPTITRANS
+KOLKATA = roman.KOLKATA_v2
 KOLKATA_v2 = roman.KOLKATA_v2
 SLP1 = roman.SLP1
 VELTHUIS = roman.VELTHUIS

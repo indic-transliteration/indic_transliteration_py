@@ -213,13 +213,18 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
     if _from is None:
       from indic_transliteration import detect
       _from = detect.detect(data)
-    if options.get('maybe_use_dravidian_variant', None):
+    maybe_use_dravidian_variant = options.get('maybe_use_dravidian_variant', None)
+    if maybe_use_dravidian_variant == "yes":
       if _from in ["kannada", "tamil", "telugu", "malayalam"]:
         dravidian_scheme = _to + "_dravidian"
         if dravidian_scheme in SCHEMES.keys():
           _to = dravidian_scheme
       elif _from in ["optitrans", "itrans", "hk"]:
         _from = _from + "_dravidian"
+    elif maybe_use_dravidian_variant == "force":
+      dravidian_scheme = _to + "_dravidian"
+      if dravidian_scheme in SCHEMES.keys():
+        _to = dravidian_scheme
     scheme_map = _get_scheme_map(_from, _to)
 
   from indic_transliteration.sanscript.brahmic_mapper import _brahmic

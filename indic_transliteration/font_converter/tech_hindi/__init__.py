@@ -4,6 +4,7 @@ import os.path
 import regex
 from selenium import webdriver
 from selenium.webdriver.chrome import options
+from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.remote_connection import LOGGER
 
 from indic_transliteration.font_converter import Converter
@@ -32,13 +33,13 @@ class DVTTVedicConverter(Converter):
         self.browser.get('file://' + os.path.join(os.path.dirname(__file__), "data", 'DV-TTVedicNormal ==_ यूनिकोड परिवर्तित्र.html'))
 
     def convert(self, text):
-        input_box = self.browser.find_element_by_id("legacy_text")
-        convert_button = self.browser.find_element_by_name("converter")
+        input_box = self.browser.find_element(by=By.ID, value="legacy_text")
+        convert_button = self.browser.find_element(by=By.NAME, value="converter")
         text = regex.sub("ÉS", "॒", text)
         text = regex.sub("ÉM", "॑", text)
         input_box.send_keys(text)
         convert_button.click()
-        output_box = self.browser.find_element_by_id("unicode_text")
+        output_box = self.browser.find_element(by=By.ID, value="unicode_text")
         out_text = output_box.get_attribute("value")
         return out_text
 

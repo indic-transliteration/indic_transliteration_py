@@ -1,8 +1,6 @@
 backports.functools_lru_cache
-selenium
 regex
 typer
 toml
 roman
-aksharamukha
 

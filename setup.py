@@ -30,13 +30,21 @@ with open('requirements.txt', 'r') as f:
   ]
 
 
+with open('extras.txt', 'r') as f:
+  install_extras = [
+    s for s in [
+      line.split('#', 1)[0].strip(' \t\n') for line in f
+    ] if s != ''
+  ]
+
+
 setup(
   name='indic_transliteration',
 
   # Versions should comply with PEP440.  For a discussion on single-sourcing
   # the version across setup.py and the project code, see
   # https://packaging.python.org/en/latest/single_source_version.html
-  version='2.3.34',
+  version='2.3.35',
 
 
   description='Transliteration tools to convert text in one indic script encoding to another',
@@ -101,8 +109,9 @@ setup(
   # for example:
   # $ pip install -e .[dev,test]
   extras_require={
-      # 'dev': ['check-manifest'],
-      'test': ['pytest'],
+    # 'dev': ['check-manifest'],
+    'test': ['pytest'],
+    'extras': install_extras,
   },
 
   include_package_data = True,

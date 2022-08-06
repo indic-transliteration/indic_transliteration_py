@@ -1,5 +1,9 @@
 from __future__ import unicode_literals
 
+import pytest
+## Skip test if optional dependency is not installed.
+selenium = pytest.importorskip("selenium")
+
 import logging
 
 from indic_transliteration.font_converter import tech_hindi

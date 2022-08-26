@@ -29,8 +29,12 @@ def test_fix_lazy_visarga():
 def test_approximate_visarga():
   assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಮತಿಃ", mode=VisargaApproximation.H) == "ಮತಿಹ್"
   assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಹರಃ", mode=VisargaApproximation.H) == "ಹರಹ್"
+  assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಮತಿಃ", mode=VisargaApproximation.AHA) == "ಮತಿಹಿ"
+  assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಹರಃ", mode=VisargaApproximation.AHA) == "ಹರಹ"
   assert sanscript.SCHEMES[sanscript.DEVANAGARI].approximate_visargas("मतिः", mode=VisargaApproximation.H) == "मतिह्"
   assert sanscript.SCHEMES[sanscript.DEVANAGARI].approximate_visargas("हरः", mode=VisargaApproximation.H) == "हरह्"
+  assert sanscript.SCHEMES[sanscript.DEVANAGARI].approximate_visargas("मतिः", mode=VisargaApproximation.AHA) == "मतिहि"
+  assert sanscript.SCHEMES[sanscript.DEVANAGARI].approximate_visargas("हरः", mode=VisargaApproximation.AHA) == "हरह"
 
 
 def test_do_vyanjana_svara_join():

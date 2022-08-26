@@ -98,8 +98,31 @@ class Scheme(dict):
     :param mode: 
     :return: 
     """
+    from indic_transliteration import sanscript
     if mode == VisargaApproximation.AHA:
-      raise NotImplementedError()
+      # अ is deliberately placed in the end below.
+      replacements = [("आः", "आह"),
+                      ("इः", "इहि"),
+                      ("ईः", "ईहि"),
+                      ("उः", "उहु"),
+                      ("ऊः", "ऊहु"),
+                      ("ॠः", "ॠहि"),
+                      ("एः", "एहे"),
+                      ("ऐः", "एहि"),
+                      ("ओः", "ओहो"),
+                      ("औः", "औहु"),
+                      ("अः", "अह"),
+                      ]
+      data_out = sanscript.transliterate(data=data, _from=self.name, _to=sanscript.DEVANAGARI)
+      for old, new in replacements:
+        data_out = data_out.replace(old, new)
+        if not old.startswith("अ"):
+          old_mark = sanscript.SCHEMES[sanscript.DEVANAGARI].vowel_to_mark_map[old[0]]
+          data_out = data_out.replace(old.replace(old[0], old_mark), new.replace(old[0], old_mark))
+      # Only akAra+visarga should be left at this point.
+      data_out = data_out.replace("ः", "ह")
+      data_out = sanscript.transliterate(data=data_out, _from=sanscript.DEVANAGARI, _to=self.name)
+      return data_out
     elif mode == VisargaApproximation.H:
       return data.replace(self["yogavaahas"]["ः"], self["consonants"]["ह"] + self["virama"]["्"])
     elif mode is None:

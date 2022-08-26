@@ -1,4 +1,5 @@
 from indic_transliteration import sanscript
+from indic_transliteration.sanscript.schemes import VisargaApproximation
 
 
 def test_force_lazy_anusvaara_devanagari():
@@ -22,6 +23,14 @@ def test_fix_lazy_anusvaara_devanagari():
 def test_fix_lazy_visarga():
   assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_visarga("अन्तः पश्य") == "अन्तᳶ पश्य"
   assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_visarga("अन्तः कुरु") == "अन्तᳵ कुरु"
+
+
+
+def test_approximate_visarga():
+  assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಮತಿಃ", mode=VisargaApproximation.H) == "ಮತಿಹ್"
+  assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಹರಃ", mode=VisargaApproximation.H) == "ಹರಹ್"
+  assert sanscript.SCHEMES[sanscript.DEVANAGARI].approximate_visargas("मतिः", mode=VisargaApproximation.H) == "मतिह्"
+  assert sanscript.SCHEMES[sanscript.DEVANAGARI].approximate_visargas("हरः", mode=VisargaApproximation.H) == "हरह्"
 
 
 def test_do_vyanjana_svara_join():

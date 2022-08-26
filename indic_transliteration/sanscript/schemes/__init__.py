@@ -7,6 +7,13 @@ import toml
 dev_vowel_to_mark_map = toml.load(os.path.join(os.path.dirname(__file__), "data/_devanagari_vowel_to_marks.toml"))
 
 
+from enum import IntEnum
+
+class VisargaApproximation(IntEnum):
+  AHA = 0
+  H = 1
+
+
 class Scheme(dict):
   """Represents all of the data associated with a given scheme. In addition
   to storing whether or not a scheme is roman, :class:`Scheme` partitions
@@ -82,6 +89,23 @@ class Scheme(dict):
     data_out = sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_anusvaara(data_in=data_out, omit_sam=omit_sam,
                                                                           omit_yrl=omit_yrl)
     return sanscript.transliterate(data=data_out, _from=sanscript.DEVANAGARI, _to=self.name)
+
+
+  def approximate_visargas(self, data, mode=VisargaApproximation.H):
+    """ Useful for TTS applications.
+    
+    :param data: 
+    :param mode: 
+    :return: 
+    """
+    if mode == VisargaApproximation.AHA:
+      raise NotImplementedError()
+    elif mode == VisargaApproximation.H:
+      return data.replace(self["yogavaahas"]["ः"], self["consonants"]["ह"] + self["virama"]["्"])
+    elif mode is None:
+      return data
+    else:
+      raise NotImplementedError()
 
   def replace_terminal_anusvaara(self, data_in):
     from indic_transliteration import sanscript

@@ -1,4 +1,5 @@
 from indic_transliteration import sanscript
+from indic_transliteration.sanscript.schemes import VisargaApproximation
 
 
 def test_fix_lazy_anusvaara_itrans():
@@ -20,6 +21,10 @@ def test_fix_lazy_anusvaara_slp():
   assert sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara("aham") == "aham"
   assert sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara("saMga") == "saNga"
   assert sanscript.SCHEMES[sanscript.SLP1].fix_lazy_anusvaara("saMga", omit_sam=True) == "saMga"
+
+def test_approximate_visarga():
+  assert sanscript.SCHEMES[sanscript.OPTITRANS].approximate_visargas("matiH", mode=VisargaApproximation.H) == "matih"
+  assert sanscript.SCHEMES[sanscript.OPTITRANS].approximate_visargas("haraH", mode=VisargaApproximation.H) == "harah"
 
 
 def test_optitrans_to_lay_indian():

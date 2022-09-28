@@ -47,8 +47,8 @@ class RomanScheme(Scheme):
   @classmethod
   def to_shatapatha_svara(cls, text):
     # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
-    text = text.replace("́", "᳘")
-    text = text.replace("̀", "᳘")
+    text = text.replace("꣡", "᳘")
+    text = text.replace("᳡", "᳘")
     text = regex.sub("᳘([ंःँ])", "\\1᳘", text)
     return text
 

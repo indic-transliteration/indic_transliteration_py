@@ -32,12 +32,13 @@ class BrahmicScheme(Scheme):
   def split_vyanjanas_and_svaras(self, text):
     letters = []
     ACCENTS = "[\u1CD0-\u1CE8\u1CF9\u1CFA\uA8E0-\uA8F1\u0951-\u0954\u0957]" # included  ॗ , which is used as svara for weber's shatapatha
+    YOGAVAAHAS = "[\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
     for letter in text:
       if letter in self.mark_to_vowel_map:
         if len(letters) > 0:
           letters[-1] += self["virama"]["्"]
         letters.append(self.mark_to_vowel_map[letter])
-      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(ACCENTS, letter) is not None or letter in self[
+      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(YOGAVAAHAS, letter)or regex.match(ACCENTS, letter) is not None or letter in self[
         "virama"].values() or letter in self.get("candra", {}).values():
         if len(letters) > 0:
           letters[-1] += letter
@@ -93,50 +94,10 @@ class BrahmicScheme(Scheme):
     return regex.sub(r"(%s)।(?=%s)" % (native_numerals_pattern, native_numerals_pattern), "\\1.", in_string)
 
   def get_letters(self):
-    letters = list(self["vowels"].values()) + list(self["consonants"].values()) + list(self["vowel_marks"].values()) + self[
-      "yogavaahas"].values() + list(self["virama"].values()) + list(self["extra_consonants"].values()) + [self["symbols"]["ॐ"]] + reduce(
+    letters = list(self["vowels"].values()) + list(self["consonants"].values()) + list(self["vowel_marks"].values()) + list(self[
+      "yogavaahas"].values()) + list(self["virama"].values()) + list(self["extra_consonants"].values()) + [self["symbols"]["ॐ"]] + reduce(
       lambda x, y: x + y, list(self["alternates"].values()))
     return letters
-
-  def move_accent_to_previous_syllable(self, text, old_accent, new_accent=None, drop_at_first_syllable=False):
-    if new_accent is None:
-      new_accent = old_accent
-    letters = self.split_vyanjanas_and_svaras(text)
-    out_letters = []
-    vowels = list(self["vowels"].values())
-    vowels_yogavaahas = vowels + list(self["yogavaahas"].values())
-    for index, letter in enumerate(letters):
-      if letter.endswith(old_accent):
-        vowel_position = -1
-        for i in range(len(out_letters) - 1, -1, -1):
-          prev_letter = out_letters[i]
-          if prev_letter[0] in vowels_yogavaahas:
-            vowel_position = i
-            break
-        if vowel_position > -1 or not drop_at_first_syllable:
-          out_letters[vowel_position] += new_accent
-          out_letters.append(letter[:-1])
-      else:
-        out_letters.append(letter)
-    text = self.join_strings(out_letters)
-    return text
-
-  def to_shatapatha_svara(self, text):
-    """
-    Limitations: Does not handle eliding udAtta-s occuring in a series. It is assumed that such are pre-elided
-    
-    :param text: 
-    :return: 
-    """
-    # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
-    text = text.replace("꣡", "᳘")
-    text = regex.sub("᳘([ंःँ])", "\\1᳘", text)
-    text = regex.sub("[ँꣳ]", "ᳫं", text)
-    # This would be wrong: text = text.replace("᳡", "ॗ") . Svarita is marked in the previous syllable.    
-    new_accent = "ॗ"
-    old_accent = "᳡"
-    text = self.move_accent_to_previous_syllable(text=text, new_accent=new_accent, old_accent=old_accent)
-    return text
 
 
 class DevanagariScheme(BrahmicScheme):

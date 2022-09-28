@@ -1,5 +1,6 @@
 from indic_transliteration import sanscript
 from indic_transliteration.sanscript.schemes import VisargaApproximation
+from indic_transliteration.sanscript.schemes.brahmic import accent
 
 
 def test_force_lazy_anusvaara_devanagari():
@@ -60,7 +61,8 @@ def test_join_letters():
 
 def test_move_accent_to_previous_syllable():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
-  assert devanagari.move_accent_to_previous_syllable(text="त॑स्माद्वा॑ अप॑ उ॑पस्पृशति॥ सो᳕ऽग्नि॑मेवा᳕भी॑क्षमाणः।", old_accent="᳕", new_accent="ॗ") == "तॖस्माद्वाॖ अप॑ उॖपस्पृशतिॗ॥ सोऽग्निॖमेॗवाभीॖक्षमाणः।".replace("ॖ", "॑")
+  assert accent.move_accent_to_previous_syllable(scheme=devanagari, text="सैॗषा᳘ निदा᳘नेना यदि᳘डा॥", old_accent="ॗ", new_accent="ॗ") == "ॗसैषा᳘ निदा᳘नेना यदि᳘डा॥"
+  assert accent.move_accent_to_previous_syllable(scheme=devanagari, text="त॑स्माद्वा॑ अप॑ उ॑पस्पृशति॥ सो᳕ऽग्नि॑मेवा᳕भी॑क्षमाणः।", old_accent="᳕", new_accent="ॗ") == "तॖस्माद्वाॖ अप॑ उॖपस्पृशतिॗ॥ सोऽग्निॖमेॗवाभीॖक्षमाणः।".replace("ॖ", "॑")
 
 
 def test_apply_roman_numerals():

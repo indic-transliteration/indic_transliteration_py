@@ -45,15 +45,22 @@ def test_do_vyanjana_svara_join():
 
 def test_split_vyanjanas_and_svaras():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
+  assert devanagari.split_vyanjanas_and_svaras("सोऽग्नि᳘मेॗव") == ['स्', "ओ", 'ऽ', 'ग्', "न्", "इ᳘", "म्", "एॗ", "व्", "अ"]
   assert devanagari.split_vyanjanas_and_svaras("ह्रीः") == ['ह्', 'र्', 'ईः']
   assert sanscript.SCHEMES[sanscript.KANNADA].split_vyanjanas_and_svaras("ಹ್ರೀಃ") == ["ಹ್", "ರ್", "ಈಃ"]
   assert devanagari.split_vyanjanas_and_svaras("ह्र") == ['ह्', 'र्', 'अ']
   assert devanagari.split_vyanjanas_and_svaras("र") == ['र्', 'अ']
 
+
 def test_join_letters():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
   assert devanagari.join_strings(['ह्', 'र्', 'ईः']) == "ह्रीः"
   assert sanscript.SCHEMES[sanscript.KANNADA].join_strings(["ಹ್", "ರ್", "ಈಃ"]) == "ಹ್ರೀಃ"
+
+
+def test_move_accent_to_previous_syllable():
+  devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
+  assert devanagari.move_accent_to_previous_syllable(text="त॑स्माद्वा॑ अप॑ उ॑पस्पृशति॥ सो᳕ऽग्नि॑मेवा᳕भी॑क्षमाणः।", old_accent="᳕", new_accent="ॗ") == "तॖस्माद्वाॖ अप॑ उॖपस्पृशतिॗ॥ सोऽग्निॖमेॗवाभीॖक्षमाणः।".replace("ॖ", "॑")
 
 
 def test_apply_roman_numerals():

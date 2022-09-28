@@ -44,14 +44,6 @@ class RomanScheme(Scheme):
     return sanscript.transliterate(data=sanscript.transliterate(_from=self.name, _to=sanscript.DEVANAGARI, data=data),
                                    _from=sanscript.DEVANAGARI, _to=self.name)
 
-  @classmethod
-  def to_shatapatha_svara(cls, text):
-    # References: https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
-    text = text.replace("꣡", "᳘")
-    text = text.replace("᳡", "᳘")
-    text = regex.sub("᳘([ंःँ])", "\\1᳘", text)
-    return text
-
   def get_double_lettered(self, text):
     text = self.get_standard_form(data=text)
     text = text.replace("A", "aa")

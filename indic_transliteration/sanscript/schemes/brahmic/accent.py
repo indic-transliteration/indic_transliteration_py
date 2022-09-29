@@ -1,7 +1,7 @@
 import regex
 
 
-def move_accent_to_previous_syllable(scheme, text, old_accent, new_accent=None, drop_at_first_syllable=False):
+def add_accent_to_previous_syllable(scheme, text, old_accent, new_accent=None, drop_at_first_syllable=False, retain_old_accent=False):
   if new_accent is None:
     new_accent = old_accent
   letters = scheme.split_vyanjanas_and_svaras(text)
@@ -22,7 +22,10 @@ def move_accent_to_previous_syllable(scheme, text, old_accent, new_accent=None, 
           accent_carryover += new_accent
       else: 
         out_letters[vowel_position] += new_accent
-      out_letters.append(letter[:-1])
+      if not retain_old_accent:
+        out_letters.append(letter[:-1])
+      else:
+        out_letters.append(letter)
     else:
       out_letters.append(letter)
   text = scheme.join_strings(out_letters)
@@ -43,7 +46,7 @@ def to_shatapatha_svara(scheme, text):
   # This would be wrong: text = text.replace("᳡", "ॗ") . Svarita is marked in the previous syllable.    
   new_accent = "ॗ"
   old_accent = "᳡"
-  text = move_accent_to_previous_syllable(scheme=scheme, text=text, new_accent=new_accent, old_accent=old_accent)
+  text = add_accent_to_previous_syllable(scheme=scheme, text=text, new_accent=new_accent, old_accent=old_accent)
   return text
 
 

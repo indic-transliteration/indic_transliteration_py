@@ -77,7 +77,9 @@ class BrahmicScheme(Scheme):
     return out_string
 
   def remove_svaras(self, in_string):
-    out_string = regex.sub(r"[॑-॔᳐-᳨᳸᳹꣠-꣱]", "", in_string)
+    SVARAS = r"[\u1CD0-\u1CE8\u1CF9\u1CFA\uA8E0-\uA8F1\u0951-\u0954\u0957]"
+    out_string = regex.sub(f"[१३]{SVARAS}+", "", in_string)
+    out_string = regex.sub(SVARAS, "", out_string)
     out_string = out_string.replace("ꣳ", "ं")
     return out_string
 

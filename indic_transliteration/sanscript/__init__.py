@@ -188,6 +188,7 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
       output = transliterate('idam adbhutam', HK, DEVANAGARI)
 
   Common options: togglers= {'##'}, suspend_on= set('<'), suspend_off = set('>')
+  Note: length of togglers, suspend_on and suspend_off parameters is limited by max token length of the source-scheme.
 
   Each time the function is called, a new :class:`SchemeMap` is created
   to map the input scheme to the output scheme. This operation is fast

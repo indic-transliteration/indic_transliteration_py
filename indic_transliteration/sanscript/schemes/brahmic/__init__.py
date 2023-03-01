@@ -18,6 +18,9 @@ class BrahmicScheme(Scheme):
           self.vowel_to_mark_map[self["vowels"][vowel]] = self["vowel_marks"][vowel_mark]
           self.mark_to_vowel_map[self["vowel_marks"][vowel_mark]] = self["vowels"][vowel]
 
+      self.long_vowel_marks = [self.vowel_to_mark_map[x] for x in self.long_vowels]
+
+
   def do_vyanjana_svara_join(self, vyanjanaanta, svaraadi):
     import regex
     if regex.match("|".join(self['vowels'].values()) + ".*", svaraadi):

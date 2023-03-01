@@ -32,6 +32,7 @@ class Scheme(dict):
     super(Scheme, self).__init__(data or {})
     self.is_roman = is_roman
     self.name = name
+    self.long_vowels = [self["vowels"][x] for x in "आईऊॠएऐओऔ"]
 
   def fix_om(self, data_in):
     replacement_pattern = "(?<=(^|\s|\p{Punct}))%s(%s|%s)(?=(\s|$|\p{Punct}))" % (self["vowels"]["ओ"], self["yogavaahas"]["ं"], self["consonants"]["म"] + self["virama"]["्"])

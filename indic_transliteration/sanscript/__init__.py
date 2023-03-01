@@ -5,7 +5,9 @@ Transliteration functions for Sanskrit. The most important function is
 
     output = transliterate(data, IAST, DEVANAGARI)
 
-By default, the module supports the following scripts:
+A full list of supported scripts and romanizations can be viewed at the sanscript/schemes/data path.
+
+For example, the module supports the following scripts:
 
 - Bengali
 - Devanagari
@@ -29,7 +31,7 @@ and the following romanizations:
 - VELTHUIS = 'velthuis'
 - WX = 'wx'
 
-Each of these **schemes** is defined in a global dictionary `SCHEMES`, whose
+Many of these **schemes** is defined in a global dictionary `SCHEMES`, whose
 keys are strings::
 
     devanagari_scheme = SCHEMES['devanagari']
@@ -38,7 +40,7 @@ For convenience, we also define a variable for each scheme::
 
     devanagari_scheme = SCHEMES[DEVANAGARI]
 
-These variables are documented below.
+Some of these variables are documented below.
 
 :license: MIT and BSD
 

@@ -38,6 +38,8 @@ In [6]: print(transliterate(data, scheme_map=scheme_map))
 ఇదమ్ అద్భుతమ్
 ```
 
+For a full list of supported schemes, please see files under [indic_transliteration/sanscript/schemes/data](indic_transliteration/sanscript/schemes/data) .
+
 ### Lazy anusvaara-s
 ```
     assert sanscript.SCHEMES[sanscript.ITRANS].fix_lazy_anusvaara("shaMkara") == "sha~Nkara"

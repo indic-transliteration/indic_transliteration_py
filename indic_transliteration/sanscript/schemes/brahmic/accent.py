@@ -54,3 +54,9 @@ def add_accent_to_end(scheme, text, accent="᳟"):
   letters = "".join(scheme.get_letters())
   text = regex.sub(f"([{letters}])([^{letters}]+)$", f"\\1{accent}\\2", text)
   return text
+
+
+def set_diirgha_svaritas(scheme, text, accent="᳚"):
+  vowel_string = "".join(scheme.long_vowels + scheme.long_vowel_marks + list(scheme["yogavaahas"].values()))
+  text = regex.sub(f"(?<=[{vowel_string}]+)॑", accent, text)
+  return text

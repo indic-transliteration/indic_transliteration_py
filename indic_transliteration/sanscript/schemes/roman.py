@@ -11,6 +11,7 @@ HK = 'hk'
 HK_DRAVIDIAN = 'hk_dravidian'
 IAST = 'iast'
 ISO = 'iso'
+ISO_VEDIC = 'iso_vedic'
 ITRANS = 'itrans'
 ITRANS_DRAVIDIAN = 'itrans_dravidian'
 TITUS = 'titus'
@@ -24,7 +25,7 @@ SLP1_ACCENTED = 'slp1_accented'
 VELTHUIS = 'velthuis'
 WX = 'wx'
 
-CAPITALIZABLE_SCHEME_IDS = ["iast", "iso", "kolkata_v2", "titus"]
+CAPITALIZABLE_SCHEME_IDS = ["iast", "iso", "iso_vedic", "kolkata_v2", "titus"]
 
 
 class RomanScheme(Scheme):

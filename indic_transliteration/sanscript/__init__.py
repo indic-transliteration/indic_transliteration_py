@@ -87,6 +87,7 @@ TITUS = roman.TITUS
 HK = roman.HK
 IAST = roman.IAST
 ISO = roman.ISO
+ISO_VEDIC = roman.ISO_VEDIC
 ITRANS = roman.ITRANS
 OPTITRANS = roman.OPTITRANS
 KOLKATA = roman.KOLKATA_v2

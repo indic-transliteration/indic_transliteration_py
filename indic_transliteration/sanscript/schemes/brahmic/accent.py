@@ -1,6 +1,8 @@
 import regex
 
 
+ACCENTS_PATTERN = "[\u1CD0-\u1CE8\u1CF9\u1CFA\uA8E0-\uA8F1\u0951-\u0954\u0957]" # included  ॗ , which is used as svara for weber's shatapatha
+
 def add_accent_to_previous_syllable(scheme, text, old_accent, new_accent=None, drop_at_first_syllable=False, retain_old_accent=False):
   if new_accent is None:
     new_accent = old_accent

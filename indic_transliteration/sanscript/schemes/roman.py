@@ -25,7 +25,7 @@ SLP1_ACCENTED = 'slp1_accented'
 VELTHUIS = 'velthuis'
 WX = 'wx'
 
-CAPITALIZABLE_SCHEME_IDS = ["iast", "iso", "iso_vedic", "kolkata_v2", "titus"]
+CAPITALIZABLE_SCHEME_IDS = ["iast", "iast_iso_m", "iso", "iso_vedic", "kolkata_v2", "titus"]
 
 
 class RomanScheme(Scheme):

@@ -2,6 +2,8 @@ import codecs
 import logging
 import os
 import aksharamukha.transliterate
+import pandas
+import tqdm
 
 
 def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[]):
@@ -21,3 +23,14 @@ def convert_file(source_path, dest_path, source_script, dest_script, pre_options
       out_file.write(out_text)
       if source_path != dest_path:
         text = in_file.read()
+
+
+def manipravaalify(text):
+  from indic_transliteration.sanscript import schemes
+  typos_df = pandas.read_csv(os.path.join(os.path.dirname(schemes.__file__), "data/ta_sa/manual.tsv"), sep="\t")
+  typos_df = typos_df.set_index("sa")
+  for sa_word in tqdm.tqdm(typos_df.index):
+    ta_words = typos_df.loc[sa_word, "ta_csv"].split(",")
+    for ta_word in ta_words:
+      text = text.replace(ta_word, sa_word)
+  return text

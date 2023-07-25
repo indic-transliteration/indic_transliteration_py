@@ -51,10 +51,15 @@ def test_split_vyanjanas_and_svaras():
   assert devanagari.split_vyanjanas_and_svaras("ह्र") == ['ह्', 'र्', 'अ']
   assert devanagari.split_vyanjanas_and_svaras("र") == ['र्', 'अ']
 
+def test_join_post_viraama():
+  devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
+  assert devanagari.join_post_viraama("पश्चात् तु ज्ञानशक्त्योर् अपचयनियमाद् व्यासकॢप्तिस् समीची") == "पश्चात्तु ज्ञानशक्त्योरपचयनियमाद्व्यासकॢप्तिस्समीची"
+
 
 def test_join_letters():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
   assert devanagari.join_strings(['ह्', 'र्', 'ईः']) == "ह्रीः"
+  assert devanagari.join_strings(['ह्', 'र्', 'अ']) == "ह्र"
   assert sanscript.SCHEMES[sanscript.KANNADA].join_strings(["ಹ್", "ರ್", "ಈಃ"]) == "ಹ್ರೀಃ"
 
 

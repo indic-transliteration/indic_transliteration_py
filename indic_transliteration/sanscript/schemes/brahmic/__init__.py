@@ -8,6 +8,8 @@ from functools import reduce
 
 
 class BrahmicScheme(Scheme):
+  ACCENTS = "[\u1CD0-\u1CE8\u1CF9\u1CFA\uA8E0-\uA8F1\u0951-\u0954\u0957]" # included  ॗ , which is used as svara for weber's shatapatha
+  YOGAVAAHAS = "[\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
   def __init__(self, data=None, name=None, **kwargs):
     super(BrahmicScheme, self).__init__(data=data, name=name, is_roman=False)
     if "vowel_marks" in self:
@@ -34,14 +36,12 @@ class BrahmicScheme(Scheme):
 
   def split_vyanjanas_and_svaras(self, text):
     letters = []
-    ACCENTS = "[\u1CD0-\u1CE8\u1CF9\u1CFA\uA8E0-\uA8F1\u0951-\u0954\u0957]" # included  ॗ , which is used as svara for weber's shatapatha
-    YOGAVAAHAS = "[\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
     for letter in text:
       if letter in self.mark_to_vowel_map:
         if len(letters) > 0:
           letters[-1] += self["virama"]["्"]
         letters.append(self.mark_to_vowel_map[letter])
-      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(YOGAVAAHAS, letter)or regex.match(ACCENTS, letter) is not None or letter in self[
+      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter)or regex.match(self.ACCENTS, letter) is not None or letter in self[
         "virama"].values() or letter in self.get("candra", {}).values():
         if len(letters) > 0:
           letters[-1] += letter
@@ -56,6 +56,12 @@ class BrahmicScheme(Scheme):
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"])
     return out_letters
+
+  def join_post_viraama(self, text):
+    VIRAMA = self["virama"]["्"]
+    VOWELS = "".join(self["vowels"].values())
+    text_out = regex.sub(rf"(.{VIRAMA})\s*(\S)", lambda match: self.join_strings([match.group(1), match.group(2)]), text)
+    return text_out
 
   def join_strings(self, strings):
     out_text = ""

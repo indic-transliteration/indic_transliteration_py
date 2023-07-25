@@ -53,6 +53,7 @@ def test_split_vyanjanas_and_svaras():
 
 def test_join_post_viraama():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
+  assert devanagari.join_post_viraama("प्रोक्तं ब्रह्म स्वयंभ्व् इत्यपि जनि-विलयाभावमत्र स्मरन्ति") == "प्रोक्तं ब्रह्म स्वयंभ्वित्यपि जनिविलयाभावमत्र स्मरन्ति"
   assert devanagari.join_post_viraama("पश्चात् तु ज्ञानशक्त्योर् अपचयनियमाद् व्यासकॢप्तिस् समीची") == "पश्चात्तु ज्ञानशक्त्योरपचयनियमाद्व्यासकॢप्तिस्समीची"
 
 

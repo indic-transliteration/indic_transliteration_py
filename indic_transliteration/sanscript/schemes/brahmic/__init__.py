@@ -60,7 +60,12 @@ class BrahmicScheme(Scheme):
   def join_post_viraama(self, text):
     VIRAMA = self["virama"]["्"]
     VOWELS = "".join(self["vowels"].values())
-    text_out = regex.sub(rf"(.{VIRAMA})[\s-]*(\S)", lambda match: self.join_strings([match.group(1), match.group(2)]), text)
+    text_out = text
+    # regex.sub replaces only non-overlapping strings. Hence:
+    for match in regex.finditer(rf"(.{VIRAMA})[\s-]*(\S)", text_out, overlapped=True):
+      text_out = text_out.replace(match.group(), self.join_strings([match.group(1), match.group(2)]))
+    text_out = regex.sub("[\s-]*ऽ", "ऽ", text_out)
+    text_out = regex.sub("-", "", text_out)
     return text_out
 
   def join_strings(self, strings):

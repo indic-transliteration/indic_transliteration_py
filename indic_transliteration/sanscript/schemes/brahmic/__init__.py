@@ -60,7 +60,7 @@ class BrahmicScheme(Scheme):
   def join_post_viraama(self, text):
     VIRAMA = self["virama"]["्"]
     VOWELS = "".join(self["vowels"].values())
-    text_out = regex.sub(rf"(.{VIRAMA})\s*(\S)", lambda match: self.join_strings([match.group(1), match.group(2)]), text)
+    text_out = regex.sub(rf"(.{VIRAMA})[\s-]*(\S)", lambda match: self.join_strings([match.group(1), match.group(2)]), text)
     return text_out
 
   def join_strings(self, strings):

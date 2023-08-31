@@ -41,7 +41,7 @@ class BrahmicScheme(Scheme):
         if len(letters) > 0:
           letters[-1] += self["virama"]["्"]
         letters.append(self.mark_to_vowel_map[letter])
-      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter)or regex.match(self.ACCENTS, letter) is not None or letter in self[
+      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter) or regex.match(self.ACCENTS, letter) is not None or letter in self[
         "virama"].values() or letter in self.get("candra", {}).values():
         if len(letters) > 0:
           letters[-1] += letter

@@ -51,10 +51,16 @@ class BrahmicScheme(Scheme):
         letters.append(letter)
     out_letters = []
     for letter in letters:
-      out_letters.append(letter)
       if letter in self["consonants"].values() or letter in self.get("extra_consonants", {}).values():
+        out_letters.append(letter)
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"])
+      elif letter[-1] in self["yogavaahas"].values() and (letter[0] in self["consonants"].values() or letter[0] in self.get("extra_consonants", {}).values()):
+        out_letters.append(letter[0])
+        out_letters[-1] += self["virama"]["्"]
+        out_letters.append(self["vowels"]["अ"] + letter[-1])      
+      else:
+        out_letters.append(letter)
     return out_letters
 
   def join_post_viraama(self, text):

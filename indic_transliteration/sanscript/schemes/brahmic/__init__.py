@@ -207,6 +207,7 @@ KANNADA = 'kannada'
 MALAYALAM = 'malayalam'
 TAMIL = 'tamil'
 TAMIL_SUP = 'tamil_superscripted'
+TAMIL_SUB = 'tamil_subscripted'
 GRANTHA = 'grantha'
 TELUGU = 'telugu'
 SCHEMES = {

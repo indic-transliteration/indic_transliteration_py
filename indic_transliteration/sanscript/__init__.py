@@ -82,6 +82,7 @@ MALAYALAM = brahmic.MALAYALAM
 ORIYA = brahmic.ORIYA
 TAMIL = brahmic.TAMIL
 TAMIL_SUP = brahmic.TAMIL_SUP
+TAMIL_SUB = brahmic.TAMIL_SUB
 GRANTHA = brahmic.GRANTHA
 TELUGU = brahmic.TELUGU
 TITUS = roman.TITUS

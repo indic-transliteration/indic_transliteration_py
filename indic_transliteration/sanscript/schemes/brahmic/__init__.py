@@ -196,6 +196,19 @@ class GurmukhiScheme(BrahmicScheme):
     text = regex.sub("ੱ([ਯਰਲਵਸ਼ਸਹਙਞਣਨਮਜ਼ੜਫ਼])", r"\g<1>੍\g<1>", text)
     return text
 
+class TamilScheme(BrahmicScheme):
+  @classmethod
+  def replace_subscripts(cls, text):
+    import regex
+    text = regex.sub("([ா-ௌ꞉ம்]+)([₂₃₄])", r"\g<2>\g<1>", text, flags=regex.UNICODE)
+    return text
+
+  @classmethod
+  def replace_superscripts(cls, text):
+    import regex
+    text = regex.sub("([ா-ௌ꞉ம்]+)([²³⁴])", r"\g<2>\g<1>", text, flags=regex.UNICODE)
+    return text
+
 
 DEVANAGARI = 'devanagari'
 GUJARATI = 'gujarati'

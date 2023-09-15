@@ -206,6 +206,7 @@ ORIYA = 'oriya'
 KANNADA = 'kannada'
 MALAYALAM = 'malayalam'
 TAMIL = 'tamil'
+TAMIL_SUP = 'tamil_superscripted'
 GRANTHA = 'grantha'
 TELUGU = 'telugu'
 SCHEMES = {

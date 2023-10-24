@@ -198,15 +198,29 @@ class GurmukhiScheme(BrahmicScheme):
 
 class TamilScheme(BrahmicScheme):
   @classmethod
-  def replace_subscripts(cls, text):
+  def move_before_maatraa_subscripts(cls, text):
     import regex
     text = regex.sub("([ா-ௌ꞉ம்]+)([₂₃₄])", r"\g<2>\g<1>", text, flags=regex.UNICODE)
     return text
 
   @classmethod
-  def replace_superscripts(cls, text):
+  def move_before_maatraa_superscripts(cls, text):
     import regex
     text = regex.sub("([ா-ௌ꞉ம்]+)([²³⁴])", r"\g<2>\g<1>", text, flags=regex.UNICODE)
+    return text
+
+  @classmethod
+  def transliterate_subscripted(cls, text, _to):
+    import regex
+    from indic_transliteration import sanscript
+    text = regex.sub("\S+[₂₃₄]\S*", lambda x: sanscript.transliterate(x, _from=sanscript.TAMIL_SUB, _to=_to), text)
+    return text
+
+  @classmethod
+  def transliterate_supercripted(cls, text, _to):
+    import regex
+    from indic_transliteration import sanscript
+    text = regex.sub("\S+[²³⁴]\S*", lambda x: sanscript.transliterate(x, _from=sanscript.TAMIL_SUP, _to=_to), text)
     return text
 
 

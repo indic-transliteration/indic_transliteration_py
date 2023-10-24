@@ -213,7 +213,7 @@ class TamilScheme(BrahmicScheme):
   def transliterate_subscripted(cls, text, _to):
     import regex
     from indic_transliteration import sanscript
-    text = regex.sub("\S+[₂₃₄]\S*", lambda x: sanscript.transliterate(x, _from=sanscript.TAMIL_SUB, _to=_to), text)
+    text = regex.sub("\S+[₂₃₄]\S*", lambda x: sanscript.transliterate(x.group(), _from=sanscript.TAMIL_SUB, _to=_to), text)
     return text
 
   @classmethod
@@ -251,5 +251,7 @@ for f in os.listdir(data_path):
     cls = DevanagariScheme
   elif f.startswith("gurmukhi"):
     cls = GurmukhiScheme
+  elif f.startswith("tamil"):
+    cls = TamilScheme
   scheme = load_scheme(file_path=os.path.join(data_path, f), cls=cls)
   SCHEMES[scheme.name] = scheme

@@ -4,7 +4,7 @@ import os
 import aksharamukha.transliterate
 import pandas
 import tqdm
-
+import regex
 
 def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[]):
   source_script = "TAMIL"
@@ -31,7 +31,9 @@ def manipravaalify(text):
   typos_df = pandas.read_csv(os.path.join(os.path.dirname(schemes.__file__), "data/ta_sa/manual.tsv"), sep="\t")
   typos_df = typos_df.set_index("sa")
   for sa_word in tqdm.tqdm(typos_df.index):
+    if isinstance(typos_df.loc[sa_word, "ta_csv"], pandas.Series):
+      logging.fatal(f"typo-table has a duplicate - {sa_word}")
     ta_words = typos_df.loc[sa_word, "ta_csv"].split(",")
     for ta_word in ta_words:
-      text = text.replace(ta_word, sa_word)
+      text = regex.sub(ta_word, sa_word, text)
   return text

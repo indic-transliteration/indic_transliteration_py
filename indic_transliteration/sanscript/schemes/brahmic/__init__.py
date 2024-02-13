@@ -35,14 +35,17 @@ class BrahmicScheme(Scheme):
       raise ValueError(svaraadi + " is not svaraadi.")
 
   def split_vyanjanas_and_svaras(self, text):
+    def _yogavaaha_accent_match(letter):
+      return letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter) or regex.match(self.ACCENTS, letter) is not None or letter in self.get("candra", {}).values()
+    
     letters = []
     for letter in text:
       if letter in self.mark_to_vowel_map:
         if len(letters) > 0:
           letters[-1] += self["virama"]["्"]
         letters.append(self.mark_to_vowel_map[letter])
-      elif letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter) or regex.match(self.ACCENTS, letter) is not None or letter in self[
-        "virama"].values() or letter in self.get("candra", {}).values():
+      elif _yogavaaha_accent_match(letter) or letter in self[
+        "virama"].values():
         if len(letters) > 0:
           letters[-1] += letter
         else:
@@ -55,7 +58,7 @@ class BrahmicScheme(Scheme):
         out_letters.append(letter)
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"])
-      elif letter[-1] in self["yogavaahas"].values() and (letter[0] in self["consonants"].values() or letter[0] in self.get("extra_consonants", {}).values()):
+      elif (letter[0] in self["consonants"].values() or letter[0] in self.get("extra_consonants", {}).values()) and (_yogavaaha_accent_match(letter[1]) or _yogavaaha_accent_match(letter[-1])):
         out_letters.append(letter[0])
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"] + letter[-1])      

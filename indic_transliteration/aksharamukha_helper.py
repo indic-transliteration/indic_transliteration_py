@@ -35,5 +35,5 @@ def manipravaalify(text):
       logging.fatal(f"typo-table has a duplicate - {sa_word}")
     ta_words = typos_df.loc[sa_word, "ta_csv"].split(",")
     for ta_word in ta_words:
-      text = regex.sub(ta_word, sa_word, text)
+      text = regex.sub(ta_word.strip(), sa_word.strip(), text)
   return text

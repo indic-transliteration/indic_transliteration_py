@@ -10,7 +10,7 @@ def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options
   source_script = "TAMIL"
   dest_script = dest_script.capitalize()
   text = aksharamukha.transliterate.process(src=source_script, tgt=dest_script, txt=text, nativize = True, pre_options = aksharamukha_pre_options, post_options = aksharamukha_post_options)
-  text = text.replace("म्स", "ंस")
+  text = regex.sub("म्([सव])", r"ं\1", text)
   return text
 
 

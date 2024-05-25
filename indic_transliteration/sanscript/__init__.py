@@ -245,3 +245,9 @@ def transliterate(data, _from=None, _to=None, scheme_map=None, **kw):
 
 def get_standard_form(data, scheme_name):
   return transliterate(data=transliterate(data=data, _from=scheme_name, _to=DEVANAGARI), _from=DEVANAGARI, _to=scheme_name)
+
+
+def get_number(text):
+  from indic_transliteration import sanscript
+  return int(sanscript.transliterate(data=text, _to=IAST))
+

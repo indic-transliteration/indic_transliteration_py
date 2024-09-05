@@ -61,7 +61,3 @@ jobs:
     - name: Upload package
       if: ${{ github.event_name != 'pull_request'}}
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        skip_existing: true
-        password: ${{ secrets.PYPI_API_TOKEN }}

@@ -6,6 +6,8 @@ import pandas
 import tqdm
 import regex
 
+from indic_transliteration import tamil_tools
+
 
 def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[]):
   source_script = "TAMIL"
@@ -14,18 +16,19 @@ def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options
   text = regex.sub("ன", r"ऩ", text)
   # https://github.com/virtualvinodh/aksharamukha-python/issues/21
   text = aksharamukha.transliterate.process(src=source_script, tgt=dest_script, txt=text, nativize = True, pre_options = aksharamukha_pre_options, post_options = aksharamukha_post_options)
+  text = regex.sub("(?<=[ऩऱ][ा-्])क", r"ग", text)
+  text = regex.sub("(?<=[ऩऱ][ा-्])च", r"ज", text)
+  text = regex.sub("(?<=[ऩऱ][ा-्])ट", r"ड", text)
+  text = regex.sub("(?<=[ऩऱ][ा-्])त", r"द", text)
+  text = regex.sub("(?<=[ऩऱ][ा-्])प", r"ब", text)
   text = text.replace("\u200c", "")
   # https://github.com/virtualvinodh/aksharamukha-python/issues/22
   text = regex.sub("म्([सव])", r"ं\1", text)
+  
+  # Mitigate consequences of ऩ ऱ insertions.
+  text = tamil_tools.soften(text=text, pattern="(?<=[ऩ][ा-्]?)({})(?!् *\\1)")
+  text = tamil_tools.soften(text=text, pattern="(?<=[ऱ][ा-ौ]?)({})(?!् *\\1)")
   # text = regex.sub("।", r".", text)
-  return text
-
-
-def fix_naive_ta_transliterations(text):
-  text = regex.sub("म्([सव])", r"ं\1", text)
-  text = regex.sub("ट्र", r"ऱ्ऱ", text)
-  text = regex.sub("ण्ड्र", r"ऩ्ऱ", text)
-  text = regex.sub("न(?=\s)", r"ऩ", text)
   return text
 
 

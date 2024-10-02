@@ -21,8 +21,8 @@ def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options
   text = regex.sub("म्([सव])", r"ं\1", text)
   
   # Mitigate consequences of ऩ ऱ insertions.
-  text = tamil_tools.soften(text=text, pattern="(?<=[ऩ][ा-्]?)({})(?!् *\\1)")
-  text = tamil_tools.soften(text=text, pattern="(?<=[ऱ][ा-ौ]?)({})(?!् *\\1)")
+  text = tamil_tools.soften(text=text, pattern="(?<=[ऩ][ा-्]?)({})(?!्)")
+  text = tamil_tools.soften(text=text, pattern="(?<=[ऱ][ा-ौ]?)({})(?!्)")
   # text = regex.sub("।", r".", text)
   return text
 

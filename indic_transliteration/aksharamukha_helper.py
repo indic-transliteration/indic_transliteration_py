@@ -9,8 +9,11 @@ import regex
 def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[]):
   source_script = "TAMIL"
   dest_script = dest_script.capitalize()
+  text = regex.sub("ற", r"ऱ", text)
+  # Unfortunately, can't even recover the superior transliteration by post-hoc replacement - ஏமாற்று ēmāṟṟu is transliterated to एमाट्रु, and not एमाट्र््ट्रु :-( It's like switching to a superior script and loosing information. So, must do pre-replacement. https://github.com/virtualvinodh/aksharamukha-python/issues/21
   text = aksharamukha.transliterate.process(src=source_script, tgt=dest_script, txt=text, nativize = True, pre_options = aksharamukha_pre_options, post_options = aksharamukha_post_options)
-  text = regex.sub("म्([सव])", r"ं\1", text)
+  # https://github.com/virtualvinodh/aksharamukha-python/issues/22
+  text = regex.sub("म्([सव])", r"ं\1", text) 
   return text
 
 

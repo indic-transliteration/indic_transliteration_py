@@ -6,14 +6,26 @@ import pandas
 import tqdm
 import regex
 
+
 def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[]):
   source_script = "TAMIL"
   dest_script = dest_script.capitalize()
   text = regex.sub("ற", r"ऱ", text)
-  # Unfortunately, can't even recover the superior transliteration by post-hoc replacement - ஏமாற்று ēmāṟṟu is transliterated to एमाट्रु, and not एमाट्र््ट्रु :-( It's like switching to a superior script and loosing information. So, must do pre-replacement. https://github.com/virtualvinodh/aksharamukha-python/issues/21
+  text = regex.sub("ன", r"ऩ", text)
+  # https://github.com/virtualvinodh/aksharamukha-python/issues/21
   text = aksharamukha.transliterate.process(src=source_script, tgt=dest_script, txt=text, nativize = True, pre_options = aksharamukha_pre_options, post_options = aksharamukha_post_options)
+  text = text.replace("\u200c", "")
   # https://github.com/virtualvinodh/aksharamukha-python/issues/22
-  text = regex.sub("म्([सव])", r"ं\1", text) 
+  text = regex.sub("म्([सव])", r"ं\1", text)
+  # text = regex.sub("।", r".", text)
+  return text
+
+
+def fix_naive_ta_transliterations(text):
+  text = regex.sub("म्([सव])", r"ं\1", text)
+  text = regex.sub("ट्र", r"ऱ्ऱ", text)
+  text = regex.sub("ण्ड्र", r"ऩ्ऱ", text)
+  text = regex.sub("न(?=\s)", r"ऩ", text)
   return text
 
 
@@ -23,7 +35,10 @@ def convert_file(source_path, dest_path, source_script, dest_script, pre_options
   with codecs.open(source_path, "r", "utf-8") as in_file, codecs.open(dest_path, "w", "utf-8") as out_file:
     text = in_file.read()
     while text:
-      out_text = aksharamukha.transliterate.process(src=source_script, tgt=dest_script, txt=text, nativize = True, pre_options = pre_options, post_options = post_options)
+      if source_script == "TAMIL":
+        out_text = transliterate_tamil(text, dest_script, pre_options, post_options)
+      else:
+        out_text = aksharamukha.transliterate.process(src=source_script, tgt=dest_script, txt=text, nativize = True, pre_options = pre_options, post_options = post_options)
       out_file.write(out_text)
       if source_path != dest_path:
         text = in_file.read()

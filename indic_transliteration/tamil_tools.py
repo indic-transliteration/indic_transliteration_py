@@ -37,4 +37,5 @@ def fix_naive_ta_transliterations(text):
   text = regex.sub("न(्?)(?![ं-०])", r"ऩ\1", text)
   text = regex.sub("ेऩ(?![ं-०])", r"ेन", text) # प्रसादेन
   text = regex.sub("न्ग(?!ळ)", "ऩ्ग", text)
+  text = regex.sub("दिक(?=ळ)", "दिग", text)
   return text

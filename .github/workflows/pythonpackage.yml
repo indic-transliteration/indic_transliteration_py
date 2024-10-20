@@ -60,4 +60,6 @@ jobs:
         pytest
     - name: Upload package
       if: ${{ github.event_name != 'pull_request'}}
+      with:
+        skip-existing: true
       uses: pypa/gh-action-pypi-publish@release/v1

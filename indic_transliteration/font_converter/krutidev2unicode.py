@@ -535,7 +535,7 @@ def kru2uni(kru_text):
     while misplaced:
         misplaced = misplaced.group(1)
         index_r_halant = kru_text.index(misplaced + 'Z')
-        while index_r_halant >= 0 and kru_text[index_r_halant] in unicode_vowel_signs:
+        while index_r_halant > 0 and kru_text[index_r_halant] in unicode_vowel_signs:
             index_r_halant -= 1
             misplaced = kru_text[index_r_halant] + misplaced
         kru_text = kru_text.replace(misplaced + 'Z', '\u0930\u094d' + misplaced)

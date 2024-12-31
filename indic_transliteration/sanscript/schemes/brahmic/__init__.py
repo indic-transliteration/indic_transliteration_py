@@ -66,6 +66,11 @@ class BrahmicScheme(Scheme):
         out_letters.append(letter)
     return out_letters
 
+  def get_consonant_letters(self, text):
+    letters = self.split_vyanjanas_and_svaras(text)
+    letters = [letter.replace(self["virama"]["्"], "") for letter in letters if letter.replace(self["virama"]["्"], "") in self["consonants"].values()]
+    return letters
+
   def join_post_viraama(self, text):
     VIRAMA = self["virama"]["्"]
     VOWELS = "".join(self["vowels"].values())
@@ -156,6 +161,7 @@ class DevanagariScheme(BrahmicScheme):
       prefix = "(?<!स)"
     else:
       prefix = ""
+    data_out = regex.sub("ंऽ", "ऽं", data_out)
     data_out = regex.sub('%sं( *)([क-ङ])' % (prefix), r'ङ्\1\2', data_out)
     data_out = regex.sub('%sं( *)([च-ञ])' % (prefix), r'ञ्\1\2', data_out)
     data_out = regex.sub('%sं( *)([त-न])' % (prefix), r'न्\1\2', data_out)

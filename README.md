@@ -20,22 +20,24 @@ Indic transliteration tools
 ## Usage
 
 ```py
-In [1]: from indic_transliteration import sanscript
-   ...: from indic_transliteration.sanscript import SchemeMap, SCHEMES, transliterate
-   ...:
+# Import the necessary modules from indic_transliteration
+from indic_transliteration import sanscript
+from indic_transliteration.sanscript import SchemeMap, SCHEMES, transliterate
 
-In [2]: data = 'idam adbhutam'
+# Input data for transliteration
+data = 'idam adbhutam'
 
-In [3]: print(transliterate(data, sanscript.HK, sanscript.TELUGU))
-ఇదమ్ అద్భుతమ్
+# Transliterate from Harvard-Kyoto (HK) to Telugu
+print(transliterate(data, sanscript.HK, sanscript.TELUGU))  # Output: ఇదమ్ అద్భుతమ్
 
-In [4]: print(transliterate(data, sanscript.ITRANS, sanscript.DEVANAGARI))
-इदम् अद्भुतम्
+# Transliterate from ITRANS to Devanagari
+print(transliterate(data, sanscript.ITRANS, sanscript.DEVANAGARI))  # Output: इदम् अद्भुतम्
 
-In [5]: scheme_map = SchemeMap(SCHEMES[sanscript.VELTHUIS], SCHEMES[sanscript.TELUGU])
+# Define a scheme map for transliteration from Velthuis to Telugu
+scheme_map = SchemeMap(SCHEMES[sanscript.VELTHUIS], SCHEMES[sanscript.TELUGU])
 
-In [6]: print(transliterate(data, scheme_map=scheme_map))
-ఇదమ్ అద్భుతమ్
+# Transliterate using the scheme map
+print(transliterate(data, scheme_map=scheme_map))  # Output: ఇదమ్ అద్భుతమ్
 ```
 
 For a full list of supported schemes, please see files under indic_transliteration/sanscript/schemes/data .
@@ -67,16 +69,16 @@ For a full list of supported schemes, please see files under indic_transliterati
   slp_scheme['accents']['꣡'] = '%'
 ```
 
-## Dravidian language extension
+## Dravidian language extensions
 ```py
-In [1]: from indic_transliteration import xsanscript
-   ...: from indic_transliteration.xsanscript import SchemeMap, SCHEMES, transliterate
-   ...:
+# Import the necessary modules from indic_transliteration
+from indic_transliteration import sanscript
 
-In [2]: data = 'असय औषधिः ग्रन्थः। ऎ ऒ यॆक्ककॊ?'
+# Input data for transliteration
+data = 'असय औषधिः ग्रन्थः। ऎ ऒ यॆक्ककॊ?'
 
-In [3]: print(transliterate(data, xsanscript.DEVANAGARI, xsanscript.KANNADA))
-ಅಸಯ ಔಷಧಿಃ ಗ್ರನ್ಥಃ। ಎ ಒ ಯೆಕ್ಕಕೊ?
+# Transliterate from Devanagari to Kannada
+print(sanscript.transliterate(data, sanscript.DEVANAGARI, sanscript.OPTITRANS_DRAVIDIAN))  
 ```
 
 
@@ -93,8 +95,8 @@ Installing the package with `pip` also installs a console script, `sanscript` wh
 
 ### Demo
 
-<p align="center">
-  <img src="cli-demo.gif" width="90%" style="display: block; margin: 0 auto;">
+<p >
+  <img src="cli-demo.gif" width="90%" style="display: block; margin: 0 auto;" alt="">
 </p>
 
 ### Usage

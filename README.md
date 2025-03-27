@@ -61,6 +61,12 @@ For a full list of supported schemes, please see files under indic_transliterati
     assert sanscript.SCHEMES[sanscript.OPTITRANS].to_lay_indian("kRShNa") == "krishna"
 ```
 
+### Modifying/ customizing schemes/ maps
+```
+  slp_scheme = sanscript.SCHEMES[sanscript.roman.SLP1_ACCENTED]
+  slp_scheme['accents']['꣡'] = '%'
+```
+
 ## Dravidian language extension
 ```py
 In [1]: from indic_transliteration import xsanscript

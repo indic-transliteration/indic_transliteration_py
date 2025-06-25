@@ -186,6 +186,25 @@ class DevanagariScheme(BrahmicScheme):
     data_out = regex.sub('[यलव]्ँ( *)([यलव])', r'ं\1\2', data_out)
     return data_out
 
+  def fix_numbered_vargiiya_vyanjanas(self, data_in):
+    """Useful for devanAgarified tamil.
+    
+    :param data_in: 
+    :return: 
+    """
+    data_out = data_in
+    superscripts = "¹²³⁴⁵"
+    VIRAMA = self["virama"]["्"]
+    for index, superscript in enumerate(superscripts):
+      data_out = regex.sub(rf"ग(?=[{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?{superscript})", "क", data_out)
+      data_out = regex.sub(rf"ज(?=[{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?{superscript})", "च", data_out)
+      data_out = regex.sub(rf"ड(?=[{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?{superscript})", "ट", data_out)
+      data_out = regex.sub(rf"द(?=[{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?{superscript})", "त", data_out)
+      data_out = regex.sub(rf"ब(?=[{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?{superscript})", "प", data_out)
+      def shifter(ch):
+        return chr(ord(ch) + index)
+      data_out = regex.sub(fr"([कचटतप])([{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?){superscript}", lambda x: shifter(x.group(1))+x.group(2), data_out)
+    return data_out
 
 class GurmukhiScheme(BrahmicScheme):
 

@@ -1,5 +1,7 @@
 # Brahmi schemes
 # -------------
+import logging
+
 import regex
 
 from indic_transliteration.sanscript import Scheme
@@ -78,9 +80,22 @@ class BrahmicScheme(Scheme):
     # regex.sub replaces only non-overlapping strings. Hence:
     for match in regex.finditer(rf"(.{VIRAMA})[\s-]*(\S)", text_out, overlapped=True):
       text_out = text_out.replace(match.group(), self.join_strings([match.group(1), match.group(2)]))
-    text_out = regex.sub("[\s-]*ऽ", "ऽ", text_out)
+    text_out = regex.sub(r"[\s-]*ऽ", "ऽ", text_out)
     text_out = regex.sub("-", "", text_out)
     return text_out
+
+
+  def sandhi_sanskrit(self, str1, str2):
+    try:
+      import sandhi
+      S = sandhi.Sandhi()
+      result = S.sandhi(str1, str2)
+      return result[0]
+    except ImportError:
+      logging.warning("sandhi package is not installed.")
+      result = str1 + str2
+      return result
+
 
   def join_strings(self, strings):
     out_text = ""
@@ -90,7 +105,7 @@ class BrahmicScheme(Scheme):
         if len(letter) > 1:
           out_text += letter[1:]
       else:
-        out_text = out_text + letter
+        out_text = self.sandhi_sanskrit(out_text, letter)
     return out_text
 
   def get_numerals(self):
@@ -120,7 +135,7 @@ class BrahmicScheme(Scheme):
 
   def dot_for_numeric_ids(self, in_string):
     native_numerals = self.get_numerals()
-    native_numerals_pattern = "[%s\d]" % "".join(native_numerals)
+    native_numerals_pattern = r"[%s\d]" % "".join(native_numerals)
     return regex.sub(r"(%s)।(?=%s)" % (native_numerals_pattern, native_numerals_pattern), "\\1.", in_string)
 
   def get_letters(self):
@@ -241,14 +256,14 @@ class TamilScheme(BrahmicScheme):
   def transliterate_subscripted(cls, text, _to):
     import regex
     from indic_transliteration import sanscript
-    text = regex.sub("\S+[₂₃₄]\S*", lambda x: sanscript.transliterate(x.group(), _from=sanscript.TAMIL_SUB, _to=_to), text)
+    text = regex.sub(r"\S+[₂₃₄]\S*", lambda x: sanscript.transliterate(x.group(), _from=sanscript.TAMIL_SUB, _to=_to), text)
     return text
 
   @classmethod
   def transliterate_supercripted(cls, text, _to):
     import regex
     from indic_transliteration import sanscript
-    text = regex.sub("\S+[²³⁴]\S*", lambda x: sanscript.transliterate(x, _from=sanscript.TAMIL_SUP, _to=_to), text)
+    text = regex.sub(r"\S+[²³⁴]\S*", lambda x: sanscript.transliterate(x, _from=sanscript.TAMIL_SUP, _to=_to), text)
     return text
 
 

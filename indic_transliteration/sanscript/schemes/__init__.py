@@ -35,7 +35,7 @@ class Scheme(dict):
     self.long_vowels = [self["vowels"][x] for x in "आईऊॠएऐओऔ"]
 
   def fix_om(self, data_in):
-    replacement_pattern = "(?<=(^|\s|\p{Punct}))%s(%s|%s)(?=(\s|$|\p{Punct}))" % (self["vowels"]["ओ"], self["yogavaahas"]["ं"], self["consonants"]["म"] + self["virama"]["्"])
+    replacement_pattern = r"(?<=(^|\s|\p{Punct}))%s(%s|%s)(?=(\s|$|\p{Punct}))" % (self["vowels"]["ओ"], self["yogavaahas"]["ं"], self["consonants"]["म"] + self["virama"]["्"])
     return regex.sub(replacement_pattern, self["symbols"]["ॐ"], data_in)
 
   def apply_shortcuts(self, data_in):

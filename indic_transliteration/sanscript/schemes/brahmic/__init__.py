@@ -70,7 +70,7 @@ class BrahmicScheme(Scheme):
         out_letters.append(letter)
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"])
-      elif (letter[0] in self["consonants"].values() or letter[0] in self.get("extra_consonants", {}).values()) and (_yogavaaha_accent_match(letter[1]) or _yogavaaha_accent_match(letter[-1])):
+      elif (letter[0] in self["consonants"].values() or letter[0] in self.get("extra_consonants", {}).values()) and (_yogavaaha_accent_match(letter[1]) or _yogavaaha_accent_match(letter[-1])) and letter[-2:] != self["virama"]["्"] + self["yogavaahas"]["ँ"]:
         out_letters.append(letter[0])
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"] + letter[-1])      

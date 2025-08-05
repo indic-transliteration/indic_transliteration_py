@@ -25,7 +25,6 @@ def test_fix_lazy_visarga():
   assert sanscript.SCHEMES[sanscript.DEVANAGARI].fix_lazy_visarga("अन्तः कुरु") == "अन्तᳵ कुरु"
 
 
-
 def test_approximate_visarga():
   assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಮತಿಃ", mode=VisargaApproximation.H) == "ಮತಿಹ್"
   assert sanscript.SCHEMES[sanscript.KANNADA].approximate_visargas("ಹರಃ", mode=VisargaApproximation.H) == "ಹರಹ್"
@@ -46,10 +45,13 @@ def test_do_vyanjana_svara_join():
 def test_split_vyanjanas_and_svaras():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
 
-  assert devanagari.split_vyanjanas_and_svaras("सो+++(=tick)+++ऽग्नि᳘मेॗव", skip_pattern=r"\+\+\+\(.+?\)\+\+\+") == ['स्', "ओ", "+++(=tick)+++", 'ऽ', 'ग्', "न्", "इ᳘", "म्", "एॗ", "व्", "अ"]
+  assert devanagari.split_vyanjanas_and_svaras("असु॑राणाय्ँ य॒ज्ञो  ") == ['अ', 'स्', 'उ॑', 'र्', 'आ', 'ण्', 'आ', 'य्ँ', ' ', 'य्', 'अ॒', 'ज्', 'ञ्', 'ओ', ' ', ' ']
+  assert devanagari.split_vyanjanas_and_svaras("सो+++(=tick)+++ऽग्नि᳘मेॗव", skip_pattern=r"\+\+\+\(.+?\)\+\+\+") == [
+    'स्', "ओ", "+++(=tick)+++", 'ऽ', 'ग्', "न्", "इ᳘", "म्", "एॗ", "व्", "अ"]
 
   assert devanagari.split_vyanjanas_and_svaras("नु॑") == ['न्', 'उ॑']
-  assert devanagari.split_vyanjanas_and_svaras("सोऽग्नि᳘मेॗव") == ['स्', "ओ", 'ऽ', 'ग्', "न्", "इ᳘", "म्", "एॗ", "व्", "अ"]
+  assert devanagari.split_vyanjanas_and_svaras("सोऽग्नि᳘मेॗव") == ['स्', "ओ", 'ऽ', 'ग्', "न्", "इ᳘", "म्", "एॗ", "व्",
+                                                                   "अ"]
 
   assert devanagari.split_vyanjanas_and_svaras("मं") == ['म्', 'अं']
   assert devanagari.split_vyanjanas_and_svaras("ह्रीः") == ['ह्', 'र्', 'ईः']
@@ -61,9 +63,12 @@ def test_split_vyanjanas_and_svaras():
 
 def test_join_post_viraama():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
-  assert devanagari.join_post_viraama("दिष्टा यत्रानधीते मुनिभिर् अनघता तत्र तत्-कर्तृतोक्ता  \nप्रोक्तं ब्रह्म स्वयंभ्व् इत्यपि जनि-विलयाभावम् अत्र स्मरन्ति ॥ १६५ ॥") == 'दिष्टा यत्रानधीते मुनिभिरनघता तत्र तत्कर्तृतोक्ता  \nप्रोक्तं ब्रह्म स्वयंभ्वित्यपि जनिविलयाभावमत्र स्मरन्ति ॥ १६५ ॥'
-  assert devanagari.join_post_viraama("प्रोक्तं ब्रह्म स्वयंभ्व् इत्यपि जनि-विलयाभावमत्र स्मरन्ति") == "प्रोक्तं ब्रह्म स्वयंभ्वित्यपि जनिविलयाभावमत्र स्मरन्ति"
-  assert devanagari.join_post_viraama("पश्चात् तु ज्ञानशक्त्योर् अपचयनियमाद् व्यासकॢप्तिस् समीची") == "पश्चात्तु ज्ञानशक्त्योरपचयनियमाद्व्यासकॢप्तिस्समीची"
+  assert devanagari.join_post_viraama(
+    "दिष्टा यत्रानधीते मुनिभिर् अनघता तत्र तत्-कर्तृतोक्ता  \nप्रोक्तं ब्रह्म स्वयंभ्व् इत्यपि जनि-विलयाभावम् अत्र स्मरन्ति ॥ १६५ ॥") == 'दिष्टा यत्रानधीते मुनिभिरनघता तत्र तत्कर्तृतोक्ता  \nप्रोक्तं ब्रह्म स्वयंभ्वित्यपि जनिविलयाभावमत्र स्मरन्ति ॥ १६५ ॥'
+  assert devanagari.join_post_viraama(
+    "प्रोक्तं ब्रह्म स्वयंभ्व् इत्यपि जनि-विलयाभावमत्र स्मरन्ति") == "प्रोक्तं ब्रह्म स्वयंभ्वित्यपि जनिविलयाभावमत्र स्मरन्ति"
+  assert devanagari.join_post_viraama(
+    "पश्चात् तु ज्ञानशक्त्योर् अपचयनियमाद् व्यासकॢप्तिस् समीची") == "पश्चात्तु ज्ञानशक्त्योरपचयनियमाद्व्यासकॢप्तिस्समीची"
 
 
 def test_join_letters():

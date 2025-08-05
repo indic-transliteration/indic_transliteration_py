@@ -36,7 +36,17 @@ class BrahmicScheme(Scheme):
     else:
       raise ValueError(svaraadi + " is not svaraadi.")
 
-  def split_vyanjanas_and_svaras(self, text):
+  def split_vyanjanas_and_svaras(self, text, skip_pattern=r"\+\+\+\(.+?\)\+\+\+"):
+    if skip_pattern is not None:
+      segments = regex.split(rf"({skip_pattern})", text)
+      if len(segments) > 1:
+        letters = []
+        for segment in segments:
+          if regex.match(skip_pattern, segment):
+            letters.append(segment)
+          else:
+            letters.extend(self.split_vyanjanas_and_svaras(text=segment, skip_pattern=None))
+        return letters
     def _yogavaaha_accent_match(letter):
       return letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter) or regex.match(self.ACCENTS, letter) is not None or letter in self.get("candra", {}).values()
     
@@ -68,6 +78,20 @@ class BrahmicScheme(Scheme):
         out_letters.append(letter)
     return out_letters
 
+  # Helper to find the index of the next or previous valid syllable, skipping non-syllables.
+  def get_adjacent_syllable_index(self, start_index, letters, direction, pauses_pattern):
+    if isinstance(pauses_pattern, str):
+      pauses_pattern = regex.compile(pauses_pattern)
+    current_index = start_index + direction
+    while 0 <= current_index < len(letters):
+      if pauses_pattern.fullmatch(letters[current_index]):
+        return None
+      elif letters[current_index][0] in self["vowels"]:
+        return current_index
+      current_index += direction
+    return None
+
+
   def get_consonant_letters(self, text):
     letters = self.split_vyanjanas_and_svaras(text)
     letters = [letter.replace(self["virama"]["्"], "") for letter in letters if letter.replace(self["virama"]["्"], "") in self["consonants"].values()]
@@ -97,7 +121,7 @@ class BrahmicScheme(Scheme):
       return result
 
 
-  def join_strings(self, strings):
+  def join_strings(self, strings, do_sandhi=False):
     out_text = ""
     for letter in strings:
       if letter[0] in self["vowels"].values() and out_text.endswith(self["virama"]["्"]):
@@ -105,7 +129,10 @@ class BrahmicScheme(Scheme):
         if len(letter) > 1:
           out_text += letter[1:]
       else:
-        out_text = self.sandhi_sanskrit(out_text, letter)
+        if do_sandhi:
+          out_text = self.sandhi_sanskrit(out_text, letter)
+        else:
+          out_text += letter
     return out_text
 
   def get_numerals(self):

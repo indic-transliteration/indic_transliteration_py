@@ -94,7 +94,9 @@ def to_US_accents(text, scheme=None, UDATTA = "꣡", SVARITA_NEW = "᳕", pauses
   # symbol definitions
   SANNATARA = "॒"
   SVARITA = "॑"
-  
+  if not any(x in text for x in [SVARITA, SANNATARA]):
+    # Avoid inserting udattas from the beginning on an invalid (already converted input)
+    return text
   if scheme == None:
     from indic_transliteration import sanscript
     scheme = sanscript.SCHEMES[sanscript.DEVANAGARI]
@@ -133,24 +135,22 @@ def to_US_accents(text, scheme=None, UDATTA = "꣡", SVARITA_NEW = "᳕", pauses
   # This rule (e.g., ध्रु॒वो॑ -> ध्रुवो᳕) is a specific substitution that takes precedence.
   for index, letter in enumerate(out_letters):
     # If a syllable has a svarita...
-    if SVARITA in letter:
+    if SVARITA in letter and not SANNATARA in letter:
       # ...and the predecessor has a sannatara...
       prev_index = scheme.get_adjacent_syllable_index(index, out_letters, -1, pauses_pattern=PAUSES_PATTERN)
       if prev_index is not None and SANNATARA in out_letters[prev_index]:
-        # ...remove both accents and add a svarita_new to the current syllable.
-        out_letters[prev_index] = out_letters[prev_index].replace(SANNATARA, "")
-        out_letters[index] = letter.replace(SVARITA, "") + SVARITA_NEW
+        # ... add a svarita_new to the current syllable.
+        out_letters[index] += SVARITA_NEW
 
   for index, letter in enumerate(out_letters):
     is_kampa = SVARITA in letter and SANNATARA in letter  # Rule 1
 
-    # If a syllable has both sannatara and svarita signs (like वो॒॑), replace it's accents with udAtta, remove the predecessor's sannatara, and temporarily keep the sannatara in itself. 
+    # If a syllable has both sannatara and svarita signs (like वो॒॑), replace it's svarita with udAtta, and temporarily keep the sannatara in itself. 
     if is_kampa:
       out_letters[index] = letter + UDATTA
       # Kampa rule: also remove the predecessor's sannatara.
-      prev_index = scheme.get_adjacent_syllable_index(index, out_letters, -1)
+      prev_index = scheme.get_adjacent_syllable_index(index, out_letters, -1, pauses_pattern=PAUSES_PATTERN)
       if prev_index is not None and SANNATARA in out_letters[prev_index]:
-        out_letters[prev_index] = out_letters[prev_index].replace(SANNATARA, "")
         out_letters[index] = out_letters[index].replace(SVARITA, "")
 
   # If a syllable has svarita, mark all preceeding syllables until a sannatara or svarita_new accent or a pause is reached with udAtta; at which point remove any preceding sannatara. 

@@ -94,9 +94,10 @@ def to_US_accents(text, scheme=None, UDATTA = "꣡", SVARITA_NEW = "᳕", pauses
   # symbol definitions
   SANNATARA = "॒"
   SVARITA = "॑"
-  if not any(x in text for x in [SVARITA, SANNATARA]):
+  if not any(x in text for x in [SVARITA, SANNATARA, "᳚", "᳛"]):
     # Avoid inserting udattas from the beginning on an invalid (already converted input)
     return text
+  text = regex.sub("[᳚᳛]", SVARITA, text)
   if scheme == None:
     from indic_transliteration import sanscript
     scheme = sanscript.SCHEMES[sanscript.DEVANAGARI]

@@ -81,12 +81,12 @@ def strip_accents(text):
   return regex.sub(ACCENTS_PATTERN, "", text)
 
 
-def to_US_accents(text, scheme=None, UDATTA = "꣡", SVARITA_NEW = "᳕", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\(.+?\)\+\+\+"):
+def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\(.+?\)\+\+\+"):
   """Given text like  
   ध्रु॒वो॑ऽसि ।  
   ध्रु॒वो॒॑ऽहँ स॑जा॒तेषु॑ भूयास॒न्  
   धीर॒श् चेत्ता॑ वसु॒वित्। 
-  produce:
+  produce something like:
   ध्रुवो᳕ऽसि ।  
   ध्रुवो꣡ऽहँ꣡ सजाते꣡षु भूयासन्  
   धी꣡रश् चे꣡त्ता वसुवि꣡त्। 

@@ -81,7 +81,7 @@ def strip_accents(text):
   return regex.sub(ACCENTS_PATTERN, "", text)
 
 
-def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\(.+?\)\+\+\+"):
+def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+"):
   """Given text like  
   ध्रु॒वो॑ऽसि ।  
   ध्रु॒वो॒॑ऽहँ स॑जा॒तेषु॑ भूयास॒न्  
@@ -97,6 +97,8 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
   if not any(x in text for x in [SVARITA, SANNATARA, "᳚", "᳛"]):
     # Avoid inserting udattas from the beginning on an invalid (already converted input)
     return text
+  if any(x in text for x in [SVARITA_NEW, UDATTA]):
+    return text
   text = regex.sub("[᳚᳛]", SVARITA, text)
   if scheme == None:
     from indic_transliteration import sanscript
@@ -106,7 +108,8 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
   SKIP_PATTERN = regex.compile(skip_pattern)
 
   # Split the text into a list of syllables and other elements.
-  letters = scheme.split_vyanjanas_and_svaras(text, skip_pattern=skip_pattern)
+  skip_pattern_noncapture = regex.sub(r"(?<=^|[^\\])\(", "(?:", skip_pattern)
+  letters = scheme.split_vyanjanas_and_svaras(text, skip_pattern=skip_pattern_noncapture)
   # Example output here - ['स्', "ओ", "+++(=tick)+++", 'ऽ', 'ग्', "न्", "इ॒", "म्", "ए॑", "व्", "अ"]
 
   out_letters = list(letters)
@@ -135,6 +138,10 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
   # If a syllable has a svarita and the predecessessor has a sannatara, remove both accents and add a svarita_new to the current syllable.
   # This rule (e.g., ध्रु॒वो॑ -> ध्रुवो᳕) is a specific substitution that takes precedence.
   for index, letter in enumerate(out_letters):
+    # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
+    if SKIP_PATTERN.fullmatch(letter):
+      continue
+
     # If a syllable has a svarita...
     if SVARITA in letter and not SANNATARA in letter:
       # ...and the predecessor has a sannatara...
@@ -145,6 +152,10 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
 
   for index, letter in enumerate(out_letters):
     is_kampa = SVARITA in letter and SANNATARA in letter  # Rule 1
+    
+    # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
+    if SKIP_PATTERN.fullmatch(letter):
+      continue
 
     # If a syllable has both sannatara and svarita signs (like वो॒॑), replace it's svarita with udAtta, and temporarily keep the sannatara in itself. 
     if is_kampa:
@@ -156,6 +167,10 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
 
   # If a syllable has svarita, mark all preceeding syllables until a sannatara or svarita_new accent or a pause is reached with udAtta; at which point remove any preceding sannatara. 
   for index, letter in enumerate(out_letters):
+    # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
+    if SKIP_PATTERN.fullmatch(letter):
+      continue
+
     # --- Backward "painting" from a Svarita ---
     if not SVARITA in letter:
       continue
@@ -179,6 +194,9 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
 
   # If a syllable has sannatara, mark all succeeding syllables with udAtta until a svarita is reached or a pause is reached. Remove the triggering sannatara. After this is done for all syllables, there should be no sannatara left.
   for index, letter in enumerate(out_letters):
+    # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
+    if SKIP_PATTERN.fullmatch(letter):
+      continue
 
     # --- Forward "painting" from a Sannatara ---
     # This applies to simple sannatara only. Kampa's effect is handled above.
@@ -200,6 +218,13 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
           out_letters[curr_fwd_index] += UDATTA
         curr_fwd_index = scheme.get_adjacent_syllable_index(curr_fwd_index, out_letters, +1,
                                                             pauses_pattern=PAUSES_PATTERN)
+
+  for index, letter in enumerate(out_letters):
+    match = SKIP_PATTERN.match(letter)
+    if match:
+      replacement = to_US_accents(text=match.group(1), scheme=scheme, UDATTA=UDATTA, SVARITA_NEW=SVARITA_NEW, pauses=pauses, skip_pattern=skip_pattern)
+      out_letters[index] = letter.replace(match.group(1), replacement)
+
 
   text = scheme.join_strings(out_letters)
   text = text.replace(SVARITA, "").replace(SANNATARA, "")

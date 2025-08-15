@@ -99,7 +99,7 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
     return text
   if any(x in text for x in [SVARITA_NEW, UDATTA]):
     return text
-  text = regex.sub("[᳚᳛]", SVARITA, text)
+  text = regex.sub("[᳖᳚᳛]", SVARITA, text)
   if scheme == None:
     from indic_transliteration import sanscript
     scheme = sanscript.SCHEMES[sanscript.DEVANAGARI]
@@ -115,6 +115,7 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
   out_letters = list(letters)
 
 
+  pass
   # mark any syllable starting from a pause (or the beginning of out_text) as udAtta, until a sannatara or svarita
   for index, letter in enumerate(out_letters):
     if PAUSES_PATTERN.fullmatch(letter) or index == 0:
@@ -150,6 +151,7 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
         # ... add a svarita_new to the current syllable.
         out_letters[index] += SVARITA_NEW
 
+  pass
   for index, letter in enumerate(out_letters):
     is_kampa = SVARITA in letter and SANNATARA in letter  # Rule 1
     
@@ -165,6 +167,7 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
       if prev_index is not None and SANNATARA in out_letters[prev_index]:
         out_letters[index] = out_letters[index].replace(SVARITA, "")
 
+  pass
   # If a syllable has svarita, mark all preceeding syllables until a sannatara or svarita_new accent or a pause is reached with udAtta; at which point remove any preceding sannatara. 
   for index, letter in enumerate(out_letters):
     # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
@@ -192,6 +195,7 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
                                                            pauses_pattern=PAUSES_PATTERN)
 
 
+  pass
   # If a syllable has sannatara, mark all succeeding syllables with udAtta until a svarita is reached or a pause is reached. Remove the triggering sannatara. After this is done for all syllables, there should be no sannatara left.
   for index, letter in enumerate(out_letters):
     # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
@@ -219,6 +223,7 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
         curr_fwd_index = scheme.get_adjacent_syllable_index(curr_fwd_index, out_letters, +1,
                                                             pauses_pattern=PAUSES_PATTERN)
 
+  pass
   for index, letter in enumerate(out_letters):
     match = SKIP_PATTERN.match(letter)
     if match:

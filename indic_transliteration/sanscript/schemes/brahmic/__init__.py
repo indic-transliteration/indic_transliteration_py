@@ -11,7 +11,7 @@ from functools import reduce
 
 class BrahmicScheme(Scheme):
   ACCENTS = "[\u1CD0-\u1CE8\u1CF9\u1CFA\uA8E0-\uA8F1\u0951-\u0954\u0957]" # included  ॗ , which is used as svara for weber's shatapatha
-  YOGAVAAHAS = "[\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
+  YOGAVAAHAS = r"[\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
   def __init__(self, data=None, name=None, **kwargs):
     super(BrahmicScheme, self).__init__(data=data, name=name, is_roman=False)
     if "vowel_marks" in self:
@@ -48,7 +48,7 @@ class BrahmicScheme(Scheme):
             letters.extend(self.split_vyanjanas_and_svaras(text=segment, skip_pattern=None))
         return letters
     def _yogavaaha_accent_match(letter):
-      return letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter) or regex.match(self.ACCENTS, letter) is not None or letter in self.get("candra", {}).values()
+      return letter in self["yogavaahas"].values() or letter in self.get("accents", {}).values() or regex.match(self.YOGAVAAHAS, letter) or regex.match(self.ACCENTS, letter) is not None or letter in self.get("candra", {}).values() or letter[-2:] == self["virama"]["्"] + self["yogavaahas"]["ँ"]
     
     letters = []
     for letter in text:
@@ -70,7 +70,10 @@ class BrahmicScheme(Scheme):
         out_letters.append(letter)
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"])
+      elif _yogavaaha_accent_match(letter):
+        out_letters[-1] += letter
       elif (letter[0] in self["consonants"].values() or letter[0] in self.get("extra_consonants", {}).values()) and (_yogavaaha_accent_match(letter[1]) or _yogavaaha_accent_match(letter[-1])) and letter[-2:] != self["virama"]["्"] + self["yogavaahas"]["ँ"]:
+        # Cases like kaH
         out_letters.append(letter[0])
         out_letters[-1] += self["virama"]["्"]
         out_letters.append(self["vowels"]["अ"] + letter[1:])      

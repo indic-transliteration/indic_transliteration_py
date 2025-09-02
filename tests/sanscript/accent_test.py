@@ -13,6 +13,8 @@ def test_set_diirgha_svaritas():
   
   
 def test_to_US_accents():
+  assert accent.to_US_accents(text="स मे॑ ददातु प्र॒जां प॒शून् पुष्टिय्ँ॒ यशः॑") == "स᳓ मे ददातु प्रजां᳓ पशू᳓न् पु᳓ष्टिय्ँ य᳓शः"
+  assert accent.to_US_accents(text="सो॑ ऽनाधृ॒ष्यः ।(9)") == "सो᳓ ऽनाधृष्यः᳓ ।(9)"
   assert accent.to_US_accents(text="""ध्रु॒वो॑ऽसि ।  \nध्रु॒वो॒॑ऽहँ स॑जा॒तेषु॑+++(=haya)+++ भूयास॒न्  \nधीर॒श् चेत्ता॑ वसु॒वित्।""", SVARITA_NEW="᳕", UDATTA="꣡") == "ध्रुवो᳕ऽसि ।  \nध्रुवो꣡ऽहँ꣡ सजाते꣡षु+++(=haya)+++ भूयासन्  \nधी꣡रश् चे꣡त्ता वसुवि꣡त्।"
   assert accent.to_US_accents(text="\"यज॑मानेन॒ खलु॒ वै तत् का॒र्य॑म्\" इत्य् आ॑हु॒र्", SVARITA_NEW="᳕", UDATTA="꣡") == "\"य꣡जमानेन ख꣡लु वै꣡ त꣡त् कार्य᳕म्\" इ꣡त्य् आहुर्"
   

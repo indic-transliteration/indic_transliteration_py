@@ -114,12 +114,20 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
 
   out_letters = list(letters)
 
+  
 
   pass
-  # mark any syllable starting from a pause (or the beginning of out_text) as udAtta, until a sannatara or svarita
+# mark any syllable starting from a pause (or the beginning of out_text) as udAtta, until a sannatara or svarita
   for index, letter in enumerate(out_letters):
     if PAUSES_PATTERN.fullmatch(letter) or index == 0:
-      mark_udAtta = True
+      first_vowel_index = scheme.get_adjacent_syllable_index(index-1, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
+      if first_vowel_index is not None and SVARITA in out_letters[first_vowel_index]:
+        out_letters[first_vowel_index] += UDATTA
+        mark_udAtta = False
+      else:
+        mark_udAtta = True
+
+
     if mark_udAtta:
       # Scan forwards and mark succeeding syllables with Udatta.
       curr_fwd_index = scheme.get_adjacent_syllable_index(index-1, out_letters, +1, pauses_pattern=PAUSES_PATTERN)

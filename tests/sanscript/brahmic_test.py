@@ -45,6 +45,7 @@ def test_do_vyanjana_svara_join():
 def test_split_vyanjanas_and_svaras():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
 
+  assert devanagari.split_vyanjanas_and_svaras("पुष्टिय्ँ॒ यशः॑") == ['प्', 'उ', 'ष्', 'ट्', 'इय्ँ॒', ' ', 'य्', 'अ', 'श्', 'अः॑']
   assert devanagari.split_vyanjanas_and_svaras("सव्ँव᳓सानः") == ['स्', 'अव्ँ', 'व्', 'अ᳓', 'स्', 'आ', 'न्', 'अः']
 
   assert devanagari.split_vyanjanas_and_svaras("\"सा नᳶ॑ ") == ['"', 'स्', 'आ', ' ', 'न्', 'अᳶ॑', ' ']

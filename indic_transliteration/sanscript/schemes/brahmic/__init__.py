@@ -254,11 +254,18 @@ class DevanagariScheme(BrahmicScheme):
       data_out = regex.sub(fr"([कचटतप])([{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?){superscript}", lambda x: shifter(x.group(1))+x.group(2), data_out)
     return data_out
 
+
+class BengaliScheme(BrahmicScheme):
+  @classmethod
+  def replace_khanda(cls, text):
+    text = regex.sub("ৎ", "ত্", text)
+    return text
+
+
 class GurmukhiScheme(BrahmicScheme):
 
   @classmethod
   def replace_addak(cls, text):
-    import regex
     text = regex.sub("ੱ([ਕਖ])", r"ਕ੍\g<1>", text, flags=regex.UNICODE)
     text = regex.sub(r"ੱ([ਗਘ])", r"ਗ੍\g<1>", text)
     text = regex.sub("ੱ([ਚਛ])", r"ਚ੍\g<1>", text)

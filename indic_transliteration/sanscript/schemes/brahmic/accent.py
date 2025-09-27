@@ -119,9 +119,8 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
   pass
 # mark any syllable starting from a pause (or the beginning of out_text) as udAtta, until a sannatara or svarita
   for index, letter in enumerate(out_letters):
-    if PAUSES_PATTERN.fullmatch(letter) or index == 0:
-      _start_index = -1 if index == 0 else index
-      first_vowel_index = scheme.get_adjacent_syllable_index(_start_index, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
+    if index == 0 or PAUSES_PATTERN.fullmatch(out_letters[index-1]):
+      first_vowel_index = scheme.get_adjacent_syllable_index(index-1, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
       if first_vowel_index is not None and SVARITA in out_letters[first_vowel_index]:
         if first_vowel_index > 1 and out_letters[first_vowel_index-2][-1] + out_letters[first_vowel_index-1] in ["्य्"]:
           # न्यू᳙नया जुहोति

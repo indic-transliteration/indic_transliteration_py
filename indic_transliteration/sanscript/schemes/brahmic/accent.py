@@ -122,7 +122,11 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
     if PAUSES_PATTERN.fullmatch(letter) or index == 0:
       first_vowel_index = scheme.get_adjacent_syllable_index(index-1, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
       if first_vowel_index is not None and SVARITA in out_letters[first_vowel_index]:
-        out_letters[first_vowel_index] += UDATTA
+        if first_vowel_index > 1 and out_letters[first_vowel_index-2][-1] + out_letters[first_vowel_index-1] in ["्य्"]:
+          # न्यू᳙नया जुहोति
+          out_letters[first_vowel_index] += SVARITA_NEW
+        else:
+          out_letters[first_vowel_index] += UDATTA
         mark_udAtta = False
       else:
         mark_udAtta = True

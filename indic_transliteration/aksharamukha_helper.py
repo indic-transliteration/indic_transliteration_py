@@ -9,13 +9,14 @@ import regex
 from indic_transliteration import tamil_tools
 
 
-def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[]):
-  source_script = "TAMIL"
+def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[], source_script="TAMIL"):
+  if source_script != "TAMIL":
+    text = aksharamukha.transliterate.process(src=source_script, tgt="TAMIL", txt=text)
   dest_script = dest_script.capitalize()
   text = regex.sub("ற", r"ऱ", text)
   text = regex.sub("ன", r"ऩ", text)
   # https://github.com/virtualvinodh/aksharamukha-python/issues/21
-  text = aksharamukha.transliterate.process(src=source_script, tgt=dest_script, txt=text, nativize = True, pre_options = aksharamukha_pre_options, post_options = aksharamukha_post_options)
+  text = aksharamukha.transliterate.process(src="TAMIL", tgt="DEVANAGARI", txt=text, nativize = True, pre_options = aksharamukha_pre_options, post_options = aksharamukha_post_options)
   text = text.replace("\u200c", "")
   # https://github.com/virtualvinodh/aksharamukha-python/issues/22
   text = regex.sub("म्([सव])", r"ं\1", text)
@@ -24,6 +25,9 @@ def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options
   text = tamil_tools.soften(text=text, pattern="(?<=[ऩ][ा-्]?)({})(?!्)")
   text = tamil_tools.soften(text=text, pattern="(?<=[ऱ][ा-ौ]?)({})(?!्)")
   # text = regex.sub("।", r".", text)
+  if dest_script != "DEVANAGARI":
+    text = aksharamukha.transliterate.process(src="DEVANAGARI", tgt=dest_script, txt=text)
+
   return text
 
 

@@ -262,6 +262,21 @@ class BengaliScheme(BrahmicScheme):
     return text
 
 
+class TeluguScheme(BrahmicScheme):
+  @classmethod
+  def replace_n(cls, text):
+    text = regex.sub("ౝ", "న్", text)
+    return text
+
+
+class KannadaScheme(BrahmicScheme):
+  @classmethod
+  def replace_n(cls, text):
+    text = regex.sub("ೝ", "ನ್", text)
+    text = regex.sub("೜", "श्री", text)
+    return text
+
+
 class GurmukhiScheme(BrahmicScheme):
 
   @classmethod

@@ -15,6 +15,10 @@ def _brahmic(data, scheme_map, **kw):
     data = brahmic.GurmukhiScheme.replace_addak(text=data)
   elif scheme_map.from_scheme.name == brahmic.BENGALI:
     data = brahmic.BengaliScheme.replace_khanda(text=data)
+  elif scheme_map.from_scheme.name == brahmic.TELUGU:
+    data = brahmic.TeluguScheme.replace_n(text=data)
+  elif scheme_map.from_scheme.name == brahmic.KANNADA:
+    data = brahmic.KannadaScheme.replace_n(text=data)
   elif scheme_map.from_scheme.name == brahmic.TAMIL_SUB:
     data = brahmic.TamilScheme.move_before_maatraa_subscripts(text=data)
   elif scheme_map.from_scheme.name == brahmic.TAMIL_SUP:

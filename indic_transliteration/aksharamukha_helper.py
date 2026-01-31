@@ -25,7 +25,7 @@ def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options
   text = tamil_tools.soften(text=text, pattern="(?<=[ऩ][ा-्]?)({})(?!्)")
   text = tamil_tools.soften(text=text, pattern="(?<=[ऱ][ा-ौ]?)({})(?!्)")
   # text = regex.sub("।", r".", text)
-  if dest_script != "DEVANAGARI":
+  if dest_script.upper() != "DEVANAGARI":
     text = aksharamukha.transliterate.process(src="DEVANAGARI", tgt=dest_script, txt=text)
 
   return text

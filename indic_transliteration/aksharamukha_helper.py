@@ -9,14 +9,24 @@ import regex
 from indic_transliteration import tamil_tools
 
 
+def fix_mistransliterations(text):
+  # Dont want stuff like https://divyaprabandham।koyil।org/index।php/२०१९/१२/upadhesa-raththina-malai-tamil-७०/
+  text = regex.sub("(?<![ँ-०] *)।", ".", text)
+  from indic_transliteration import sanscript
+  text = regex.sub(r"http\S+", lambda x: sanscript.transliterate(x.group(0), sanscript.DEVANAGARI, sanscript.IAST), text)
+  return text
+
+
 def transliterate_tamil(text, dest_script="DEVANAGARI", aksharamukha_pre_options=["TamilTranscribe"], aksharamukha_post_options=[], source_script="TAMIL"):
   if source_script != "TAMIL":
     text = aksharamukha.transliterate.process(src=source_script, tgt="TAMIL", txt=text)
+    
   dest_script = dest_script.capitalize()
   text = regex.sub("ற", r"ऱ", text)
   text = regex.sub("ன", r"ऩ", text)
   # https://github.com/virtualvinodh/aksharamukha-python/issues/21
   text = aksharamukha.transliterate.process(src="TAMIL", tgt="DEVANAGARI", txt=text, nativize = True, pre_options = aksharamukha_pre_options, post_options = aksharamukha_post_options)
+  text = fix_mistransliterations(text=text)
   text = text.replace("\u200c", "")
   # https://github.com/virtualvinodh/aksharamukha-python/issues/22
   text = regex.sub("म्([सव])", r"ं\1", text)

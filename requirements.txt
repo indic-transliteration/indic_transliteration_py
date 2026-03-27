@@ -3,4 +3,5 @@ regex
 typer
 toml
 roman
+tqdm
 

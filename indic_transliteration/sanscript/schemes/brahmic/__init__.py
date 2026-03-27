@@ -182,7 +182,7 @@ class BrahmicScheme(Scheme):
 
 
 class DevanagariScheme(BrahmicScheme):
-  BASE_BLOCK = r"[\u0900-ॿ]"
+  PATTERN_BASE_BLOCK = r"[\u0900-ॿ]"
   PATTERN_CONSONANT_MODIFIER = "़्"
   PATTERN_YOGAVAAHA = r"ऀ-ःᳩ-ᳶ"
   PATTERN_GURU_YOGAVAAHA = r"ंःᳩ-ᳶ"

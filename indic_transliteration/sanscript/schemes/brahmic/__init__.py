@@ -1,6 +1,7 @@
 # Brahmi schemes
 # -------------
 import logging
+import sys
 
 import regex
 
@@ -119,12 +120,48 @@ class BrahmicScheme(Scheme):
     try:
       import sandhi
       S = sandhi.Sandhi()
-      result = S.sandhi(str1, str2)
+      result = S.sandhi(str1, str2, input_scheme=self.name)
       return result[0]
     except ImportError:
       logging.warning("sandhi package is not installed.")
       result = str1 + str2
       return result
+
+  def redo_upapada_sandhis(self, text):
+    padas = regex.split(r"(\s+)", text)
+    padas_out = []
+    for pada in padas:
+      if "-" not in pada:
+        padas_out.append(pada)
+        continue
+
+      upapadas = regex.split(r"(-+)", pada)
+      upapadas_out = []
+      for index, upapada in enumerate(upapadas):
+        if index == 0 or regex.match(r"(-+)", upapada):
+          upapadas_out.append(upapada)
+          continue
+        if regex.match(r"(-+)", upapadas_out[-1]):
+          if len(upapadas_out) > 1:
+            prev_index = -2
+            prev_upapada = upapadas_out[prev_index]
+          else:
+            upapadas_out.append(upapada)
+            continue
+        else:
+          logging.warning(f"Data error {pada}")
+          sys.exit(1)
+        
+        sandhi = self.sandhi_sanskrit(prev_upapada, upapada)
+        joined_upapada = sandhi[0]
+        
+        if upapada in joined_upapada and prev_upapada in upapada:
+          upapadas_out.append(upapada)
+        else:
+          upapadas_out = upapadas_out[0:prev_index]
+          upapadas_out.append(joined_upapada)
+      padas_out.append("".join(upapadas_out))
+    return "".join(padas_out)
 
 
   def join_strings(self, strings, do_sandhi=False):
@@ -184,12 +221,21 @@ class DevanagariScheme(BrahmicScheme):
   PATTERN_GURU_YOGAVAAHA = r"ंःᳩ-ᳶ"
   PATTERN_ACCENT = r"॑-॔\uA8E0-꣼\u1CD0-\u1CFF"
   PATTERN_DEPENDENT_VOWEL = r"\u093A-\u093B\u093E-\u094C \u094E-\u094F\u0955-\u0957\u0962-\u0963\uA8FF"
+  PATTERN_MATRA = r"[ऺऻा-ॏॢॣ]"
   PATTERN_GURU_DEPENDENT_VOWEL = r"ऻ ा ी ू ॄ ॗॣ ॎ े ै ो ौ ॕ".replace(" ", "")
   PATTERN_GURU_INDEPENDENT_VOWEL = "आईऊॠॡएऐओऔऍऑॴॵॷꣾ"
   PATTERN_VYANJANA = "क-हक़-य़ॸ-ॿ"
   PATTERN_VYANJANA_WITHOUT_VOWEL = "[%s]़?्" % (PATTERN_VYANJANA)
   PATTERN_INDEPENDENT_VOWEL = "ऄ-औॠॡॲ-ॷꣾ"
   PATTERN_OM = "ॐꣽ"
+  PATTERN_NON_MATRA = r"[\u0900-हॐ-ॡॲ-ॿ़]"
+  PATTERN_YOGAVAHA = "[\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
+  PATTERN_MATRA_YOGAVAHA = r"[ऺऻा-ॏॢॣ\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
+  PATTERN_DIGITS = "[०-९]"
+  PATTERN_NON_DIGITS = r"[\u0900-॥॰-ॿ]"
+  PATTERN_NON_DIGITS_NON_DANDA = r"[\u0900-ॣ॰-ॿ]"
+  PATTERN_DANDAS = "[।॥]"
+
 
   @classmethod
   def fix_lazy_visarga(cls, data_in):
@@ -253,6 +299,9 @@ class DevanagariScheme(BrahmicScheme):
         return chr(ord(ch) + index)
       data_out = regex.sub(fr"([कचटतप])([{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?){superscript}", lambda x: shifter(x.group(1))+x.group(2), data_out)
     return data_out
+
+
+
 
 
 class BengaliScheme(BrahmicScheme):

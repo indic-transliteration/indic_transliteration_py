@@ -43,7 +43,7 @@ def test_do_vyanjana_svara_join():
 
 def test_upapada_sandhi():
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
-  assert devanagari.redo_upapada_sandhis("नित्य-कर्म-अनुष्ठाने अत्र मुद्रिते  \nगण-ईश-कृते॥") == 'नित्यकर्मानुष्ठाने अत्र मुद्रिते  \nगणेशकृते॥'
+  assert devanagari.redo_upapada_sandhis("नित्य-कर्म-अनुष्ठाने अत्र मुद्रिते  \nगण-ईश-कृते॥") == 'नित्य-कर्मानुष्ठाने अत्र मुद्रिते  \nगणेश-कृते॥'
 
 
 def test_split_vyanjanas_and_svaras():

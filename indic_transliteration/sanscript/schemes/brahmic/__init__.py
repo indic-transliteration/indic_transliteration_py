@@ -4,6 +4,7 @@ import logging
 import sys
 
 import regex
+import tqdm
 
 from indic_transliteration.sanscript import Scheme
 from indic_transliteration.sanscript.schemes import dev_vowel_to_mark_map
@@ -121,48 +122,13 @@ class BrahmicScheme(Scheme):
       import sandhi
       S = sandhi.Sandhi()
       result = S.sandhi(str1, str2, input_scheme=self.name)
+      if result == []:
+        result = [[""]]
       return result[0]
     except ImportError:
       logging.warning("sandhi package is not installed.")
       result = str1 + str2
       return result
-
-  def redo_upapada_sandhis(self, text):
-    padas = regex.split(r"(\s+)", text)
-    padas_out = []
-    for pada in padas:
-      if "-" not in pada:
-        padas_out.append(pada)
-        continue
-
-      upapadas = regex.split(r"(-+)", pada)
-      upapadas_out = []
-      for index, upapada in enumerate(upapadas):
-        if index == 0 or regex.match(r"(-+)", upapada):
-          upapadas_out.append(upapada)
-          continue
-        if regex.match(r"(-+)", upapadas_out[-1]):
-          if len(upapadas_out) > 1:
-            prev_index = -2
-            prev_upapada = upapadas_out[prev_index]
-          else:
-            upapadas_out.append(upapada)
-            continue
-        else:
-          logging.warning(f"Data error {pada}")
-          sys.exit(1)
-        
-        sandhi = self.sandhi_sanskrit(prev_upapada, upapada)
-        joined_upapada = sandhi[0]
-        
-        if upapada in joined_upapada and prev_upapada in upapada:
-          upapadas_out.append(upapada)
-        else:
-          upapadas_out = upapadas_out[0:prev_index]
-          upapadas_out.append(joined_upapada)
-      padas_out.append("".join(upapadas_out))
-    return "".join(padas_out)
-
 
   def join_strings(self, strings, do_sandhi=False):
     out_text = ""
@@ -216,6 +182,7 @@ class BrahmicScheme(Scheme):
 
 
 class DevanagariScheme(BrahmicScheme):
+  BASE_BLOCK = r"[\u0900-ॿ]"
   PATTERN_CONSONANT_MODIFIER = "़्"
   PATTERN_YOGAVAAHA = r"ऀ-ःᳩ-ᳶ"
   PATTERN_GURU_YOGAVAAHA = r"ंःᳩ-ᳶ"
@@ -235,6 +202,7 @@ class DevanagariScheme(BrahmicScheme):
   PATTERN_NON_DIGITS = r"[\u0900-॥॰-ॿ]"
   PATTERN_NON_DIGITS_NON_DANDA = r"[\u0900-ॣ॰-ॿ]"
   PATTERN_DANDAS = "[।॥]"
+  PATTERN_MANIPRAVALA_MID_K_L = f"(?<=[^\\s्])क(?={PATTERN_MATRA}?ळ)"
 
 
   @classmethod
@@ -299,6 +267,47 @@ class DevanagariScheme(BrahmicScheme):
         return chr(ord(ch) + index)
       data_out = regex.sub(fr"([कचटतप])([{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?){superscript}", lambda x: shifter(x.group(1))+x.group(2), data_out)
     return data_out
+
+  def redo_upapada_sandhis(self, text):
+    padas = regex.split(r"(\s+)", text)
+    padas_out = []
+    for pada in tqdm.tqdm(padas):
+      if "-" not in pada:
+        padas_out.append(pada)
+        continue
+
+      upapadas = regex.split(r"(-+)", pada)
+      upapadas_out = []
+      for index, upapada in enumerate(upapadas):
+        if index == 0 or regex.match(r"(-+)", upapada):
+          upapadas_out.append(upapada)
+          continue
+        if regex.match(r"(-+)", upapadas_out[-1]):
+          if len(upapadas_out) > 1:
+            prev_index = -2
+            prev_upapada = upapadas_out[prev_index]
+          else:
+            upapadas_out.append(upapada)
+            continue
+        else:
+          logging.warning(f"Data error {pada}")
+          sys.exit(1)
+        if upapada in [""]:
+          continue
+        if not (regex.match(self.PATTERN_NON_DIGITS_NON_DANDA, prev_upapada[-1]) and regex.match(self.PATTERN_NON_DIGITS_NON_DANDA, upapada[0])): 
+          upapadas_out.append(upapada)
+          continue
+        sandhi = self.sandhi_sanskrit(prev_upapada, upapada)
+        joined_upapada = sandhi[0]
+
+        if upapada in joined_upapada and prev_upapada in joined_upapada:
+          upapadas_out.append(upapada)
+        else:
+          upapadas_out = upapadas_out[0:prev_index]
+          upapadas_out.append(joined_upapada)
+      padas_out.append("".join(upapadas_out))
+    return "".join(padas_out)
+
 
 
 

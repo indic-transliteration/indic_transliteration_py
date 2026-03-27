@@ -1,4 +1,6 @@
 sandhi
 selenium
 aksharamukha
+pandas
+tqdm
 vidyut

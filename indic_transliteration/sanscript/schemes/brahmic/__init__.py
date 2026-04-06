@@ -182,27 +182,28 @@ class BrahmicScheme(Scheme):
 
 
 class DevanagariScheme(BrahmicScheme):
-  PATTERN_BASE_BLOCK = r"[\u0900-ॿ]"
+  PATTERN_BASE_BLOCK = r"\u0900-ॿ"
   PATTERN_CONSONANT_MODIFIER = "़्"
   PATTERN_YOGAVAAHA = r"ऀ-ःᳩ-ᳶ"
   PATTERN_GURU_YOGAVAAHA = r"ंःᳩ-ᳶ"
   PATTERN_ACCENT = r"॑-॔\uA8E0-꣼\u1CD0-\u1CFF"
   PATTERN_DEPENDENT_VOWEL = r"\u093A-\u093B\u093E-\u094C \u094E-\u094F\u0955-\u0957\u0962-\u0963\uA8FF"
-  PATTERN_MATRA = r"[ऺऻा-ॏॢॣ]"
+  PATTERN_MATRA = r"ऺऻा-ॏॢॣ"
   PATTERN_GURU_DEPENDENT_VOWEL = r"ऻ ा ी ू ॄ ॗॣ ॎ े ै ो ौ ॕ".replace(" ", "")
   PATTERN_GURU_INDEPENDENT_VOWEL = "आईऊॠॡएऐओऔऍऑॴॵॷꣾ"
   PATTERN_VYANJANA = "क-हक़-य़ॸ-ॿ"
-  PATTERN_VYANJANA_WITHOUT_VOWEL = "[%s]़?्" % (PATTERN_VYANJANA)
+  PATTERN_VYANJANA_WITHOUT_VOWEL = f"[{PATTERN_VYANJANA}]़?्"
   PATTERN_INDEPENDENT_VOWEL = "ऄ-औॠॡॲ-ॷꣾ"
   PATTERN_OM = "ॐꣽ"
-  PATTERN_NON_MATRA = r"[\u0900-हॐ-ॡॲ-ॿ़]"
-  PATTERN_YOGAVAHA = "[\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
-  PATTERN_MATRA_YOGAVAHA = r"[ऺऻा-ॏॢॣ\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ]"
-  PATTERN_DIGITS = "[०-९]"
-  PATTERN_NON_DIGITS = r"[\u0900-॥॰-ॿ]"
-  PATTERN_NON_DIGITS_NON_DANDA = r"[\u0900-ॣ॰-ॿ]"
-  PATTERN_DANDAS = "[।॥]"
-  PATTERN_MANIPRAVALA_MID_K_L = f"(?<=[^\\s्])क(?={PATTERN_MATRA}?ळ)"
+  PATTERN_NON_MATRA = r"\u0900-हॐ-ॡॲ-ॿ़"
+  PATTERN_YOGAVAHA = "\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ"
+  PATTERN_MATRA_YOGAVAHA = r"ऺऻा-ॏॢॣ\u0900-\u0903\uA8F2-\uA8F7ᳩ-ᳶ"
+  PATTERN_DIGITS = "०-९"
+  PATTERN_NON_DIGITS = r"\u0900-॥॰-ॿ"
+  PATTERN_NON_DIGITS_NON_DANDA = r"\u0900-ॣ॰-ॿ"
+  PATTERN_DANDAS = "।॥"
+  PATTERN_ALL_PUNCTUATIONS = r"\-,।॥\"'`\(\)\[\]{{}}"
+  PATTERN_MANIPRAVALA_MID_K_L = f"(?<=[^\\s्])क(?=[{PATTERN_MATRA}]?ळ)"
 
 
   @classmethod
@@ -212,6 +213,7 @@ class DevanagariScheme(BrahmicScheme):
     data_out = regex.sub(r'ः( *)([क-ङ])', r'ᳵ\1\2', data_out)
     data_out = regex.sub(r'ः( *)([प-म])', r'ᳶ\1\2', data_out)
     return data_out
+
 
   def fix_lazy_anusvaara(self, data_in, omit_sam=False, omit_yrl=False, ignore_padaanta=True):
     # Overriding because we don't want to turn जगइ to जगै
@@ -268,18 +270,18 @@ class DevanagariScheme(BrahmicScheme):
       data_out = regex.sub(fr"([कचटतप])([{VIRAMA}{self.PATTERN_DEPENDENT_VOWEL}]?){superscript}", lambda x: shifter(x.group(1))+x.group(2), data_out)
     return data_out
 
-  def redo_upapada_sandhis(self, text):
+  def redo_upapada_sandhis(self, text, level="svara"):
     padas = regex.split(r"(\s+)", text)
     padas_out = []
     for pada in tqdm.tqdm(padas):
-      if "-" not in pada:
+      if "-" not in pada or not regex.match(rf"[{self.PATTERN_BASE_BLOCK}{self.PATTERN_ALL_PUNCTUATIONS}]+", pada):
         padas_out.append(pada)
         continue
 
       upapadas = regex.split(r"(-+)", pada)
       upapadas_out = []
       for index, upapada in enumerate(upapadas):
-        if index == 0 or regex.match(r"(-+)", upapada):
+        if index == 0 or regex.fullmatch(r"(-+)", upapada):
           upapadas_out.append(upapada)
           continue
         if regex.match(r"(-+)", upapadas_out[-1]):
@@ -294,7 +296,13 @@ class DevanagariScheme(BrahmicScheme):
           sys.exit(1)
         if upapada in [""]:
           continue
-        if not (regex.match(self.PATTERN_NON_DIGITS_NON_DANDA, prev_upapada[-1]) and regex.match(self.PATTERN_NON_DIGITS_NON_DANDA, upapada[0])): 
+        if prev_upapada in [""]:
+          upapadas_out.append(upapada)
+          continue
+        if not (regex.match(f"[{self.PATTERN_NON_DIGITS_NON_DANDA}]", prev_upapada[-1]) and regex.match(f"[{self.PATTERN_NON_DIGITS_NON_DANDA}]", upapada[0])): 
+          upapadas_out.append(upapada)
+          continue
+        if level == "svara" and not (regex.match(f"[{self.PATTERN_INDEPENDENT_VOWEL}]", upapada[0]) and prev_upapada[-1] != "्"):
           upapadas_out.append(upapada)
           continue
         sandhi = self.sandhi_sanskrit(prev_upapada, upapada)

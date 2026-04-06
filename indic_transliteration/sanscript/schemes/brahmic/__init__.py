@@ -203,6 +203,7 @@ class DevanagariScheme(BrahmicScheme):
   PATTERN_NON_DIGITS_NON_DANDA = r"\u0900-ॣ॰-ॿ"
   PATTERN_DANDAS = "।॥"
   PATTERN_ALL_PUNCTUATIONS = r"\-,।॥\"'`\(\)\[\]{{}}"
+  PATTERN_SEP_PUNCTUATIONS = r"\s,।॥\"'`\(\)\[\]{{}}"
   PATTERN_MANIPRAVALA_MID_K_L = f"(?<=[^\\s्])क(?=[{PATTERN_MATRA}]?ळ)"
 
 
@@ -271,10 +272,10 @@ class DevanagariScheme(BrahmicScheme):
     return data_out
 
   def redo_upapada_sandhis(self, text, level="svara"):
-    padas = regex.split(r"(\s+)", text)
+    padas = regex.split(rf"([^{self.PATTERN_BASE_BLOCK}\-]+)", text)
     padas_out = []
     for pada in tqdm.tqdm(padas):
-      if "-" not in pada or not regex.match(rf"[{self.PATTERN_BASE_BLOCK}{self.PATTERN_ALL_PUNCTUATIONS}]+", pada):
+      if "-" not in pada or not regex.match(rf"[{self.PATTERN_BASE_BLOCK}\-]+", pada):
         padas_out.append(pada)
         continue
 

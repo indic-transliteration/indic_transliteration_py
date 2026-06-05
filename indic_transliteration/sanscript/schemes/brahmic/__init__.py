@@ -303,7 +303,7 @@ class DevanagariScheme(BrahmicScheme):
         if not (regex.match(f"[{self.PATTERN_NON_DIGITS_NON_DANDA}]", prev_upapada[-1]) and regex.match(f"[{self.PATTERN_NON_DIGITS_NON_DANDA}]", upapada[0])): 
           upapadas_out.append(upapada)
           continue
-        if level == "svara" and not (regex.match(f"[{self.PATTERN_INDEPENDENT_VOWEL}]", upapada[0]) and prev_upapada[-1] != "्"):
+        if level == "svara" and not (regex.match(f"[{self.PATTERN_INDEPENDENT_VOWEL}]", upapada[0]) and prev_upapada[-1] != "्" and prev_upapada not in ["मन"]):
           upapadas_out.append(upapada)
           continue
         sandhi = self.sandhi_sanskrit(prev_upapada, upapada)

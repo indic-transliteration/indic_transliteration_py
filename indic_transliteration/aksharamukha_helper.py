@@ -1,6 +1,8 @@
 import codecs
 import logging
 import os
+import sys
+
 import aksharamukha.transliterate
 import pandas
 import tqdm
@@ -70,6 +72,7 @@ def manipravaalify(text):
   for sa_word in tqdm.tqdm(typos_df.index):
     if isinstance(typos_df.loc[sa_word, "ta_csv"], pandas.Series):
       logging.fatal(f"typo-table has a duplicate - {sa_word}")
+      sys.exit(1)
     ta_words = typos_df.loc[sa_word, "ta_csv"].split(",")
     for ta_word in ta_words:
       text = regex.sub(ta_word.strip(), sa_word.strip(), text)

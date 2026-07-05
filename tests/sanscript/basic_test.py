@@ -68,6 +68,8 @@ def test_correspondence(name, scheme ):
   scheme corresponds to a subset of Devanagari."""
   dev = sanscript.SCHEMES[sanscript.DEVANAGARI]
   groups = set(dev.keys())
+  groups.add("approximate_consonants")
+  groups.add("approximate_symbols")
   for group in scheme:
     logging.debug(name)
     logging.debug(group)

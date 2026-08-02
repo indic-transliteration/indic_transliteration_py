@@ -129,6 +129,10 @@ class BrahmicScheme(Scheme):
       logging.warning("sandhi package is not installed.")
       result = str1 + str2
       return result
+    except Exception:
+      logging.warning(f"Failed on {str1} + {str2}")
+      result = str1 + str2
+      return result
 
   def join_strings(self, strings, do_sandhi=False):
     out_text = ""

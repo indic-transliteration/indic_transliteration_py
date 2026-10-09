@@ -369,8 +369,12 @@ class TamilScheme(BrahmicScheme):
   @classmethod
   def move_before_maatraa_subscripts(cls, text):
     import regex
-    text = regex.sub("([ா-ௌ꞉ம்]+)([₂₃₄])", r"\g<2>\g<1>", text, flags=regex.UNICODE)
-    return text
+    # Standalone new-style forms (independent vowels, anusvara, chandrabindu
+    # and vocalic signs, e.g. ரு₂, ம்₂, ்ரு₂) must survive intact for reverse
+    # mapping; only bare vowel-sign + subscript sequences move left.
+    return regex.sub("(ரு₂|ரூ₂|லு₂|லூ₂|்ரு₂|்ரூ₂|்லு₂|்லூ₂|ம்₂|ம்₃)|([ா-ௌ꞉ம்]+)([₂₃₄])",
+                     lambda m: m.group(1) if m.group(1) else m.group(3) + m.group(2),
+                     text, flags=regex.UNICODE)
 
   @classmethod
   def move_before_maatraa_superscripts(cls, text):

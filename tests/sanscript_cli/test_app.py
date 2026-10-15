@@ -50,5 +50,5 @@ def test_file_output(tmp_path):
     )
 
     assert result.exit_code == 0
-    assert f"Output written to: {test_output_file}" in result.stdout
+    assert f"Output written to: {test_output_file}" in result.stderr
     assert test_output_file.read_text() == expected_output

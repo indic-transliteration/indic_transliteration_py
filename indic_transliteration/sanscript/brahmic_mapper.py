@@ -65,7 +65,10 @@ def _brahmic(data, scheme_map, **kw):
           append(non_marks_viraama.get(token, token))
           found = True
       else:
-        if token in non_marks_viraama:
+        if token in vowel_marks:
+          append(vowel_marks[token] or '')
+          found = True
+        elif token in non_marks_viraama:
           if to_roman_had_consonant:
             append('a')
           append(non_marks_viraama.get(token))
@@ -94,4 +97,12 @@ def _brahmic(data, scheme_map, **kw):
 
   if to_roman_had_consonant:
     append('a')
-  return ''.join(buf)
+  result = ''.join(buf)
+  # Match the Keyman keyboard's ordering for subscripted halanta consonants
+  # (consonant+virama+subscript, e.g. க்₃, rather than the toml concatenation's
+  # க₃்). This makes the library forward output reversible as-is.
+  if scheme_map.to_scheme.name == brahmic.TAMIL_SUB:
+    result = brahmic.TamilScheme.move_after_virama_subscripts(text=result)
+  elif scheme_map.to_scheme.name == brahmic.TAMIL_SUP:
+    result = brahmic.TamilScheme.move_after_virama_superscripts(text=result)
+  return result

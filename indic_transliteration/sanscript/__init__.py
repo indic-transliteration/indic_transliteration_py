@@ -158,6 +158,15 @@ class SchemeMap(object):
         elif group == 'accents':
           self.accents = conjunct_map
 
+    # The lookup maps are keyed by the source-scheme symbols; a source symbol
+    # (e.g. the 4-character Tamil vowel mark ரு₂) can be longer than any
+    # canonical key, so make sure the tokenizer window is wide enough to match
+    # it. Otherwise multi-character vowel marks are split on reverse mapping.
+    lookup_keys = list(self.vowel_marks) + list(self.virama) + list(self.non_marks_viraama)
+    if lookup_keys:
+      self.max_key_length_from_scheme = max(self.max_key_length_from_scheme,
+                                            max(len(k) for k in lookup_keys))
+
     for base_accented_vowel, synonyms in from_scheme.get("accented_vowel_alternates", {}).items():
       for accented_vowel in synonyms:
         base_vowel = base_accented_vowel[:-1]

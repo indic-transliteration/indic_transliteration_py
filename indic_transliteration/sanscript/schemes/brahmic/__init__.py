@@ -372,15 +372,51 @@ class TamilScheme(BrahmicScheme):
     # Standalone new-style forms (independent vowels, anusvara, chandrabindu
     # and vocalic signs, e.g. ரு₂, ம்₂, ்ரு₂) must survive intact for reverse
     # mapping; only bare vowel-sign + subscript sequences move left.
-    return regex.sub("(ரு₂|ரூ₂|லு₂|லூ₂|்ரு₂|்ரூ₂|்லு₂|்லூ₂|ம்₂|ம்₃)|([ா-ௌ꞉ம்]+)([₂₃₄])",
-                     lambda m: m.group(1) if m.group(1) else m.group(3) + m.group(2),
-                     text, flags=regex.UNICODE)
+    # The visarga ஃ + subscript also moves left, unless it is the nukta prefix
+    # of a following consonant (e.g. ஃ₂க -> क़), which must stay in place.
+    standalone = "ரு₂|ரூ₂|லு₂|லூ₂|்ரু₂|்ரூ₂|்லু₂|்லூ₂|ம்₂|ம்₃"
+    pattern = "(" + standalone + ")|([ா-ௌம்]+)([₂₃₄])|(ஃ)([₂₃₄])(?![க-ஹ])"
+
+    def move(m):
+      if m.group(1):
+        return m.group(1)
+      if m.group(4):
+        return m.group(5) + m.group(4)
+      return m.group(3) + m.group(2)
+
+    return regex.sub(pattern, move, text, flags=regex.UNICODE)
 
   @classmethod
   def move_before_maatraa_superscripts(cls, text):
     import regex
-    text = regex.sub("([ா-ௌ꞉ம்]+)([²³⁴])", r"\g<2>\g<1>", text, flags=regex.UNICODE)
-    return text
+    # As above, but with superscripts. The standalone vocalic and anusvara
+    # forms end in a superscript digit and must survive intact, so protect
+    # them. The nukta prefix (e.g. ஃ²க) also keeps its digit in place.
+    standalone = "ரு²|ரூ²|லு²|லூ²|்ரু²|்ரூ²|্লু²|்லூ²|ம்²|ம்³"
+    pattern = "(" + standalone + ")|([ா-ௌம்]+)([²³⁴])|(ஃ)([²³⁴])(?![க-ஹ])"
+
+    def move(m):
+      if m.group(1):
+        return m.group(1)
+      if m.group(4):
+        return m.group(5) + m.group(4)
+      return m.group(3) + m.group(2)
+
+    return regex.sub(pattern, move, text, flags=regex.UNICODE)
+
+  @classmethod
+  def move_after_virama_subscripts(cls, text):
+    import regex
+    # Forward counterpart of move_before_maatraa_subscripts: a subscripted
+    # consonant in halanta (virama) form is written consonant+virama+subscript
+    # (க்₃), matching the Keyman keyboard, whereas naive concatenation of the
+    # toml yields consonant+subscript+virama (க₃்). Reorder to match.
+    return regex.sub("([க-ஹ])([₂₃₄])(்)", r"\g<1>\g<3>\g<2>", text, flags=regex.UNICODE)
+
+  @classmethod
+  def move_after_virama_superscripts(cls, text):
+    import regex
+    return regex.sub("([க-ஹ])([²³⁴])(்)", r"\g<1>\g<3>\g<2>", text, flags=regex.UNICODE)
 
   @classmethod
   def transliterate_subscripted(cls, text, _to):

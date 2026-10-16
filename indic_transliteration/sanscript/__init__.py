@@ -139,6 +139,9 @@ class SchemeMap(object):
         if key in to_scheme[group]:
           from_scheme_symbol = from_scheme[group][key]
           to_scheme_symbol = to_scheme[group][key]
+          if isinstance(from_scheme_symbol, (list, tuple)) or isinstance(to_scheme_symbol, (list, tuple)):
+            # e.g. a list-valued shortcut entry; not a transliteration unit.
+            continue
           if (to_scheme_symbol == "") and (group not in ["virama", "zwj", "skip"]):
             to_scheme_symbol = from_scheme_symbol
           conjunct_map[from_scheme_symbol] = to_scheme_symbol

@@ -14,6 +14,13 @@ class VisargaApproximation(IntEnum):
   H = 1
 
 
+def _as_list(value):
+  """A shortcut value may be a single string or a list of equivalent strings."""
+  if isinstance(value, (list, tuple)):
+    return list(value)
+  return [value]
+
+
 class Scheme(dict):
   """Represents all of the data associated with a given scheme. In addition
   to storing whether or not a scheme is roman, :class:`Scheme` partitions
@@ -41,19 +48,21 @@ class Scheme(dict):
   def apply_shortcuts(self, data_in):
     if "shortcuts" in self:
       for key, shortcut in self["shortcuts"].items():
-        if key in shortcut:
-          # An actually long "Shortcut" may already exist in the data
-          data_in = data_in.replace(shortcut, key)
-        data_in = data_in.replace(key, shortcut)
+        for alt in _as_list(shortcut):
+          if key in alt:
+            # An actually long "Shortcut" may already exist in the data
+            data_in = data_in.replace(alt, key)
+          data_in = data_in.replace(key, alt)
     return data_in
 
   def unapply_shortcuts(self, data_in):
     if "shortcuts" in self:
       for key, shortcut in self["shortcuts"].items():
-        if shortcut in key:
-          # An actually long "key" may already exist in the data
-          data_in = data_in.replace(key, shortcut)
-        data_in = data_in.replace(shortcut, key)
+        for alt in _as_list(shortcut):
+          if alt in key:
+            # An actually long "key" may already exist in the data
+            data_in = data_in.replace(key, alt)
+          data_in = data_in.replace(alt, key)
     return data_in
 
   def fix_lazy_anusvaara_except_padaantas(self, data_in, omit_sam, omit_yrl):

@@ -43,3 +43,15 @@ def test_from_devanagari(test_conversions):
         transliteration = sanscript.transliterate(dev_string, sanscript.DEVANAGARI, script)
         assert transliteration == text, "Failed to convert to " + script + " from devanAgarI. Compare: " + transliteration + " vs " + text
 
+
+
+def test_unmarked_tamil_consonants_map_to_first_varga_member():
+  # Tamil writes all four of क ख ग घ as க (likewise ச ட த ப). When such a many-to-one
+  # scheme is used as the SOURCE, the reverse map used to keep the LAST key, so a plain
+  # க came back as घ / gha. The unmarked letter should map to the first member.
+  assert sanscript.transliterate("கடை", sanscript.TAMIL, sanscript.DEVANAGARI) == "कटै"
+  assert sanscript.transliterate("கடை", sanscript.TAMIL, sanscript.IAST) == "kaṭai"
+  assert sanscript.transliterate("பாகம்", sanscript.TAMIL, sanscript.IAST) == "pākaṃ"
+  assert sanscript.transliterate("சுதர்சன்", sanscript.TAMIL, sanscript.HK) == "cutarcan2"
+  # The disambiguated schemes are unaffected.
+  assert sanscript.transliterate("க²", sanscript.TAMIL_SUP, sanscript.DEVANAGARI) == "ख"

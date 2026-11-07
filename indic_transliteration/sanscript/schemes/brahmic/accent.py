@@ -81,6 +81,49 @@ def strip_accents(text):
   return regex.sub(ACCENTS_PATTERN, "", text)
 
 
+def detect_fake_US_accents(text, max_udaatta_seq=5):
+  """Detect suspicious runs of consecutive UDATTA (᳓) marks in US-accented text.
+
+  Genuine Vedic US-accented text does not normally have long unbroken runs of
+  udatta-marked syllables.  Such runs usually indicate that a text was
+  mechanically accented (for example, every syllable was marked with ᳓).
+
+  Only consecutive udatta-marked syllables count.  Unaccented syllables,
+  consonants, and spaces do not break a run; a dependent svarita (᳙) or a
+  pause (danda, newline, comma or semicolon) does.
+
+  :param text: text to inspect
+  :param max_udaatta_seq: maximum number of udatta marks allowed before a run
+    is considered fake
+  :return: list of suspicious runs (empty list means no fake accents detected)
+  """
+  if "᳓" not in text:
+    return []
+  # Ignore annotations such as +++(...)+++; they may contain arbitrary accents.
+  text = regex.sub(r"\+\+\+.*?\+\+\+", "", text, flags=regex.S)
+  from indic_transliteration import sanscript
+  scheme = sanscript.SCHEMES[sanscript.DEVANAGARI]
+  vowels = set(scheme["vowels"].values())
+  letters = scheme.split_vyanjanas_and_svaras(text)
+  runs = []
+  current = []
+  for letter in letters:
+    if letter and letter[0] in vowels:
+      if "᳓" in letter:
+        current.append(letter)
+      else:
+        if len(current) > max_udaatta_seq:
+          runs.append("".join(current))
+        current = []
+    elif letter in ("।", "॥", ",", ";", "\n"):
+      if len(current) > max_udaatta_seq:
+        runs.append("".join(current))
+      current = []
+  if len(current) > max_udaatta_seq:
+    runs.append("".join(current))
+  return runs
+
+
 def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+"):
   """Given text like  
   ध्रु॒वो॑ऽसि ।  

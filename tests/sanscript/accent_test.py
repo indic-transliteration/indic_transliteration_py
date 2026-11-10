@@ -22,3 +22,26 @@ def test_to_US_accents():
   
   assert accent.to_US_accents(text="\"स त्वा+++(←तु + वै)+++ इडा॒म् उप॑ह्वयेत॒,", SVARITA_NEW="᳕", UDATTA="꣡") == "\"स꣡ त्वा꣡+++(←तु + वै)+++ इ꣡डाम् उ꣡पह्वयेत,"
   assert accent.to_US_accents(text="ए॒तत्प्रति॒ वा असु॑राणाय्ँ य॒ज्ञो व्य॑च्छिद्यत ।  ", SVARITA_NEW="᳕", UDATTA="꣡") == "एत꣡त्प्र꣡ति वा꣡ अ꣡सुराणाय्ँ यज्ञो꣡ व्यच्छिद्यत ।  "
+
+
+def test_add_dependent_accents():
+  # A dependent svarita gets DEP_SVARITA, and an anudAtta rising to an accent gets a sannatara.
+  # UDATTA_NEW defaults to UDATTA, so udAtta marks are retained.
+  assert accent.add_dependent_accents(text="ग्र᳓हो भवति दर्शपूर्णमास᳓योस्सृष्ट᳓योर्धृ᳓त्यै  ।") == "ग्र᳓हो᳜ भवति दर्शपूर्णमा॒स᳓यो᳜स्सृ॒ष्ट᳓यो॒र्धृ᳓त्यै᳜  ।"
+  # Pass DEP_SVARITA="॑" to get classical Yajurveda print style, and UDATTA_NEW="" to leave udAttas unmarked.
+  assert accent.add_dependent_accents(text="ग्र᳓हो भवति दर्शपूर्णमास᳓योस्सृष्ट᳓योर्धृ᳓त्यै  ।", DEP_SVARITA="॑", UDATTA_NEW="") == "ग्रहो॑ भवति दर्शपूर्णमा॒सयो॑स्सृ॒ष्टयो॒र्धृत्यै॑  ।"
+  # Independent svaritas (᳙) are left untouched.
+  assert accent.add_dependent_accents(text="न्यू᳙नया जुहोति") == "न्यू᳙नया जुहोति"
+  # An udAtta followed by another udAtta does not produce a svarita.
+  assert accent.add_dependent_accents(text="ध्रुवो꣡ऽहँ꣡ सजाते꣡षु+++(=haya)+++ भूयासन्", UDATTA="꣡", DEP_SVARITA="॑", UDATTA_NEW="") == "ध्रु॒वोऽहँ स॑जा॒तेषु॑+++(=haya)+++ भूयासन्"
+  # Text already containing dependent accents is not accented twice.
+  assert accent.add_dependent_accents(text="ग्रहो᳜ भवति") == "ग्रहो᳜ भवति"
+
+
+def test_add_dependent_accents_round_trip():
+  # Note: to_US_accents loses some accent information (e.g. some independent svaritas at the start of a phrase).
+  for text in ["स मे॑ ददातु प्र॒जां प॒शून् पुष्टिय्ँ॒ यशः॑",
+               "दर्शपूर्णमा॒सयो॑स्सृ॒ष्टयो॒र्धृत्यै॑  ।",
+               "चातुर्मा॒स्यानि॑ सृजे॒येति॑ ।",
+               "ए॒तत्प्रति॒ वा असु॑राणाय्ँ य॒ज्ञो व्य॑च्छिद्यत ।  "]:
+    assert accent.add_dependent_accents(text=accent.to_US_accents(text=text), DEP_SVARITA="॑", UDATTA_NEW="") == text

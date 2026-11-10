@@ -124,7 +124,7 @@ def detect_fake_US_accents(text, max_udaatta_seq=5):
   return runs
 
 
-def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+"):
+def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+", SANNATARA_NEW="", DEP_SVARITA_NEW=""):
   """Given text like  
   ध्रु॒वो॑ऽसि ।  
   ध्रु॒वो॒॑ऽहँ स॑जा॒तेषु॑ भूयास॒न्  
@@ -287,5 +287,85 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
 
 
   text = scheme.join_strings(out_letters)
-  text = text.replace(SVARITA, "").replace(SANNATARA, "")
+  text = text.replace(SVARITA, DEP_SVARITA_NEW).replace(SANNATARA, SANNATARA_NEW)
+  return text
+
+
+def add_dependent_accents(text, scheme=None, UDATTA = "᳓", SVARITA = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+", SANNATARA="॒", DEP_SVARITA="᳜", UDATTA_NEW=None):
+  """Inverse of to_US_accents: convert udAtta(᳓)-svarita(᳙) accented text into the traditional "dependent accented" notation, where only the non-default accents are marked.
+
+  - udAtta syllables are left as they are (UDATTA_NEW = UDATTA by default); pass UDATTA_NEW="" to leave them unmarked as in traditional Vedic printing.
+  - An anudAtta syllable which rises to a following accented syllable (udAtta or svarita) is marked with a sannatara (SANNATARA = ॒) - eg: दर्शपूर्णमा॒सयो᳙स्सृ॒ष्टयो᳙र्
+  - An anudAtta syllable which falls from a preceding udAtta is a dependent svarita, and is marked with DEP_SVARITA (᳜ by default; pass "॑" to get the classical Yajurveda print style) - eg: ग्रहो᳜, सो᳜.
+  - Independent svaritas (already marked with SVARITA = ᳙ in the input) are left untouched - eg: न्यू᳙नया.
+
+  So add_dependent_accents(text=to_US_accents(text=classically_accented_text), UDATTA_NEW="", DEP_SVARITA="॑") round-trips classical text.
+
+  :param text: text accented with UDATTA (᳓) and SVARITA (᳙) marks.
+  :param scheme: scheme of the text; Devanagari by default.
+  :param UDATTA: mark of an udAtta syllable in the input.
+  :param SVARITA: mark of an (independent) svarita syllable in the input.
+  :param pauses: pattern which separates accentual phrases; accents are never marked across it.
+  :param skip_pattern: annotations like +++(...)+++ which should be accented separately.
+  :param SANNATARA: mark to add to an anudAtta syllable rising to a following accent.
+  :param DEP_SVARITA: mark to add to a dependent svarita syllable.
+  :param UDATTA_NEW: mark to replace UDATTA with; UDATTA itself by default.
+  :return:
+  """
+  if UDATTA_NEW is None:
+    UDATTA_NEW = UDATTA
+  if UDATTA not in text and SVARITA not in text:
+    # Nothing to do for unaccented (or already dependent-accented) text.
+    return text
+  if any(x in text for x in [SANNATARA, DEP_SVARITA] if x):
+    # Avoid adding dependent accents twice.
+    return text
+  if scheme == None:
+    from indic_transliteration import sanscript
+    scheme = sanscript.SCHEMES[sanscript.DEVANAGARI]
+
+  PAUSES_PATTERN = regex.compile(pauses)
+  SKIP_PATTERN = regex.compile(skip_pattern)
+
+  # Split the text into a list of syllables and other elements.
+  skip_pattern_noncapture = regex.sub(r"(?<=^|[^\\])\(", "(?:", skip_pattern)
+  letters = scheme.split_vyanjanas_and_svaras(text, skip_pattern=skip_pattern_noncapture)
+  out_letters = list(letters)
+
+  udAtta_indices = set(index for index, letter in enumerate(letters) if UDATTA in letter)
+  svarita_indices = set(index for index, letter in enumerate(letters) if SVARITA in letter)
+  accented_indices = udAtta_indices | svarita_indices
+
+  # udAtta marks are replaced by UDATTA_NEW (pass UDATTA_NEW="" to leave them unmarked, as in traditional printing).
+  for index in udAtta_indices:
+    out_letters[index] = out_letters[index].replace(UDATTA, UDATTA_NEW)
+
+  # AnudAtta syllables get a dependent accent, which is determined by their neighbouring accents.
+  for index, letter in enumerate(letters):
+    # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
+    if SKIP_PATTERN.fullmatch(letter):
+      continue
+    # Only unaccented syllables (ie. anudAttas) need a dependent accent.
+    if index in accented_indices or letter[0] not in scheme["vowels"]:
+      continue
+
+    next_index = scheme.get_adjacent_syllable_index(index, letters, +1, pauses_pattern=PAUSES_PATTERN)
+    prev_index = scheme.get_adjacent_syllable_index(index, letters, -1, pauses_pattern=PAUSES_PATTERN)
+    if next_index is not None and next_index in accented_indices:
+      # The voice rises from this syllable to the following accent.
+      out_letters[index] += SANNATARA
+    elif prev_index is not None and prev_index in udAtta_indices:
+      # The voice falls from the preceding udAtta - hence a dependent svarita.
+      out_letters[index] += DEP_SVARITA
+
+  # Accent the annotations like +++(...)+++ separately.
+  for index, letter in enumerate(out_letters):
+    match = SKIP_PATTERN.match(letter)
+    if match:
+      replacement = add_dependent_accents(text=match.group(1), scheme=scheme, UDATTA=UDATTA, SVARITA=SVARITA,
+                                          pauses=pauses, skip_pattern=skip_pattern, SANNATARA=SANNATARA,
+                                          DEP_SVARITA=DEP_SVARITA, UDATTA_NEW=UDATTA_NEW)
+      out_letters[index] = letter.replace(match.group(1), replacement)
+
+  text = scheme.join_strings(out_letters)
   return text

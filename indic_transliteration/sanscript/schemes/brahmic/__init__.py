@@ -348,6 +348,21 @@ class KannadaScheme(BrahmicScheme):
     return text
 
 
+class MalayalamScheme(BrahmicScheme):
+  # Atomic chillu letters (U+0D7A-U+0D7F) are pure consonants with no inherent vowel.
+  # They are absent from the scheme map, so they used to pass through untouched
+  # ('അവൻ' -> 'avaൻ'). Rewrite each to consonant + virama, which the map does know.
+  CHILLU = {"ൺ": "ണ്", "ൻ": "ന്", "ർ": "ര്", "ൽ": "ല്", "ൾ": "ള്", "ൿ": "ക്"}
+
+  @classmethod
+  def replace_chillu(cls, text):
+    for chillu, base in cls.CHILLU.items():
+      text = text.replace(chillu, base)
+    # Pre-5.1 encoding: consonant + virama + ZWJ. The ZWJ carries no sound.
+    text = text.replace("्‍", "्").replace("്‍", "്")
+    return text
+
+
 class GurmukhiScheme(BrahmicScheme):
 
   @classmethod
@@ -462,5 +477,7 @@ for f in os.listdir(data_path):
     cls = GurmukhiScheme
   elif f.startswith("tamil"):
     cls = TamilScheme
+  elif f.startswith("malayalam"):
+    cls = MalayalamScheme
   scheme = load_scheme(file_path=os.path.join(data_path, f), cls=cls)
   SCHEMES[scheme.name] = scheme

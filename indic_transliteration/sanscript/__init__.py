@@ -144,10 +144,13 @@ class SchemeMap(object):
             continue
           if (to_scheme_symbol == "") and (group not in ["virama", "zwj", "skip"]):
             to_scheme_symbol = from_scheme_symbol
-          conjunct_map[from_scheme_symbol] = to_scheme_symbol
+          # Several keys may share one symbol in the from-scheme (Tamil writes क ख ग घ all
+          # as க). Keep the FIRST key's target so the unmarked letter maps to the first
+          # member of its varga (க -> क / ka), not the last (घ / gha).
+          conjunct_map.setdefault(from_scheme_symbol, to_scheme_symbol)
           if from_scheme_symbol in from_scheme.get("alternates", {}):
             for k_syn in from_scheme["alternates"][from_scheme_symbol]:
-              conjunct_map[k_syn] = to_scheme_symbol
+              conjunct_map.setdefault(k_syn, to_scheme_symbol)
       if group.endswith('vowel_marks'):
         self.vowel_marks.update(conjunct_map)
       elif group == 'virama':

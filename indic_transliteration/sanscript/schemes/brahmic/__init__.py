@@ -186,6 +186,68 @@ class BrahmicScheme(Scheme):
 
 
 class DevanagariScheme(BrahmicScheme):
+  # One unit per consonant (with optional nukta, vowel sign or virama, and yogavaaha),
+  # per independent vowel, or per other character.
+  _SCHWA_UNIT = regex.compile(
+    r"(?P<c>[क-हक़-य़]़?)(?P<v>्|[ा-ौ])?(?P<y>[ँ-ः]?)"
+    r"|(?P<iv>[अ-औ])(?P<iy>[ँ-ः]?)"
+    r"|(?P<o>.)", regex.DOTALL)
+
+  def delete_schwa(self, text):
+    """Apply Hindi schwa deletion: add a virama where the inherent 'a' is not spoken.
+
+    Sanskrit pronounces every inherent vowel (कमल = kamala); Hindi, Marathi, Punjabi
+    and other New Indo-Aryan languages drop it (kamal), so a Hindi word transliterated
+    as-is reads wrong in every roman scheme. Run this BEFORE transliterating:
+
+        dev = sanscript.SCHEMES[sanscript.DEVANAGARI]
+        sanscript.transliterate(dev.delete_schwa("कदमताला"), DEVANAGARI, IAST)  # kadamtālā
+
+    Two rules, applied per word:
+      1. Word-final: the inherent vowel of a final consonant is dropped (कमल -> कमल्),
+         unless the word is a single syllable (न, क्ष) or the consonant follows a
+         conjunct (चन्द्र keeps its schwa).
+      2. Medial, right to left: in the context V C _ C V the schwa is dropped
+         (कदमताला -> कदम्ताला, नमकीन -> नम्कीन्). A consonant carrying an anusvara,
+         visarga or candrabindu is left alone.
+
+    This is the standard rule (Ohala 1983) and is blind to morphology: compounds like
+    कमलनगर come out as the rule dictates, not as a speaker would split them. Do not use
+    it on Sanskrit text.
+    """
+    units = []
+    for m in self._SCHWA_UNIT.finditer(text):
+      if m.group("c"):
+        units.append({"kind": "C", "c": m.group("c"), "v": m.group("v") or "", "y": m.group("y")})
+      elif m.group("iv"):
+        units.append({"kind": "V", "c": m.group("iv"), "v": "", "y": m.group("iy")})
+      else:
+        units.append({"kind": "O", "c": m.group("o"), "v": "", "y": ""})
+
+    def inherent(u):
+      return u["kind"] == "C" and u["v"] == "" and u["y"] == ""
+
+    def vowel(u):
+      # Evaluated live: a deletion earlier in the pass silences the unit for later checks.
+      return u["kind"] == "V" or (u["kind"] == "C" and u["v"] != "्")
+
+    def apply_word(w):
+      n = len(w)
+      if n >= 2 and inherent(w[-1]) and w[-2]["v"] != "्" and sum(vowel(u) for u in w) >= 2:
+        w[-1]["v"] = "्"
+      for i in range(n - 2, 0, -1):
+        if inherent(w[i]) and vowel(w[i - 1]) and w[i + 1]["kind"] == "C" and vowel(w[i + 1]):
+          w[i]["v"] = "्"
+
+    word = []
+    for u in units + [{"kind": "O"}]:
+      if u["kind"] == "O":
+        apply_word(word)
+        word = []
+      else:
+        word.append(u)
+    return "".join(u["c"] + u["v"] + u["y"] for u in units)
+
   PATTERN_BASE_BLOCK = r"\u0900-ॿ"
   PATTERN_CONSONANT_MODIFIER = "़्"
   PATTERN_YOGAVAAHA = r"ऀ-ःᳩ-ᳶ"

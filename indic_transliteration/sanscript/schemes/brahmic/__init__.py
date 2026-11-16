@@ -94,7 +94,7 @@ class BrahmicScheme(Scheme):
     while 0 <= current_index < len(letters):
       if pauses_pattern.fullmatch(letters[current_index]):
         return None
-      elif letters[current_index][0] in self["vowels"]:
+      elif letters[current_index][0] in self["vowels"].values():
         return current_index
       current_index += direction
     return None

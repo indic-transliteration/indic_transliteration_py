@@ -165,11 +165,9 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
     if index == 0 or PAUSES_PATTERN.fullmatch(out_letters[index-1]):
       first_vowel_index = scheme.get_adjacent_syllable_index(index-1, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
       if first_vowel_index is not None and SVARITA in out_letters[first_vowel_index]:
-        if first_vowel_index > 1 and out_letters[first_vowel_index-2][-1] + out_letters[first_vowel_index-1] in ["्य्"]:
-          # न्यू᳙नया जुहोति
+        if SANNATARA not in out_letters[first_vowel_index] and SVARITA_NEW not in out_letters[first_vowel_index]:
+          # Phrase-initial svarita (not kampa) has no preceding vowel, so it is always non-dependent svarita (᳙).
           out_letters[first_vowel_index] += SVARITA_NEW
-        else:
-          out_letters[first_vowel_index] += UDATTA
         mark_udAtta = False
       else:
         mark_udAtta = True
@@ -198,12 +196,16 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
     if SKIP_PATTERN.fullmatch(letter):
       continue
 
-    # If a syllable has a svarita...
-    if SVARITA in letter and not SANNATARA in letter:
-      # ...and the predecessor has a sannatara...
+    # If a syllable has a non-kampa svarita and its predecessor is NOT an udAtta
+    # (no predecessor, predecessor has sannatara, or predecessor is itself a non-kampa svarita),
+    # mark it as non-dependent svarita (SVARITA_NEW).
+    if SVARITA in letter and SANNATARA not in letter and SVARITA_NEW not in letter:
       prev_index = scheme.get_adjacent_syllable_index(index, out_letters, -1, pauses_pattern=PAUSES_PATTERN)
-      if prev_index is not None and SANNATARA in out_letters[prev_index]:
-        # ... add a svarita_new to the current syllable.
+      if (
+        prev_index is None
+        or SANNATARA in out_letters[prev_index]
+        or (SVARITA in out_letters[prev_index] and SANNATARA not in out_letters[prev_index])
+      ):
         out_letters[index] += SVARITA_NEW
 
   pass
@@ -216,7 +218,8 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
 
     # If a syllable has both sannatara and svarita signs (like वो॒॑), replace it's svarita with udAtta, and temporarily keep the sannatara in itself. 
     if is_kampa:
-      out_letters[index] = letter + UDATTA
+      if UDATTA not in out_letters[index]:
+        out_letters[index] += UDATTA
       # Kampa rule: also remove the predecessor's sannatara.
       prev_index = scheme.get_adjacent_syllable_index(index, out_letters, -1, pauses_pattern=PAUSES_PATTERN)
       if prev_index is not None and SANNATARA in out_letters[prev_index]:
@@ -251,32 +254,182 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
 
 
   pass
-  # If a syllable has sannatara, mark all succeeding syllables with udAtta until a svarita is reached or a pause is reached. Remove the triggering sannatara. After this is done for all syllables, there should be no sannatara left.
+  virama = scheme["virama"].get("्", "")
+  ya_halant = scheme["consonants"].get("य", "") + virama if virama and "य" in scheme["consonants"] else ""
+  da_halant = scheme["consonants"].get("द", "") + virama if virama and "द" in scheme["consonants"] else ""
+  ra_halant = scheme["consonants"].get("र", "") + virama if virama and "र" in scheme["consonants"] else ""
+  sa_halant = scheme["consonants"].get("स", "") + virama if virama and "स" in scheme["consonants"] else ""
+  ka_halant = scheme["consonants"].get("क", "") + virama if virama and "क" in scheme["consonants"] else ""
+  ma_halant = scheme["consonants"].get("म", "") + virama if virama and "म" in scheme["consonants"] else ""
+  a_vowel = scheme["vowels"].get("अ", "")
+  aa_vowel = scheme["vowels"].get("आ", "")
+  ai_vowel = scheme["vowels"].get("ऐ", "")
+  o_vowel = scheme["vowels"].get("ओ", "")
+  yo_ye_vowels = {v for k in ("ओ", "ए") if (v := scheme["vowels"].get(k))}
+  non_ru_vowels = {v for k in ("अ", "आ", "ऊ", "औ") if (v := scheme["vowels"].get(k))}
+  avagraha = scheme.get("symbols", {}).get("ऽ", "ऽ")
+  vowels_set = set(scheme["vowels"].values())
+  yogavaahas_set = set(scheme.get("yogavaahas", {}).values())
+  word_chars_set = vowels_set | yogavaahas_set | {"-"}
+  pada_end_nasals = tuple(
+    scheme["consonants"].get(c, "") + virama + candra
+    for c in ("ल", "व", "य")
+    if virama and scheme["consonants"].get(c) and (candra := scheme.get("yogavaahas", {}).get("ँ"))
+  )
+
+  def _paint_forward_udatta(start_index):
+    curr_fwd_index = scheme.get_adjacent_syllable_index(start_index, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
+    while curr_fwd_index is not None:
+      syllable_to_check = out_letters[curr_fwd_index]
+      # Stop if a barrier (a svarita, sannatara, or pause) is reached.
+      if any(x in syllable_to_check for x in [SVARITA_NEW, SVARITA, SANNATARA]):
+        break
+      # Add Udatta if not already accented.
+      if UDATTA not in out_letters[curr_fwd_index]:
+        out_letters[curr_fwd_index] += UDATTA
+      curr_fwd_index = scheme.get_adjacent_syllable_index(curr_fwd_index, out_letters, +1,
+                                                          pauses_pattern=PAUSES_PATTERN)
+
+  def _is_unaccented_enclitic_after_avagraha(av_index):
+    # AnvAdesha enclitic forms ऽस्य / ऽस्मै (PAnini 2.4.32) immediately after यो॑/ये॑ carry no udAtta.
+    k = av_index + 1
+    while k < len(out_letters) and out_letters[k].isspace():
+      k += 1
+    if k + 2 >= len(out_letters) or not sa_halant or out_letters[k] != sa_halant:
+      return False
+    c2, v = out_letters[k + 1], out_letters[k + 2]
+    is_sya = ya_halant and a_vowel and c2 == ya_halant and v == a_vowel
+    is_smai = ma_halant and ai_vowel and c2 == ma_halant and v == ai_vowel
+    if not (is_sya or is_smai):
+      return False
+    nxt = k + 3
+    return nxt >= len(out_letters) or out_letters[nxt].isspace() or bool(PAUSES_PATTERN.fullmatch(out_letters[nxt])) or bool(SKIP_PATTERN.fullmatch(out_letters[nxt]))
+
+  def _succeeding_word_has_udatta(av_index):
+    word_syl_indices = []
+    seen_word_char = False
+    for k in range(av_index + 1, len(out_letters)):
+      tok = out_letters[k]
+      if not tok or PAUSES_PATTERN.fullmatch(tok) or SKIP_PATTERN.fullmatch(tok):
+        break
+      if tok.isspace():
+        if not seen_word_char:
+          continue
+        break
+      if tok == avagraha:
+        # A second avagraha after an accented/sannatara syllable starts a new pada (e.g. ये॑ऽमुतो॒ऽर्वाञ्च॑म्),
+        # whereas unaccented internal avagraha in aluk-samAsa (e.g. यो॑ऽरण्येऽनुवा॒क्यो॑) continues the compound.
+        if word_syl_indices and any(x in out_letters[word_syl_indices[-1]] for x in (SANNATARA, UDATTA, SVARITA_NEW, SVARITA)):
+          break
+        seen_word_char = True
+        continue
+      if tok[0] in vowels_set:
+        seen_word_char = True
+        word_syl_indices.append(k)
+        # Word-final anunAsika sandhi (-ल्ँ / -व्ँ / -य्ँ) marks the end of the pada even when unspaced.
+        if pada_end_nasals and any(p in tok for p in pada_end_nasals):
+          break
+      elif (virama and tok.endswith(virama)) or tok[0] in word_chars_set:
+        seen_word_char = True
+        # Visarga repha after ए/ओ (-एर्/-ओर् + consonant, e.g. यो॑ऽग्नेर्दे॒वता॑याः) only occurs at a pada boundary.
+        if ra_halant and tok == ra_halant and word_syl_indices and word_syl_indices[-1] == k - 1 and out_letters[k - 1][0] in yo_ye_vowels:
+          break
+      else:
+        break
+    if not word_syl_indices:
+      return False
+    if any(UDATTA in out_letters[k] or SVARITA_NEW in out_letters[k] for k in word_syl_indices):
+      return True
+    # Non-final sannatara rises to an udAtta within this same word in the forward pass.
+    return any(SANNATARA in out_letters[k] for k in word_syl_indices[:-1])
+
+  def _find_yo_ye_vowel_before_avagraha(av_index):
+    # Relative pronoun यो॑/ये॑ (यः/ये, standalone or after external -र्/-द् sandhi) + ऽ
+    # carries an independent accent (abhinihita) and elides a following sannatara अ॒ without leaving ॒ behind.
+    if out_letters[av_index] != avagraha or not ya_halant or not yo_ye_vowels:
+      return None
+    vi = av_index - 1
+    while vi >= 1 and (out_letters[vi].isspace() or SKIP_PATTERN.fullmatch(out_letters[vi])):
+      vi -= 1
+    if (
+      vi < 1
+      or SVARITA not in out_letters[vi]
+      or SANNATARA in out_letters[vi]
+      or out_letters[vi][0] not in yo_ye_vowels
+      or out_letters[vi - 1] != ya_halant
+    ):
+      return None
+    if vi - 1 == 0:
+      return vi
+    prev_tok = out_letters[vi - 2]
+    if not prev_tok or prev_tok == avagraha:
+      return None
+    # Standalone यो॑/ये॑ after whitespace, pause/punctuation, or word-final yogavAha (e.g. ताय्ँ॒यो॑ऽ).
+    if prev_tok[0] not in vowels_set and not (virama and prev_tok.endswith(virama)):
+      return vi
+    if prev_tok[0] in vowels_set and any(y in prev_tok for y in yogavaahas_set):
+      return vi
+    # External sandhi before यः/ये without space: -त्/-द् + यः/ये -> -द्यो॑ऽ/-द्ये॑ऽ (e.g. भूया॒द्यो॑ऽ, यद्ब्रू॒याद्यो॑ऽ),
+    # or non-अ/आ/ऊ/औ visarga + यः -> -र्यो॑ऽ (e.g. भूयासु॒र्यो॑ऽ, पाशै॒र्यो॑ऽ; excludes आचा॒र्यो॑ऽ, का॒र्यो॑ऽ, सू॒र्यो॑ऽ, सौ॒र्यो॑ऽ).
+    if da_halant and prev_tok == da_halant and vi >= 3 and out_letters[vi - 3][0] in vowels_set:
+      if SVARITA_NEW in out_letters[vi]:
+        return vi
+      if aa_vowel and ya_halant and vi >= 4 and out_letters[vi - 3][0] == aa_vowel and out_letters[vi - 4] == ya_halant:
+        return vi
+    if SVARITA_NEW in out_letters[vi] and vi >= 3 and out_letters[vi - 3][0] in vowels_set:
+      if ra_halant and prev_tok == ra_halant and out_letters[vi][0] == o_vowel and out_letters[vi - 3][0] not in non_ru_vowels:
+        return vi
+    return None
+
+  def _find_so_ko_vowel_before_avagraha(av_index):
+    # Standalone orthotone pronouns सो॑ऽ / को॑ऽ (सः/कः + अ-) carry non-dependent abhinihita svarita even after an udAtta word.
+    if out_letters[av_index] != avagraha or not o_vowel:
+      return None
+    vi = av_index - 1
+    while vi >= 1 and (out_letters[vi].isspace() or SKIP_PATTERN.fullmatch(out_letters[vi])):
+      vi -= 1
+    if (
+      vi < 1
+      or SVARITA not in out_letters[vi]
+      or SANNATARA in out_letters[vi]
+      or out_letters[vi][0] != o_vowel
+      or out_letters[vi - 1] not in {c for c in (sa_halant, ka_halant) if c}
+    ):
+      return None
+    if vi - 1 == 0:
+      return vi
+    prev_tok = out_letters[vi - 2]
+    if prev_tok and prev_tok != avagraha and prev_tok[0] not in vowels_set and not (virama and prev_tok.endswith(virama)):
+      return vi
+    return None
+
+  # --- PASS 4A: Handle pre-avagraha abhinihita svarita (यो॑ऽ / ये॑ऽ, सो॑ऽ / को॑ऽ) BEFORE SANNATARA barriers are removed ---
+  for index, letter in enumerate(out_letters):
+    if SKIP_PATTERN.fullmatch(letter):
+      continue
+    yo_ye_vi = _find_yo_ye_vowel_before_avagraha(index)
+    if yo_ye_vi is not None:
+      if SVARITA_NEW not in out_letters[yo_ye_vi]:
+        out_letters[yo_ye_vi] = out_letters[yo_ye_vi].replace(UDATTA, "") + SVARITA_NEW
+      if not _succeeding_word_has_udatta(index) and not _is_unaccented_enclitic_after_avagraha(index):
+        _paint_forward_udatta(index)
+      continue
+    so_ko_vi = _find_so_ko_vowel_before_avagraha(index)
+    if so_ko_vi is not None and SVARITA_NEW not in out_letters[so_ko_vi]:
+      out_letters[so_ko_vi] = out_letters[so_ko_vi].replace(UDATTA, "") + SVARITA_NEW
+
+  # --- PASS 4B: Forward "painting" from a Sannatara ---
+  # If a syllable has sannatara, mark all succeeding syllables with udAtta until a svarita, sannatara, or pause is reached. Remove the triggering sannatara. After this is done for all syllables, there should be no sannatara left.
   for index, letter in enumerate(out_letters):
     # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
     if SKIP_PATTERN.fullmatch(letter):
       continue
 
-    # --- Forward "painting" from a Sannatara ---
     # This applies to simple sannatara only. Kampa's effect is handled above.
     if SANNATARA in letter:
       # Remove the triggering sannatara.
       out_letters[index] = letter.replace(SANNATARA, "")
-
-      # Scan forwards and mark succeeding syllables with Udatta.
-      curr_fwd_index = scheme.get_adjacent_syllable_index(index, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
-      while curr_fwd_index is not None:
-        syllable_to_check = out_letters[curr_fwd_index]
-        if SVARITA in syllable_to_check:
-          break
-        # Stop if a barrier (a svarita or a pause) is reached.
-        if any(x in syllable_to_check for x in [SVARITA_NEW, SVARITA, SANNATARA]):
-          break
-        # Add Udatta if not already accented.
-        if UDATTA not in out_letters[curr_fwd_index]:
-          out_letters[curr_fwd_index] += UDATTA
-        curr_fwd_index = scheme.get_adjacent_syllable_index(curr_fwd_index, out_letters, +1,
-                                                            pauses_pattern=PAUSES_PATTERN)
+      _paint_forward_udatta(index)
 
   pass
   for index, letter in enumerate(out_letters):
@@ -341,12 +494,13 @@ def add_dependent_accents(text, scheme=None, UDATTA = "᳓", SVARITA = "᳙", pa
     out_letters[index] = out_letters[index].replace(UDATTA, UDATTA_NEW)
 
   # AnudAtta syllables get a dependent accent, which is determined by their neighbouring accents.
+  vowels_set = set(scheme["vowels"].values())
   for index, letter in enumerate(letters):
     # Deal with accented text like दु॒श्चरि॑तं॒ in SKIP_PATTERN
     if SKIP_PATTERN.fullmatch(letter):
       continue
     # Only unaccented syllables (ie. anudAttas) need a dependent accent.
-    if index in accented_indices or letter[0] not in scheme["vowels"]:
+    if index in accented_indices or letter[0] not in vowels_set:
       continue
 
     next_index = scheme.get_adjacent_syllable_index(index, letters, +1, pauses_pattern=PAUSES_PATTERN)

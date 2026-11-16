@@ -52,6 +52,8 @@ def test_to_US_accents():
   assert accent.to_US_accents(text="सो॒॑ऽग्नये॑ऽध्रियत") == "सो᳓ऽग्न᳓येऽध्रियत"
   assert accent.to_US_accents(text="यो॑ऽसि॒ सोऽसि॑") == "यो᳙ऽसि सो᳓ऽसि"
   assert accent.to_US_accents(text="म॒ही॒नाम्पयो॑ऽसि") == "महीना᳓म्प᳓योऽसि"
+  # Leading accent mark does not raise IndexError in split_vyanjanas_and_svaras.
+  assert accent.to_US_accents(text="॑सोऽकामयत") == "॑सोऽकामयत"
   telugu = sanscript.SCHEMES[sanscript.TELUGU]
   tel_in = sanscript.transliterate("यो॑ऽपां पुष्पव्ँ॒ वेद॑", sanscript.DEVANAGARI, sanscript.TELUGU)
   tel_us = accent.to_US_accents(text=tel_in, scheme=telugu)

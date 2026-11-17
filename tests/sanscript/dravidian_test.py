@@ -43,3 +43,18 @@ def test_from_devanagari(test_conversions):
         transliteration = sanscript.transliterate(dev_string, sanscript.DEVANAGARI, script)
         assert transliteration == text, "Failed to convert to " + script + " from devanAgarI. Compare: " + transliteration + " vs " + text
 
+
+
+def test_malayalam_chillu_letters():
+  # Chillu letters are bare consonants. They were not in the map and leaked through.
+  assert sanscript.transliterate("അവൻ", sanscript.MALAYALAM, sanscript.IAST) == "avan"
+  assert sanscript.transliterate("അവൻ", sanscript.MALAYALAM, sanscript.DEVANAGARI) == "अवन्"
+  assert sanscript.transliterate("കാർ", sanscript.MALAYALAM, sanscript.IAST) == "kār"
+  # Every chillu must equal its explicit consonant + virama spelling.
+  from indic_transliteration.sanscript.schemes.brahmic import MalayalamScheme
+  for chillu, base in MalayalamScheme.CHILLU.items():
+    for to in (sanscript.IAST, sanscript.DEVANAGARI):
+      assert sanscript.transliterate("അ" + chillu, sanscript.MALAYALAM, to) == sanscript.transliterate("അ" + base, sanscript.MALAYALAM, to)
+  assert sanscript.transliterate("മെഡിക്കൽ", sanscript.MALAYALAM, sanscript.IAST) == "mèḍikkal"
+  # Old encoding: consonant + virama + ZWJ.
+  assert sanscript.transliterate("അവന്‍", sanscript.MALAYALAM, sanscript.IAST) == "avan"

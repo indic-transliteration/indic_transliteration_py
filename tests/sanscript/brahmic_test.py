@@ -97,3 +97,20 @@ def test_apply_roman_numerals():
 def test_dot_for_numeric_ids():
   devanagari_str = "हरि बोल १।३।५४ ६ ९को"
   assert sanscript.SCHEMES[sanscript.DEVANAGARI].dot_for_numeric_ids(devanagari_str) == "हरि बोल १.३.५४ ६ ९को"
+
+
+def test_delete_schwa():
+  dev = sanscript.SCHEMES[sanscript.DEVANAGARI]
+  assert dev.delete_schwa("कमल") == "कमल्"
+  assert dev.delete_schwa("कदमताला") == "कदम्ताला"
+  assert dev.delete_schwa("नमकीन") == "नम्कीन्"
+  assert dev.delete_schwa("कमला") == "कम्ला"
+  assert dev.delete_schwa("हंस") == "हंस्"
+  assert dev.delete_schwa("लखनऊ") == "लख्नऊ"
+  # untouched: no inherent vowel to drop, single syllable, or a conjunct before the end
+  for word in ["बालाजी", "न", "क्ष", "चन्द्र", "कमल्"]:
+    assert dev.delete_schwa(word) == word
+  # word by word, other characters pass through
+  assert dev.delete_schwa("राम कमल! 12") == "राम् कमल्! 12"
+  assert sanscript.transliterate(dev.delete_schwa("कदमताला"), sanscript.DEVANAGARI, sanscript.IAST) == "kadamtālā"
+  assert sanscript.transliterate(dev.delete_schwa("नमकीन"), sanscript.DEVANAGARI, sanscript.HK) == "namkIn"

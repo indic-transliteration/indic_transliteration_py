@@ -81,3 +81,10 @@ def test_add_dependent_accents_round_trip():
                "चातुर्मा॒स्यानि॑ सृजे॒येति॑ ।",
                "ए॒तत्प्रति॒ वा असु॑राणाय्ँ य॒ज्ञो व्य॑च्छिद्यत ।  "]:
     assert accent.add_dependent_accents(text=accent.to_US_accents(text=text), DEP_SVARITA="॑", UDATTA_NEW="") == text
+
+
+def test_fix_kAThaka_notation():
+  sample = "य॑त्प्राण॑द्वायु॑रक्षितम् प्रसवे᳙ऽश्वि॑नोर् वीर्या᳗वन्तं +++(कुहू᳚र्देवा॑नाम्)+++"
+  expected = "य᳓त्प्राण᳓द्वायु᳓रक्षितम् प्रसवे᳙ऽश्वि᳓नोर् वीर्या᳙वन्तं +++(कुहू᳙र्देवा᳓नाम्)+++"
+  assert accent.fix_kAThaka_notation(sample) == expected
+  assert accent.from_US_to_kAThaka_notation(expected) == "य॑त्प्राण॑द्वायु॑रक्षितम् प्रसवे᳙ऽश्वि॑नोर् वीर्या᳙वन्तं +++(कुहू᳙र्देवा॑नाम्)+++"

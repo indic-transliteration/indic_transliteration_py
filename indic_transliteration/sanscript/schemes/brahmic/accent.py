@@ -523,3 +523,66 @@ def add_dependent_accents(text, scheme=None, UDATTA = "᳓", SVARITA = "᳙", pa
 
   text = scheme.join_strings(out_letters)
   return text
+
+def fix_kAThaka_notation(text, UDATTA="᳓", SVARITA="᳙", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+"):
+  """Translate Kāṭhaka / Schroeder edition accent notation to our US accent notation.
+
+  In Leopold von Schroeder's edition of the Kāṭhaka Saṁhitā:
+  - Udātta is marked by a vertical stroke above the syllable: ॑ (U+0951).
+  - Independent svarita is marked by a curve/hook: ᳙ (U+1CD9), ᳗ (U+1CD7), ᳖ (U+1CD6), ᳚ (U+1CDA).
+  - Anudātta and secondary (dependent) svarita are left unmarked.
+
+  This function translates these marks to our US notation (losslessly):
+  - ॑ (U+0951) -> UDATTA (default: ᳓ U+1CD3)
+  - ᳙, ᳗, ᳖, ᳚ -> SVARITA (default: ᳙ U+1CD9)
+
+  :param text: input text in Kāṭhaka / Schroeder notation
+  :param UDATTA: replacement for udātta (default: "᳓")
+  :param SVARITA: replacement for independent svarita (default: "᳙")
+  :param skip_pattern: pattern for annotations to be skipped or processed separately
+  :return: text in our US accent notation
+  """
+  def _replace(t):
+    t = regex.sub(r"[᳖᳗᳙᳚]", SVARITA, t)
+    t = t.replace("॑", UDATTA)
+    return t
+
+  if skip_pattern:
+    SKIP_PATTERN = regex.compile(skip_pattern, flags=regex.DOTALL)
+    parts = []
+    last_end = 0
+    for match in SKIP_PATTERN.finditer(text):
+      parts.append(_replace(text[last_end:match.start()]))
+      inner_replaced = fix_kAThaka_notation(match.group(1), UDATTA=UDATTA, SVARITA=SVARITA, skip_pattern=skip_pattern)
+      parts.append(match.group(0).replace(match.group(1), inner_replaced))
+      last_end = match.end()
+    parts.append(_replace(text[last_end:]))
+    return "".join(parts)
+  else:
+    return _replace(text)
+
+
+def from_US_to_kAThaka_notation(text, UDATTA="॑", SVARITA="᳙", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+"):
+  """Inverse of fix_kAThaka_notation: translate US accent notation back to Kāṭhaka / Schroeder notation.
+
+  - UDATTA mark (᳓ U+1CD3) -> UDATTA (default: ॑ U+0951)
+  - SVARITA mark (᳙ U+1CD9) -> SVARITA (default: ᳙ U+1CD9)
+  """
+  def _replace(t):
+    t = t.replace("᳓", UDATTA)
+    t = t.replace("᳙", SVARITA)
+    return t
+
+  if skip_pattern:
+    SKIP_PATTERN = regex.compile(skip_pattern, flags=regex.DOTALL)
+    parts = []
+    last_end = 0
+    for match in SKIP_PATTERN.finditer(text):
+      parts.append(_replace(text[last_end:match.start()]))
+      inner_replaced = from_US_to_kAThaka_notation(match.group(1), UDATTA=UDATTA, SVARITA=SVARITA, skip_pattern=skip_pattern)
+      parts.append(match.group(0).replace(match.group(1), inner_replaced))
+      last_end = match.end()
+    parts.append(_replace(text[last_end:]))
+    return "".join(parts)
+  else:
+    return _replace(text)

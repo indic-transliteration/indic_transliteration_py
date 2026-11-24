@@ -69,3 +69,15 @@ def test_optitrans_from_urdu():
   for source, dest in test_pairs.items():
     assert optitrans_scheme.approximate_from_iso_urdu(source) == dest, (source, dest)
   assert optitrans_scheme.approximate_from_iso_urdu("maẕhab", add_terminal_a=False) == "mazhab"
+
+
+def test_om_after_consonant():
+  # The symbol ॐ is spelled like ओ + ं in these schemes.
+  for scheme, text in [("wx", "goM"), ("baraha", "gOM"), ("itrans_dravidian", "gOM"), ("hk_dravidian", "gOM"),
+                       ("optitrans_dravidian", "gOM")]:
+    assert sanscript.transliterate(text, scheme, sanscript.DEVANAGARI) == "गों"
+    assert sanscript.transliterate(text, scheme, sanscript.IAST) == "goṃ"
+    assert sanscript.transliterate("गों", sanscript.DEVANAGARI, scheme) == text
+  assert sanscript.transliterate("oM govinxoM", "wx", sanscript.DEVANAGARI) == "ॐ गोविन्दों"
+  assert sanscript.transliterate("oM govinxoM", "wx", "kannada") == sanscript.transliterate("ॐ गोविन्दों", sanscript.DEVANAGARI, "kannada")
+  assert sanscript.transliterate("OM", sanscript.ITRANS, sanscript.DEVANAGARI) == "ॐ"

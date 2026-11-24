@@ -16,6 +16,7 @@ def _roman(data, scheme_map, **kw):
   virama = scheme_map.virama
   consonants = scheme_map.consonants
   non_marks_viraama = scheme_map.non_marks_viraama
+  ambiguous_om = scheme_map.ambiguous_om
   max_key_length_from_scheme = scheme_map.max_key_length_from_scheme
   to_roman = scheme_map.to_scheme.is_roman
 
@@ -80,7 +81,7 @@ def _roman(data, scheme_map, **kw):
       # and regular vowels. Due to the implicit 'a', we must explicitly
       # end any lingering consonants before we can handle the current
       # token.
-      elif token in non_marks_viraama:
+      elif token in non_marks_viraama and not (had_consonant and token == ambiguous_om):
         if had_consonant:
           append(virama[''])
         append(non_marks_viraama[token])

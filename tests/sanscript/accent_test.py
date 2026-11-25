@@ -88,3 +88,31 @@ def test_fix_kAThaka_notation():
   expected = "य᳓त्प्राण᳓द्वायु᳓रक्षितम् प्रसवे᳙ऽश्वि᳓नोर् वीर्या᳙वन्तं +++(कुहू᳙र्देवा᳓नाम्)+++"
   assert accent.fix_kAThaka_notation(sample) == expected
   assert accent.from_US_to_kAThaka_notation(expected) == "य॑त्प्राण॑द्वायु॑रक्षितम् प्रसवे᳙ऽश्वि॑नोर् वीर्या᳙वन्तं +++(कुहू᳙र्देवा॑नाम्)+++"
+
+
+def test_to_US_accents_atharva_kampa_pluta():
+  # Atharvavedic independent svarita ᳡ (including post-᳡ anudatta ॑ dip and redundant ॑᳡)
+  assert accent.to_US_accents("अ॒न्यत्रा॒स्मन्न्यु᳡च्यतु") == "अन्य᳓त्रास्म᳓न्न्यु᳙च्यतु"
+  assert accent.to_US_accents("दे॒वाना॑ममृतग॒र्भो᳡ऽसि॑ स्वप्न") == "देवा᳓नाममृतगर्भो᳙ऽसि स्वप्न"
+  assert accent.to_US_accents("यस्ये॒दमा रजो॒ युज॑स्तु॒जे जना॒ वनं॒ स्वः॑᳡।") == "य᳓स्येद᳓मा᳓ र᳓जो यु᳓जस्तुजे᳓ ज᳓ना व᳓नं स्वः᳙।"
+  # Hrasva and dirgha kampa (१ / ३) -> SVARITA_NEW + forward UDATTA paint
+  assert accent.to_US_accents("अ॒प्स्व॑१न्तर॒मृत॑म॒प्सु भे॑ष॒जम्।") == "अप्स्व᳙न्त᳓रमृ᳓तमप्सु᳓ भेषज᳓म्।"
+  assert accent.to_US_accents("शं न॒ आपो॑ धन्व॒न्या॑३॒॑ शमु॑ सन्त्वनू॒प्याः॑।") == "शं᳓ न आ᳓पो धन्वन्या᳙ श᳓मु सन्त्वनूप्याः᳙।"
+  assert accent.to_US_accents("तेना॑ ते त॒न्वे॑३ शं क॑रम्") == "ते᳓ना ते तन्वे᳙ शं᳓ करम्"
+  assert accent.to_US_accents("यो व॑ आपो॒ऽपां भा॒गो॒३॒॑प्स्व॒न्तर्य॑जु॒ष्यो᳡") == "यो᳓ व आपोऽपां᳓ भागो᳙प्स्वन्त᳓र्यजुष्यो᳙"
+  assert accent.to_US_accents("स ए॒व मृ॒त्युः सो॒३॒॑मृतं॒ सो॒३॒॑भ्वं१॒॑ स रक्षः॑ ॥") == "स᳓ एव᳓ मृत्युः᳓ सो᳙मृ᳓तं सो᳙भ्वं᳙ स᳓ र᳓क्षः ॥"
+  assert accent.to_US_accents("अग॑न्म॒ स्वः१॒॑स्व᳡रगन्म॒ सं") == "अ᳓गन्म स्वः᳙स्व᳙रगन्म सं᳓"
+  assert accent.to_US_accents("आ॒रे॑३ ऽसा॑व॒स्मद॑स्तु") == "आरे᳙ ऽसा᳓वस्म᳓दस्तु"
+  # True pluta ३ is preserved (both unmarked and dependent-svarita before sannatara/pause)
+  assert accent.to_US_accents("ख॑ण्व॒खा३इ॑ खैम॒खा३इ॒ मध्ये॑", pauses=r"[।॥,;]+") == "ख᳙ण्वखा᳓३इ खैमखा᳓३इ म᳓ध्ये"
+  assert accent.to_US_accents("क्षि॒प्रं वै तस्य॑ पृच्छन्ति॒ यत्तदासी॑३दि॒दं नु ता३दिति॑ ॥") == "क्षिप्रं᳓ वै᳓ त᳓स्य पृच्छन्ति य᳓त्त᳓दा᳓सी३दिदं᳓ नु᳓ ता᳓३दि᳓ति ॥"
+  # Wrapped odd padas without danda when pauses excludes newline
+  assert accent.to_US_accents("भ॒द्रा ह्य् अ᳡स्याः॒ प्रम॑तिर् ब॒भूव॒\nसेमं य॒ज्ञम् **अ॑वतु** दे॒व-गो॑पा ॥", pauses=r"[।॥,;]+") == "भद्रा᳓ ह्य् अ᳙स्याः प्र᳓मतिर् बभू᳓व\nसे᳓मं᳓ यज्ञ᳓म् **अवतु** देव᳓-गोपा ॥"
+
+
+
+def test_to_US_accents_rigveda_kampa_visarga_and_pluta():
+  # Rigveda kampa followed by visarga keeps visarga and converts kampa to ᳙
+  assert accent.to_US_accents("त॒न्व१॑ः॒ सुजा॑ताः") == "तन्वः᳙ सु᳓जाताः"
+  # Rigveda pluta ३ with chandrabindu stays intact
+  assert accent.to_US_accents("न त्वा॒ भीरि॑व विन्दती३ँ ॥") == "न᳓ त्वा भी᳓रिव विन्दती३ँ ॥"

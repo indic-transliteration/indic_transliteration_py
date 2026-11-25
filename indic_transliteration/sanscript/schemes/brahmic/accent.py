@@ -124,6 +124,102 @@ def detect_fake_US_accents(text, max_udaatta_seq=5):
   return runs
 
 
+def _decode_kampa(out_letters, scheme, pauses_pattern, skip_pattern, sannatara, svarita, svarita_new, udatta, av_svarita):
+  """Decode syllable-attached Vedic kampa (१/३) while keeping true pluta ३ intact.
+
+  Promotes kampa-bearing syllables to ``svarita_new``, removes kampa digit tokens,
+  and returns ``(rebuilt_letters, kampa_anchor_indices)`` so Pass 4B paints subsequent udattas.
+  """
+  numerals = []
+  try:
+    numerals = scheme.get_numerals()
+  except (KeyError, AttributeError):
+    pass
+  num_1 = numerals[1] if len(numerals) > 1 else "१"
+  num_3 = numerals[3] if len(numerals) > 3 else "३"
+  kampa_digits = {num_1, num_3}
+  all_digits = set(numerals) | set("0123456789")
+  accents_only = {svarita, sannatara, av_svarita, svarita_new, udatta}
+  yogavaahas = set(scheme.get("yogavaahas", {}).values())
+  accents_and_yogavaahas = accents_only | yogavaahas
+
+  remove_indices = set()
+  orig_anchors = set()
+  for idx, tok in enumerate(out_letters):
+    if not tok or skip_pattern.fullmatch(tok) or tok[0] not in kampa_digits:
+      continue
+    if any(ch not in accents_and_yogavaahas for ch in tok[1:]):
+      continue
+    if idx + 1 < len(out_letters) and out_letters[idx + 1] and out_letters[idx + 1][0] in all_digits:
+      continue
+    prev_syl = scheme.get_adjacent_syllable_index(idx, out_letters, -1, pauses_pattern=pauses_pattern)
+    if prev_syl != idx - 1 or skip_pattern.fullmatch(out_letters[prev_syl]):
+      continue
+    next_syl = scheme.get_adjacent_syllable_index(idx, out_letters, +1, pauses_pattern=pauses_pattern)
+    has_kampa_marks = sannatara in tok or svarita in tok
+    if tok[0] != num_1 and not has_kampa_marks:
+      # Bare pluta ३ marks kampa only when preceded by SVARITA and followed by an unmarked/non-sannatara syllable.
+      is_kampa = (
+        svarita in out_letters[prev_syl]
+        and next_syl is not None
+        and not skip_pattern.fullmatch(out_letters[next_syl])
+        and sannatara not in out_letters[next_syl]
+      )
+      if not is_kampa:
+        continue
+
+    trailing_yogavaahas = "".join(ch for ch in tok[1:] if ch in yogavaahas)
+    out_letters[prev_syl] = (
+      out_letters[prev_syl]
+      .replace(sannatara, "")
+      .replace(svarita, "")
+      .replace(av_svarita, "")
+    )
+    for yv in trailing_yogavaahas:
+      if yv not in out_letters[prev_syl]:
+        out_letters[prev_syl] += yv
+    if svarita_new not in out_letters[prev_syl]:
+      out_letters[prev_syl] += svarita_new
+    if next_syl is not None and not skip_pattern.fullmatch(out_letters[next_syl]):
+      nxt_tok = out_letters[next_syl]
+      if svarita in nxt_tok and sannatara not in nxt_tok and av_svarita not in nxt_tok and svarita_new not in nxt_tok:
+        out_letters[next_syl] = nxt_tok.replace(svarita, "")
+    remove_indices.add(idx)
+    orig_anchors.add(prev_syl)
+
+  if not remove_indices:
+    return out_letters, set()
+
+  rebuilt = []
+  kampa_anchors = set()
+  for idx, tok in enumerate(out_letters):
+    if idx in remove_indices:
+      continue
+    if idx in orig_anchors:
+      kampa_anchors.add(len(rebuilt))
+    rebuilt.append(tok)
+  return rebuilt, kampa_anchors
+
+
+def _decode_av_svarita(out_letters, scheme, pauses_pattern, skip_pattern, sannatara, svarita, svarita_new, av_svarita):
+  """Convert Atharvavedic independent svarita marks (᳡) to ``svarita_new`` and clear post-᳡ anudatta ``॑`` dips."""
+  av_indices = [
+    idx for idx, tok in enumerate(out_letters)
+    if av_svarita in tok and tok[0] not in (svarita, sannatara, av_svarita) and not skip_pattern.fullmatch(tok)
+  ]
+  for idx in av_indices:
+    nxt = scheme.get_adjacent_syllable_index(idx, out_letters, +1, pauses_pattern=pauses_pattern)
+    if nxt is not None and not skip_pattern.fullmatch(out_letters[nxt]):
+      nxt_tok = out_letters[nxt]
+      if svarita in nxt_tok and sannatara not in nxt_tok and av_svarita not in nxt_tok and svarita_new not in nxt_tok:
+        out_letters[nxt] = nxt_tok.replace(svarita, "")
+  for idx in av_indices:
+    tok = out_letters[idx].replace(av_svarita, "").replace(svarita, "").replace(sannatara, "")
+    if svarita_new not in tok:
+      tok += svarita_new
+    out_letters[idx] = tok
+
+
 def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses=r"[।॥\n,;]+", skip_pattern=r"\+\+\+\((.+?)\)\+\+\+", SANNATARA_NEW="", DEP_SVARITA_NEW=""):
   """Given text like  
   ध्रु॒वो॑ऽसि ।  
@@ -137,7 +233,8 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
   # symbol definitions
   SANNATARA = "॒"
   SVARITA = "॑"
-  if not any(x in text for x in [SVARITA, SANNATARA, "᳚", "᳛"]):
+  AV_SVARITA = "᳡"
+  if not any(x in text for x in [SVARITA, SANNATARA, "᳚", "᳛", AV_SVARITA]):
     # Avoid inserting udattas from the beginning on an invalid (already converted input)
     return text
   if any(x in text for x in [SVARITA_NEW, UDATTA]):
@@ -156,15 +253,29 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
   # Example output here - ['स्', "ओ", "+++(=tick)+++", 'ऽ', 'ग्', "न्", "इ॒", "म्", "ए॑", "व्", "अ"]
 
   out_letters = list(letters)
+  # Unattached orphan accent marks (e.g. leading "॑" with no base syllable) carry no valid accent pattern.
+  source_marks = (SVARITA, SANNATARA, AV_SVARITA)
+  if not any(
+    tok and (
+      (SKIP_PATTERN.fullmatch(tok) and any(m in tok for m in source_marks))
+      or (not SKIP_PATTERN.fullmatch(tok) and tok[0] not in source_marks and any(m in tok for m in source_marks))
+    )
+    for tok in out_letters
+  ):
+    return text
 
-  
+  out_letters, kampa_anchors = _decode_kampa(
+    out_letters, scheme, PAUSES_PATTERN, SKIP_PATTERN, SANNATARA, SVARITA, SVARITA_NEW, UDATTA, AV_SVARITA
+  )
+  _decode_av_svarita(
+    out_letters, scheme, PAUSES_PATTERN, SKIP_PATTERN, SANNATARA, SVARITA, SVARITA_NEW, AV_SVARITA
+  )
 
-  pass
-# mark any syllable starting from a pause (or the beginning of out_text) as udAtta, until a sannatara or svarita
+  # mark any syllable starting from a pause (or the beginning of out_text) as udAtta, until a sannatara or svarita
   for index, letter in enumerate(out_letters):
     if index == 0 or PAUSES_PATTERN.fullmatch(out_letters[index-1]):
       first_vowel_index = scheme.get_adjacent_syllable_index(index-1, out_letters, +1, pauses_pattern=PAUSES_PATTERN)
-      if first_vowel_index is not None and SVARITA in out_letters[first_vowel_index]:
+      if first_vowel_index is not None and any(x in out_letters[first_vowel_index] for x in [SVARITA, SVARITA_NEW]):
         if SANNATARA not in out_letters[first_vowel_index] and SVARITA_NEW not in out_letters[first_vowel_index]:
           # Phrase-initial svarita (not kampa) has no preceding vowel, so it is always non-dependent svarita (᳙).
           out_letters[first_vowel_index] += SVARITA_NEW
@@ -199,7 +310,12 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
     # If a syllable has a non-kampa svarita and its predecessor is NOT an udAtta
     # (no predecessor, predecessor has sannatara, or predecessor is itself a non-kampa svarita),
     # mark it as non-dependent svarita (SVARITA_NEW).
-    if SVARITA in letter and SANNATARA not in letter and SVARITA_NEW not in letter:
+    if (
+      SVARITA in letter
+      and letter[0] not in (SVARITA, SANNATARA, AV_SVARITA)
+      and SANNATARA not in letter
+      and SVARITA_NEW not in letter
+    ):
       prev_index = scheme.get_adjacent_syllable_index(index, out_letters, -1, pauses_pattern=PAUSES_PATTERN)
       if (
         prev_index is None
@@ -425,10 +541,10 @@ def to_US_accents(text, scheme=None, UDATTA = "᳓", SVARITA_NEW = "᳙", pauses
     if SKIP_PATTERN.fullmatch(letter):
       continue
 
-    # This applies to simple sannatara only. Kampa's effect is handled above.
-    if SANNATARA in letter:
-      # Remove the triggering sannatara.
-      out_letters[index] = letter.replace(SANNATARA, "")
+    # Trigger forward udatta painting on sannatara or decoded kampa anchor syllables.
+    if SANNATARA in letter or index in kampa_anchors:
+      if SANNATARA in letter:
+        out_letters[index] = letter.replace(SANNATARA, "")
       _paint_forward_udatta(index)
 
   pass

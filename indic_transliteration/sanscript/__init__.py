@@ -123,6 +123,8 @@ class SchemeMap(object):
     self.accents = {}
     self.from_scheme = from_scheme
     self.to_scheme = to_scheme
+    # ॐ is often spelled just like ओ + ं (e.g. "oM" in WX). After a consonant, that spelling can only be the vowel mark.
+    self.ambiguous_om = from_scheme["vowels"].get("ओ", "") + from_scheme.get("yogavaahas", {}).get("ं", "")
     self.max_key_length_from_scheme = max(len(x) for g in from_scheme
                                           for x in from_scheme[g])
 

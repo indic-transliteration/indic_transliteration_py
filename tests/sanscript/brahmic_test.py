@@ -1,3 +1,6 @@
+import sys
+import pytest
+
 from indic_transliteration import sanscript
 from indic_transliteration.sanscript.schemes import VisargaApproximation
 
@@ -42,9 +45,18 @@ def test_do_vyanjana_svara_join():
   assert sanscript.SCHEMES[sanscript.KANNADA].do_vyanjana_svara_join("ಹ್ರ್", "ಈಃ") == "ಹ್ರೀಃ"
 
 def test_upapada_sandhi():
+  pytest.importorskip("sandhi", reason="The sandhi library is required for these tests.")
   devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
   assert devanagari.redo_upapada_sandhis("नित्य-कर्म-अनुष्ठाने अत्र मुद्रिते  \nगण-ईश-कृते॥") == 'नित्य-कर्मानुष्ठाने अत्र मुद्रिते  \nगणेश-कृते॥'
   assert devanagari.redo_upapada_sandhis("अनपाय-प्रभा-अन्वितऩाऩ  \nगण-ईश-कृते॥") == 'अनपाय-प्रभान्वितऩाऩ  \nगणेश-कृते॥'
+
+
+def test_upapada_sandhi_without_sandhi_package(monkeypatch):
+  monkeypatch.setitem(sys.modules, "sandhi", None)
+  devanagari = sanscript.SCHEMES[sanscript.DEVANAGARI]
+  text = "नित्य-कर्म-अनुष्ठाने अत्र मुद्रिते  \nगण-ईश-कृते॥"
+  assert devanagari.redo_upapada_sandhis(text) == text
+  assert devanagari.join_strings(['अ', 'अ'], do_sandhi=True) == 'अअ'
 
 
 def test_split_vyanjanas_and_svaras():

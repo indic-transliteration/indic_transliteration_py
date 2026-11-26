@@ -130,11 +130,11 @@ class BrahmicScheme(Scheme):
       return result[0]
     except ImportError:
       logging.warning("sandhi package is not installed.")
-      result = str1 + str2
+      result = [str1 + str2]
       return result
     except Exception:
       logging.warning(f"Failed on {str1} + {str2}")
-      result = str1 + str2
+      result = [str1 + str2]
       return result
 
   def join_strings(self, strings, do_sandhi=False):
@@ -145,8 +145,8 @@ class BrahmicScheme(Scheme):
         if len(letter) > 1:
           out_text += letter[1:]
       else:
-        if do_sandhi:
-          out_text = self.sandhi_sanskrit(out_text, letter)
+        if do_sandhi and out_text:
+          out_text = self.sandhi_sanskrit(out_text, letter)[0]
         else:
           out_text += letter
     return out_text
